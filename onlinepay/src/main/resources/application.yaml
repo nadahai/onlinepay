@@ -1,0 +1,74 @@
+server:
+  port: 80
+  servlet:
+    context-path: /xpay
+  tomcat:
+    uri-encoding: UTF-8
+
+spring:
+  profiles:
+    active: @profileActive@
+    
+  http:
+      encoding:
+              force: true
+              charset: UTF-8
+              enabled: true
+              uri-encoding: UTF-8
+
+  datasource:
+            type: com.alibaba.druid.pool.DruidDataSource
+            druid:
+              filters: config,stat,wall,log4j
+              maxActive: 20
+              initialSize: 1
+              maxWait: 60000
+              minIdle: 1
+              timeBetweenEvictionRunsMillis: 60000
+              minEvictableIdleTimeMillis: 300000
+              validationQuery: select 'x'
+              testWhileIdle: true
+              testOnBorrow: false
+              testOnReturn: false
+              poolPreparedStatements: true
+              maxOpenPreparedStatements: 20
+              connect-properties:
+                config.decrypt: true
+                config.decrypt.key: MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBALI+Uiu5orflG47CN2A5+w2W+TU1zKvtpw+hyMA+EjCqRVWzyefufAQTebZdumtalOwzyrzoW7cTrrC7QnurNPUCAwEAAQ==
+
+
+  jackson:
+         default-property-inclusion: non_default
+
+  freemarker:
+        allow-request-override: false
+        allow-session-override: false
+        cache: false
+        charset: UTF-8
+        check-template-location: true
+        content-type: text/html
+        enabled: true
+        expose-request-attributes: false
+        expose-session-attributes: false
+        expose-spring-macro-helpers: true
+        prefer-file-system-access: true
+        suffix: .ftl
+        template-loader-path: classpath:/templates/
+        settings:
+              template_update_delay: 0
+              default_encoding: UTF-8
+              classic_compatible: true
+        request-context-attribute: request
+
+mybatis:
+    type-aliases-package: com.vc.onlinepay.persistent.entity
+    mapper-locations: classpath:mapper/*.xml
+    config-location: classpath:MyBatisConf.xml
+
+mapper:
+    mappers: com.vc.onlinepay.config.MyMapper
+    not-empty: false
+
+jdbc:
+  servers: com.vc.onlinepay.config
+

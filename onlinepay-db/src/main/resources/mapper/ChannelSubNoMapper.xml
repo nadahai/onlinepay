@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vc.onlinepay.persistent.mapper.channel.ChannelSubNoMapper">
+    
+    <!-- 获取符合条件子商户号 -->
+	<select id="getChannelSubNoList" resultType="ChannelSubNo">
+		SELECT 
+			id,
+			channel_id as channelId,
+		    merch_id as merchId,
+			UP_MERCH_NO as upMerchNo,
+			UP_MERCH_KEY as upMerchKey,
+			MIN_PRICE as minPrice,
+			MAX_PRICE as maxPrice,
+		    PAY_TYPE as payType,
+		    REMARK as remark,
+		    REMARKS as remarks,
+			USER_ID as userId,
+			name as name,
+			BANK_NO as bankNo,
+			cardIdx as cardIdx,
+			BANK_MARK as bankMark,
+			TYPE as type,
+			LAST_ORDER_TIME as lastOrderTime
+		FROM 
+			VC_A1_CHANNEL_SUBNO
+		WHERE 
+			del_flag = 0 and status =1
+			and IFNULL(DAY_TRA_AMOUNT,0) &lt;= IFNULL(DAY_QUOTA_AMOUNT,0)
+			and IFNULL(TRA_AMOUNT,0) &lt;= IFNULL(QUOTA_AMOUNT,0)
+			<if test="traAmount != null and traAmount !=0 ">
+				and IFNULL(MIN_PRICE,0) &lt;= #{traAmount}
+				and IFNULL(MAX_PRICE,0) >= #{traAmount}
+			</if>
+			<if test="upMerchNo != null and upMerchNo !='' ">
+				and  UP_MERCH_NO = #{upMerchNo}
+			</if>
+			<if test="channelId != null and channelId !=0 ">
+				and channel_id = #{channelId}
+			</if>
+			<if test="merchId != null and merchId !=0 ">
+				and merch_id = #{merchId}
+			</if>
+			<if test="payType != null and payType !=0 ">
+				and (IFNULL(PAY_TYPE,0) = #{payType} or IFNULL(PAY_TYPE,0) = 0)
+			</if>
+			ORDER BY LAST_ORDER_TIME asc ,DAY_TRA_AMOUNT asc
+			LIMIT 10
+	</select>
+	
+	<!-- 个人支付宝账号列表 -->
+	<select id="getLoopRobinSubNoList" resultType="ChannelSubNo">
+		SELECT 
+			channel_id as channelId,
+			UP_MERCH_NO as upMerchNo,
+			UP_MERCH_KEY as upMerchKey,
+			MIN_PRICE as minPrice,
+			MAX_PRICE as maxPrice,
+			loop_robin as loopRobin,
+			weight as weight
+		FROM 
+			VC_A1_CHANNEL_SUBNO
+		WHERE 
+			del_flag = 0 and status =1
+			AND UP_MERCH_NO IN (SELECT up_merch_key FROM vc_a1_supplier_subno WHERE STATUS=1 AND del_flag=0 GROUP BY up_merch_key)
+			AND channel_id = #{channelId}
+			AND IFNULL(DAY_TRA_AMOUNT,0) &lt;= IFNULL(DAY_QUOTA_AMOUNT,0)
+			AND IFNULL(TRA_AMOUNT,0) &lt;= IFNULL(QUOTA_AMOUNT,0)
+			ORDER BY SEQ ASC,id DESC
+	</select>
+	
+	<!-- 企业支付宝账号 -->
+	<select id="getAllSupplierList" resultType="ChannelSubNo">
+		SELECT 
+			channel_id as channelId,
+			UP_MERCH_NO as upMerchNo,
+			UP_MERCH_KEY as upMerchKey,
+			MIN_PRICE as minPrice,
+			MAX_PRICE as maxPrice,
+			loop_robin as loopRobin,
+			weight as weight
+		FROM 
+			VC_A1_CHANNEL_SUBNO
+		WHERE 
+			del_flag = 0 and status =1
+			AND UP_MERCH_NO IN (SELECT up_merch_key FROM vc_a1_supplier_subno WHERE STATUS=1 AND del_flag=0 GROUP BY up_merch_key)
+			AND channel_id = #{channelId}
+			AND IFNULL(DAY_TRA_AMOUNT,0) &lt;= IFNULL(DAY_QUOTA_AMOUNT,0)
+			AND IFNULL(TRA_AMOUNT,0) &lt;= IFNULL(QUOTA_AMOUNT,0)
+			ORDER BY SEQ ASC,id DESC
+	</select>
+	
+	<!-- 拉卡拉获取符合时间限额条件子商户号 -->
+	<select id="getChannelLimitTimeSubNoList" resultType="ChannelSubNo">
+		SELECT
+		channel_id as channelId,
+		UP_MERCH_NO as upMerchNo,
+		UP_MERCH_KEY as upMerchKey,
+		MIN_PRICE as minPrice,
+		MAX_PRICE as maxPrice,
+		SUB_TRA_START_TIME as subTraStartTime,
+		SUB_TRA_END_TIME as subTraEndTime
+		FROM
+		VC_A1_CHANNEL_SUBNO
+		WHERE
+		del_flag = 0 and status =1
+		AND channel_id = #{channelId}
+		AND IFNULL(DAY_TRA_AMOUNT,0) &lt;= IFNULL(DAY_QUOTA_AMOUNT,0)
+		AND IFNULL(TRA_AMOUNT,0) &lt;= IFNULL(QUOTA_AMOUNT,0)
+		ORDER BY
+		<if test="lastOrderExpiredTime != null and lastOrderExpiredTime !=0 ">
+			LAST_ORDER_TIME ASC,
+		</if>
+		SEQ ASC
+		limit 5
+	</select>
+
+	<!-- 查找失效时间内交易渠道商-->
+	<select id="findUsedMerchNo" resultType="String">
+		SELECT CONCAT(o.up_merch_no , ',',o.up_merch_key) as up_merch_no 
+		FROM vc_online_order o
+		WHERE o.del_flag = 0 AND o.channel_id = #{channelId} AND o.STATUS = 1 AND o.TRA_AMOUNT = #{traAmount}
+			AND o.CREATE_DATE BETWEEN DATE_ADD(SYSDATE(), INTERVAL -#{lastOrderExpiredTime} SECOND) AND  SYSDATE()
+	</select>
+	
+	<!--查找已禁用商户  -->
+	<select id="findLimited" resultType="ChannelSubNo">
+		SELECT  channel_id AS channelId, UP_MERCH_NO AS upMerchNo,STATUS AS STATUS
+		FROM VC_A1_CHANNEL_SUBNO
+		WHERE del_flag = 0 AND status = 2
+			<if test="upMerchNo != null">
+				AND UP_MERCH_NO = #{upMerchNo}
+			</if>
+	</select>
+	
+	<!-- 根据商户号查找 -->
+	<select id="getByUpMerchNo" resultType="ChannelSubNo">
+		SELECT  
+			channel_id as channelId,
+			UP_MERCH_NO as upMerchNo,
+			UP_MERCH_KEY as upMerchKey,
+			MIN_PRICE as minPrice,
+			MAX_PRICE as maxPrice,
+			loop_robin as loopRobin,
+			weight as weight,
+			USER_ID as userId,
+			name as name,
+			BANK_NO as bankNo,
+			cardIdx as cardIdx,
+			BANK_MARK as bankMark,
+			REMARK as remark,
+		    REMARKS as remarks
+		FROM 
+			VC_A1_CHANNEL_SUBNO
+		WHERE 
+			del_flag = 0 AND status = 1 AND UP_MERCH_NO = #{upMerchNo}  limit 1
+	</select>
+	
+
+	<!--更新金额  -->
+	<!--<update id="updateSubNoAmount" parameterType="ChannelSubNo">
+		UPDATE VC_A1_CHANNEL_SUBNO a SET DAY_TRA_AMOUNT=IFNULL(DAY_TRA_AMOUNT,0)+#{actualAmount},
+			TRA_AMOUNT=IFNULL(TRA_AMOUNT,0)+#{actualAmount},
+			LAST_ORDER_TIME = sysdate()
+		WHERE  
+			channel_id = #{channelId} and up_merch_no=#{upMerchNo} and del_flag = 0
+	</update>-->
+	<update id="updateSubNoAmount" parameterType="ChannelSubNo">
+		UPDATE VC_A1_CHANNEL_SUBNO a SET DAY_TRA_AMOUNT=(
+			CASE WHEN LAST_DAY &lt; CURRENT_DATE() THEN #{actualAmount} ELSE IFNULL(DAY_TRA_AMOUNT,0)+#{actualAmount} END
+			),
+			LAST_DAY = current_date(),
+			TRA_AMOUNT=IFNULL(TRA_AMOUNT,0)+#{actualAmount},
+			update_date = sysdate() ,
+			LAST_ORDER_TIME = sysdate()
+		WHERE
+			1=1
+			
+		<choose>
+            <when test="channelId != null and channelId >0">
+                and channel_id = #{channelId}
+            </when>
+            <otherwise>
+                and merch_id = #{merchId}
+            </otherwise>
+        </choose>
+			 and up_merch_no=#{upMerchNo} and del_flag = 0
+	</update>
+
+	<!-- 商户限额更新 actualAmount是交易金额-->
+	<update id="updateLimitAmount" parameterType="ChannelSubNo">
+		UPDATE VC_A1_CHANNEL_SUBNO a
+		SET DAY_TRA_AMOUNT = (CASE WHEN LAST_DAY &lt; CURRENT_DATE() THEN #{actualAmount} ELSE IFNULL(DAY_TRA_AMOUNT,0)+#{actualAmount} END),
+			LAST_DAY = current_date(),
+			TRA_AMOUNT = IFNULL(TRA_AMOUNT,0) + #{actualAmount},
+			STATUS =(CASE WHEN QUOTA_AMOUNT &lt;= IFNULL(TRA_AMOUNT,0)+#{actualAmount} THEN 2 ELSE 1 END),
+			update_date = sysdate(),
+			LAST_ORDER_TIME = sysdate()
+		WHERE up_merch_no=#{upMerchNo} and del_flag = 0
+	</update>
+	
+	<!--更新最后一次下单时间  -->
+	<update id="updateLastOrderTime" parameterType="ChannelSubNo">
+		UPDATE VC_A1_CHANNEL_SUBNO a SET LAST_ORDER_TIME = sysdate(),update_date = sysdate()  
+		WHERE  up_merch_no=#{upMerchNo} and del_flag = 0 
+		<if test="id != null and upMerchNo !=''">
+			AND id = #{id}
+		</if>
+	</update>
+	
+	
+</mapper>

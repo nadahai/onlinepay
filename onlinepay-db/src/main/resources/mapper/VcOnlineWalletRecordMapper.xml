@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vc.onlinepay.persistent.mapper.online.VcOnlineWalletRecordMapper">
+    
+    <resultMap id="VcOnlineWalletRecordResultMap" type="com.vc.onlinepay.persistent.entity.online.VcOnlineWalletRecord">
+		<id column="id" jdbcType="BIGINT" property="id" />
+		<result column="merch_id" jdbcType="VARCHAR" property="merchId"/>
+		<result column="ORDER_NO" jdbcType="VARCHAR" property="orderNo"/>
+		<result column="C_ORDER_NO" jdbcType="VARCHAR" property="cOrderNo"/>
+		<result column="B_ORDER_NO" jdbcType="VARCHAR" property="bOrderNo"/>
+		<result column="ORDER_TYPE" jdbcType="BIGINT" property="orderType"/>
+		<result column="SYMBOL" jdbcType="BIGINT" property="symbol"/>
+		<result column="AMOUNT" jdbcType="BIGINT" property="amount"/>
+		<result column="POUNDAGE" jdbcType="BIGINT" property="poundage"/>
+		<result column="WEALTH_TYPE" jdbcType="BIGINT" property="wealthType"/>
+		<result column="WEALTH_AMOUNT" jdbcType="BIGINT" property="wealthAmount"/>
+		<result column="WAIT_AMOUNT" jdbcType="BIGINT" property="waitAmount"/>
+		<result column="CREATE_DATE" jdbcType="DATE" property="createDate"/>
+		<result column="CREATE_BY" jdbcType="VARCHAR" property="createBy"/>
+		<result column="update_date" jdbcType="DATE" property="updateDate"/>
+		<result column="UPDATE_BY" jdbcType="VARCHAR" property="updateBy"/>
+		<result column="REMARKS" jdbcType="VARCHAR" property="remarks"/>
+		<result column="DEL_FLAG" jdbcType="BIGINT" property="delflag"/>
+	</resultMap>
+	
+	<!--修改描述  -->
+	<update id="updateWalletRecord">
+		UPDATE vc_online_wallet_record SET 
+			<if test="remarks != null and remarks !='' ">
+				REMARKS = #{remarks,jdbcType=VARCHAR},
+			</if>
+			update_date = sysdate()
+		WHERE 
+			merch_id = #{merchId,jdbcType=VARCHAR} and ORDER_NO = #{orderNo,jdbcType=VARCHAR}
+	</update>
+	
+	<!-- 保存订单 -->
+	<insert id="saveWalletRecord" parameterType="VcOnlineWalletRecord">
+		INSERT INTO vc_online_wallet_record(
+			MERCH_ID,
+			ORDER_NO,
+			C_ORDER_NO,
+			ORDER_TYPE,
+			SYMBOL,
+			AMOUNT,
+			POUNDAGE,
+			WEALTH_TYPE,
+			WEALTH_AMOUNT,
+			WAIT_AMOUNT,
+			CREATE_DATE,
+			UPDATE_DATE,
+			REMARKS,
+			UPDATE_BY
+		) VALUES (
+			#{merchId,jdbcType=VARCHAR},
+			#{orderNo,jdbcType=VARCHAR},
+			#{cOrderNo,jdbcType=VARCHAR},
+			#{orderType,jdbcType=BIGINT},
+			#{symbol,jdbcType=BIGINT},
+			#{amount,jdbcType=BIGINT},
+			#{poundage,jdbcType=BIGINT},
+			#{wealthType,jdbcType=BIGINT},
+			#{wealthAmount,jdbcType=BIGINT},
+			#{waitAmount,jdbcType=BIGINT},
+			sysdate(),
+			sysdate(),
+			#{remarks,jdbcType=VARCHAR},
+			#{updateBy,jdbcType=VARCHAR}
+		)
+	</insert>
+</mapper>

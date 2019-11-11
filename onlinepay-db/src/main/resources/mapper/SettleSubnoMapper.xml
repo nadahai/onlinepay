@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vc.onlinepay.persistent.mapper.merch.SettleSubnoMapper">
+    
+	<sql id="settleSubnoColumns">
+		a.id AS "id",
+		a.merch_id AS "merchId",
+		a.status AS "status",
+		a.up_merch_no AS "upMerchNo",
+		a.UP_MERCH_KEY AS "upMerchKey",
+		IFNULL(a.day_quota_amount,0) AS "dayQuotaAmount",
+		IFNULL(a.quota_amount,0) AS "quotaAmount",
+		IFNULL(a.day_tra_amount,0) AS "dayTraAmount",
+		IFNULL(a.tra_amount,0) AS "traAmount",
+		a.remark AS "remark",
+		a.remarks AS "remarks",
+		a.last_day AS "lastDay",
+		a.create_date AS "createDate",
+		a.update_date AS "updateDate",
+		a.del_flag AS "delFlag",
+		IFNULL(a.min_price,0) AS "minPrice",
+		IFNULL(a.max_price,0) AS "maxPrice",
+		a.last_order_time AS "lastOrderTime",
+		a.user_id AS "userId",
+		a.SETTLE_RATE as "settleRate",
+		a.seq AS "seq"
+	</sql>
+    
+	<select id="get" resultType="SettleSubno">
+		SELECT 
+			<include refid="settleSubnoColumns"/>,b.name as "merchName"
+		FROM vc_a1_settle_subno a 
+		<include refid="supplierSubnoJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<!-- 根据渠道获取账号-->
+	<select id="findSettleList" resultType="SettleSubno">
+		SELECT
+		<include refid="settleSubnoColumns" />
+		FROM vc_a1_settle_subno a 
+		WHERE status =1 
+		 AND IFNULL(DAY_TRA_AMOUNT,0) &lt;= IFNULL(DAY_QUOTA_AMOUNT,0)
+		 AND IFNULL(TRA_AMOUNT,0) &lt;= IFNULL(QUOTA_AMOUNT,0)
+		 and a.DEL_FLAG=0 ORDER BY SEQ ASC,id DESC
+	</select>
+	
+	<!--更新归集金额 -->
+	<update id="updateSettleAmount" parameterType="SettleSubno">
+		UPDATE
+		vc_a1_settle_subno a SET DAY_TRA_AMOUNT= IFNULL(DAY_TRA_AMOUNT,0)+#{traAmount},
+		TRA_AMOUNT=IFNULL(TRA_AMOUNT,0)+#{traAmount},
+		LAST_ORDER_TIME = sysdate()
+		WHERE up_merch_no=#{upMerchNo} and del_flag = 0
+	</update>
+	<!--<update id="updateSettleAmount" parameterType="SettleSubno">
+		UPDATE
+		vc_a1_settle_subno a SET DAY_TRA_AMOUNT=(
+		CASE WHEN LAST_DAY &lt; CURRENT_DATE() THEN #{traAmount} ELSE IFNULL(DAY_TRA_AMOUNT,0)+#{traAmount} END ),
+		TRA_AMOUNT=IFNULL(TRA_AMOUNT,0)+#{traAmount},
+		LAST_DAY = current_date(),
+		update_date = sysdate(),
+		LAST_ORDER_TIME = sysdate() 
+		WHERE up_merch_no=#{upMerchNo} and del_flag = 0 
+	</update>-->
+	
+	<sql id="supplierSubnoJoins">
+	LEFT JOIN vc_a1_merch_info b ON b.id=a.merch_id
+	</sql>
+	
+	<select id="findList" resultType="SettleSubno">
+		SELECT 
+			<include refid="settleSubnoColumns"/>,b.name as "merchName"
+		FROM vc_a1_settle_subno a 
+		<include refid="supplierSubnoJoins"/>
+		<where>
+			a.del_flag = 0 
+			<if test="status != null and status != ''">
+				AND a.status = #{status}
+			</if>
+			<if test="merchId != null and merchId != ''">
+				AND a.merch_id = #{merchId}
+			</if>
+			<if test="upMerchNo != null and upMerchNo != ''">
+				AND a.up_merch_no = #{upMerchNo}
+			</if>
+			<if test="upMerchKey != null and upMerchKey != ''">
+				AND a.up_merch_key = #{upMerchKey}
+			</if>
+			<if test="remarks != null and remarks != ''">
+				AND a.remarks LIKE CONCAT('%',#{remarks},'%')
+			</if>
+			<if test="name != null and name != ''">
+				AND a.name LIKE CONCAT('%',#{name},'%')
+			</if>
+			<if test="beginCreateDate != null and endCreateDate != null and beginCreateDate != '' and endCreateDate != ''">
+                AND a.update_date BETWEEN #{beginCreateDate} AND #{endCreateDate}
+            </if>
+		</where>
+		ORDER BY a.seq asc,a.update_date DESC
+	</select>
+	
+	<update id="update">
+		UPDATE vc_a1_settle_subno SET 	
+			merch_id = #{merchId},
+			status = #{status},
+			up_merch_no = #{upMerchNo},
+			up_merch_key = #{upMerchKey},
+			day_quota_amount = #{dayQuotaAmount},
+			quota_amount = #{quotaAmount},
+			day_tra_amount = #{dayTraAmount},
+			tra_amount = #{traAmount},
+			remark = #{remark},
+			remarks = #{remarks},
+			update_date = #{updateDate},
+			min_price = #{minPrice},
+			max_price = #{maxPrice},
+			last_order_time = #{lastOrderTime},
+			user_id = #{userId},
+			seq = #{seq}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="updateStatus">
+		UPDATE vc_a1_settle_subno SET 
+			 <if test="status != null and status != ''">
+	            status = #{status},
+	         </if>
+	          <if test="remark != null and remark != ''">
+	            remark = #{remark},
+	         </if>
+			 update_date = sysdate()
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE vc_a1_settle_subno SET del_flag = 1 WHERE id = #{id}
+	</update>
+	
+</mapper>

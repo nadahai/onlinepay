@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vc.onlinepay.persistent.mapper.dict.DictionaryMapper">
+    
+	<sql id="dictionaryColumns">
+		a.id AS "id",
+		a.d_key AS "dKey",
+		a.str_value AS "strValue",
+		a.number_value AS "numberValue",
+		a.describle AS "describle",
+		a.d_type AS "dType",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag",
+		a.label AS "label",
+		a.d_sort AS "dSort"
+	</sql>
+    
+	<select id="get" resultType="Dictionary">
+		SELECT 
+			<include refid="dictionaryColumns"/>
+		FROM vc_sys_dictionary a
+		WHERE a.id = #{id}
+	</select>
+	
+	<!-- 获取所有字典列表 -->
+	<select id="getAllList" resultType="Dictionary">
+		SELECT 
+			<include refid="dictionaryColumns"/>
+		FROM vc_sys_dictionary a
+		WHERE a.del_flag = 0 
+	</select>
+	
+	<!-- 根据key查询字典信息 -->
+	<select id="findByKey" resultType="Dictionary">
+		SELECT 
+			a.id AS "id",
+			a.d_key AS "dKey",
+			a.str_value AS "strValue",
+			a.number_value AS "numberValue"
+		FROM vc_sys_dictionary a 
+		<where> 
+			a.del_flag = 0 
+			<if test="dKey != null and dKey != ''">
+				AND a.d_key = #{dKey}
+			</if>
+			<if test="dType != null and dType != ''">
+				AND a.d_type = #{dType}
+			</if>
+		</where>
+	</select>
+
+	<select id="findAccessIp" resultType="Dictionary">
+		SELECT
+			a.access_url AS "dKey",
+			a.access_ip  AS "strValue"
+		FROM vc_sys_access_ip a
+		where a.del_flag = 0
+			AND a.project_id = 1
+			AND a.access_url = #{dKey}
+	</select>
+
+</mapper>

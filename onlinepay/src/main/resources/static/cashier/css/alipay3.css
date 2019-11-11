@@ -1,0 +1,132 @@
+html{font-family:"Microsoft YaHei",微软雅黑,"MicrosoftJhengHei",华文细黑,STHeiti,MingLiu}
+body{background-color: #118eea;}
+a{color: #fff;text-decoration:none;}
+.title{width:100%; height:40px; }
+.title .lefthistory{height: 40px; line-height: 40px; }
+.title .lefthistory a{font-size:20px; margin-left:40px; }
+
+/*收钱码*/
+.qrcode_body{width:95%; height:auto;  margin:10px auto; background-color:#fff; border-radius:5px; padding-bottom: 10px;  }
+.qrcode_body .qrcode_title, .qrcode_error .qrcode_title{height:40px; line-height:40px; font-size:14px; padding:0 35%;   background-color:#f1f8fe; border-radius:5px 5px 0 0; text-align:center;   }
+.qrcode_body .qrcode_title .qrcode_titlejz{width:100px; height:40px; margin:0 auto;}
+.qrcode_body .qrcode_title span, .qrcode_error .qrcode_title span{width:30px;  height:40px;  float: left; display: block; background:url('../images/alipaydun.png') no-repeat 5px 11px; }
+.qrcode_body .qrcode_title a, .qrcode_error .qrcode_title a{display:block; color:#118eea; float: left;}
+.qrcode_body .qrcode_xwfk, .qrcode_error .qrcode_xwfk{width:180px; height:auto; font-size:16px; line-height:30px; margin:0 auto;}
+.qrcode_body .qrcode_code{width:240px; height:240px; margin:10px auto; background-color:#000; }
+.qrcode_body .qrcode_code .qrcode{width:240px; height:240px;}
+.qrcode_body .pay_shis{width:240px; margin:20px auto; font-size:14px;}
+.qrcode_body .alipay{margin:40px auto;
+    width:240px;
+    display: block;
+    height: 40px;
+    background-color: #03A9F4;
+    border-radius: 5px;
+    text-align: center;
+    line-height: 40px;
+    color: #fff;
+    text-decoration:none;
+    border-style: none;
+}
+.qrcode_body .alipay[disabled]{
+    background-color: lightgray;
+}
+
+.bootshi{width:95%; height:50px; font-size:10px;   margin:10px auto; background-color:#fff; border-radius:2px;}
+.bootshi span{float:left; line-height:50px; margin:0 10px; color:#118eea; }
+.bootshi p{ line-height:50px; margin:0 5px;  }
+
+.qrcode_error{width:95%; height:200px;  margin:10px auto; background-color:#fff; border-radius:5px;   }
+.qrcode_error .qrcode_title .qrcode_titlejz{width:70px; font-size:16px; height:40px; margin:0 auto;}
+.qrcode_error .qrcode_errormsg{height:40px; font-size:20px; line-height:40px; margin-top:10px;  text-align:center;  }
+.qrcode_error .alipay{margin:30px auto;
+    width:240px;
+    display: block;
+    height: 40px;
+    background-color: #03A9F4;
+    border-radius: 5px;
+    text-align: center;
+    line-height: 40px;
+    color: #fff;
+    text-decoration:none
+}
+
+.wrap {
+    width: 100%;
+    height: auto;
+    text-align: center
+}
+
+.wrap .load {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto;
+    position: relative;
+    margin-bottom: 30px;
+    margin-top: 20%
+}
+
+.wrap .text {
+    font-size: 14px;
+    color: #acacae;
+    text-align: center
+}
+
+.wrap .load_log {
+    width: 68px;
+    height: 50px;
+    position: absolute;
+    top: 25px;
+    left: 16px;
+    z-index: 9
+}
+
+.wrap .load_circle {
+    width: 100px;
+    height: 100px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    -webkit-animation: load_antimate .6s linear infinite;
+    animation: load_antimate .6s linear infinite
+}
+
+.wrap .load_qrcode {
+    width: 180px;
+    height: 180px;
+    margin: 0 auto;
+    position: relative;
+    margin-bottom:  5%;
+    margin-top: 5%
+}
+.wrap .load_qrcodeImg {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+@-webkit-keyframes load_antimate {
+    0% {
+        transform: rotate(0deg);
+        -webkit-transform: rotate(0deg)
+    }
+
+    to {
+        transform: rotate(1turn);
+        -webkit-transform: rotate(1turn)
+    }
+}
+
+@keyframes load_antimate {
+    0% {
+        transform: rotate(0deg);
+        -webkit-transform: rotate(0deg)
+    }
+
+    to {
+        transform: rotate(1turn);
+        -webkit-transform: rotate(1turn)
+    }
+}

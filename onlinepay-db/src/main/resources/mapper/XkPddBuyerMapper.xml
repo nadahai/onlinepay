@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vc.onlinepay.persistent.mapper.merch.XkPddBuyerMapper">
+    
+    <!-- 获取符合条件的码商号 -->
+	<select id="getPddBuyerList" resultType="XkPddBuyer">
+		SELECT 
+			id as id,
+			parent_id as parentId,
+			merch_name as merchName,
+			login_name as loginName,
+			access_token as accessToken,
+			address_id as addressId,
+			day_trade_amount as dayTradeAmount,
+			total_trade_amount as totalTradeAmount,
+			extend_info as extendInfo,
+			status as status,
+			remarks as remarks
+		FROM 
+			xk_pdd_buyer
+		where status=1 and del_flag = 0 and parent_id=#{parentId} ORDER BY RAND()
+	</select>
+
+    <!--更新金额  -->
+    <update id="updateTradeAmount">
+		UPDATE xk_pdd_buyer a SET day_trade_amount=(
+			CASE WHEN LAST_DAY &lt; CURRENT_DATE() THEN #{dayTradeAmount} ELSE IFNULL(day_trade_amount,0)+#{dayTradeAmount} END
+			),
+			LAST_DAY = current_date(),
+			total_trade_amount=IFNULL(total_trade_amount,0)+#{dayTradeAmount},
+			update_date = sysdate() ,
+			LAST_ORDER_TIME = sysdate()
+		WHERE
+			id = #{id} and del_flag = 0
+	</update>
+
+	<!--关闭pdd买家号  -->
+	<update id="closePddBuyer">
+		UPDATE xk_pdd_buyer SET
+			status = 0,
+			del_flag = 1,
+			remarks = '下单失败已禁用',
+			update_date = sysdate()
+		WHERE
+			login_name = #{loginName}
+	</update>
+
+	<!--cleanDayTradeAmount  -->
+	<update id="cleanDayTradeAmount">
+		UPDATE xk_pdd_buyer a SET
+			day_trade_amount=0,
+			update_date = sysdate()
+	</update>
+
+</mapper>

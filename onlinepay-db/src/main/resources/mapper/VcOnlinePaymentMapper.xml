@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.vc.onlinepay.persistent.mapper.online.VcOnlinePaymentMapper" >
+
+  <resultMap id="BaseResultMap" type="com.vc.onlinepay.persistent.entity.online.VcOnlinePayment" >
+    <id column="ID" property="id" jdbcType="DECIMAL" />
+    <result column="MERCH_ID" property="merchId" jdbcType="DECIMAL" />
+    <result column="ORDER_NO" property="orderNo" jdbcType="VARCHAR" />
+    <result column="CASH_AMOUNT" property="cashAmount" jdbcType="DECIMAL" />
+    <result column="ACTUAL_AMOUNT" property="actualAmount" jdbcType="DECIMAL" />
+    <result column="TRA_TOTAL_AMOUNT" property="traTotalAmount" jdbcType="DECIMAL" />
+    <result column="DISABLED_TOTAL_AMOUNT" property="disabledTotalAmount" jdbcType="DECIMAL" />
+    <result column="CASHD_TOTAL_AMOUNT" property="cashdTotalAmount" jdbcType="DECIMAL" />
+    <result column="USABLE_TOTAL_AMOUNT" property="usableTotalAmount" jdbcType="DECIMAL" />
+    <result column="POUNDAGE_RATE" property="poundageRate" jdbcType="DECIMAL" />
+    <result column="WAIT_TOTAL_AMOUNT" property="waitTotalAmount" jdbcType="DECIMAL" />
+    <result column="BANK_ACCOUNT" property="bankAccount" jdbcType="VARCHAR" />
+    <result column="BANK_NAME" property="bankName" jdbcType="VARCHAR" />
+    <result column="BANK_CARD" property="bankCard" jdbcType="VARCHAR" />
+    <result column="BANK_NO" property="bankNo" jdbcType="VARCHAR" />
+    <result column="SUB_BANK_NO" property="subBankNo" jdbcType="VARCHAR" />
+    <result column="MERCH_NO" property="merchNo" jdbcType="VARCHAR" />
+    <result column="CASH_KEY" property="cashKey" jdbcType="VARCHAR" />
+    <result column="CASH_MODE" property="cashMode" jdbcType="DECIMAL" />
+    <result column="TRAN_RATE" property="tranRate" jdbcType="DECIMAL" />
+    <result column="CASH_SIGN" property="cashSign" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="DECIMAL" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+    <result column="REASON" property="reason" jdbcType="VARCHAR" />
+    <result column="P_ORDER_NO" property="pOrderNo" jdbcType="VARCHAR" />
+    <result column="P_KEY" property="pKey" jdbcType="VARCHAR" />
+    <result column="P_SIGN" property="pSign" jdbcType="VARCHAR" />
+    <result column="P_ALL_RES" property="pAllRes" jdbcType="VARCHAR" />
+    <result column="CREATE_BY" property="createBy" jdbcType="VARCHAR" />
+    <result column="CREATE_DATE" property="createDate" jdbcType="DATE" />
+    <result column="UPDATE_BY" property="updateBy" jdbcType="VARCHAR" />
+    <result column="UPDATE_DATE" property="updateDate" jdbcType="DATE" />
+    <result column="REMARKS" property="remarks" jdbcType="VARCHAR" />
+    <result column="DEL_FLAG" property="delFlag" jdbcType="DECIMAL" />
+    <result column="CASH_ORDER_NO" property="cashOrderNo" jdbcType="VARCHAR" />
+    <result column="CHANNEL_SOURCE" property="channelSource" jdbcType="DECIMAL" />
+	<result column="isAccounted" jdbcType="BIGINT" property="isAccounted" />
+    <result column="MERCH_NAME" property="channelName" jdbcType="VARCHAR" />
+	
+	<result column="C_NOTIFY_URL" jdbcType="VARCHAR" property="cNotifyUrl" />
+	<result column="C_NOTIFY_RESULT" jdbcType="VARCHAR" property="cNotifyResult" />
+	<result column="C_NOTIFY_NUM" jdbcType="BIGINT" property="cNotifyNum" />
+
+    <result column="PAYMENT_TYPE" jdbcType="BIGINT" property="paymentType" />
+    <result column="REDO_RESULT" jdbcType="VARCHAR" property="redoResult" />
+    <result column="RELATE_ORDER" jdbcType="VARCHAR" property="relateOrder" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    a.ID, a.MERCH_ID, a.ORDER_NO, a.CASH_AMOUNT, a.ACTUAL_AMOUNT, a.TRA_TOTAL_AMOUNT, a.DISABLED_TOTAL_AMOUNT,
+    a.CASHD_TOTAL_AMOUNT, a.USABLE_TOTAL_AMOUNT, a.POUNDAGE_RATE, a.WAIT_TOTAL_AMOUNT, a.BANK_ACCOUNT,
+    a.BANK_NAME, a.BANK_CARD, a.BANK_NO, a.SUB_BANK_NO, a.MERCH_NO, a.CASH_KEY, a.CASH_MODE, a.TRAN_RATE,
+    a.CASH_SIGN, a.STATUS, a.REMARK, a.REASON, a.P_ORDER_NO, a.P_KEY, a.P_SIGN, a.P_ALL_RES, a.CREATE_BY,
+    a.CREATE_DATE, a.UPDATE_BY, a.UPDATE_DATE, a.REMARKS, a.DEL_FLAG, a.CASH_ORDER_NO,a.CHANNEL_SOURCE,a.isAccounted,
+    a.C_NOTIFY_URL,a.C_NOTIFY_RESULT,a.C_NOTIFY_NUM,a.PAYMENT_TYPE,a.REDO_RESULT,a.RELATE_ORDER
+  </sql>
+  
+  <select id="selectMoneyAndCount" resultMap="BaseResultMap" parameterType="VcOnlinePayment" >
+    select count(t.id) as sumCount,sum(cash_amount) as sumMoney
+    from vc_online_payment t
+    where  merch_no=#{merchNo} and status=1
+  </select>
+  
+  <select id="selectByPorderNo" resultMap="BaseResultMap" >
+    select 
+      <include refid="Base_Column_List" />
+    from VC_ONLINE_PAYMENT a
+    where a.P_ORDER_NO = #{pOrderNo,jdbcType=VARCHAR} and a.del_flag=0
+  </select>
+  
+  <select id="selectByChannelSource" resultMap="BaseResultMap" >
+    SELECT 
+      <include refid="Base_Column_List" />
+    FROM VC_ONLINE_PAYMENT a
+    WHERE a.CHANNEL_SOURCE = #{channelSource} and a.`STATUS`='2' and a.del_flag=0
+  </select>
+  
+  
+  
+  <select id="selectPaymentIsDouble" resultMap="BaseResultMap" >
+    select 
+      a.id
+    from VC_ONLINE_PAYMENT a
+    where a.P_ORDER_NO in (#{pOrderNo,jdbcType=VARCHAR})
+  </select>
+
+    <select id="countCardAmountForDay" resultType="double">
+        SELECT IFNULL(SUM(a.CASH_AMOUNT),0)
+        FROM VC_ONLINE_PAYMENT a
+        WHERE   a.DEL_FLAG = 0
+            AND a.STATUS IN (1,2)
+            AND a.payment_type = 1
+            AND a.BANK_CARD = #{bankCard,jdbcType=VARCHAR}
+            AND a.CREATE_DATE BETWEEN DATE_ADD(SYSDATE(), INTERVAL - 1 DAY) AND SYSDATE()
+    </select>
+  
+  <select id="findVcOnlinePaymentByOrderNo" resultMap="BaseResultMap" >
+    SELECT
+      <include refid="Base_Column_List" />,b.MERCH_NAME
+    FROM VC_ONLINE_PAYMENT a
+    LEFT JOIN vc_online_third_balance b ON b.BALANCE_LABEL = a.REMARKS
+    WHERE a.ORDER_NO = #{orderNo,jdbcType=VARCHAR} and a.del_flag=0
+  </select>
+
+    <select id="findPaddingOrder" resultMap="BaseResultMap">
+        SELECT
+            <include refid="Base_Column_List" />
+        FROM VC_ONLINE_PAYMENT a
+        WHERE a.DEL_FLAG = 0 AND a.STATUS = 2
+                AND a.ORDER_NO NOT IN (SELECT relate_order FROM VC_ONLINE_PAYMENT WHERE payment_type =2 AND (STATUS = 1 OR STATUS = 2))
+            <if test="orderNo != null and orderNo !=''">
+                AND a.ORDER_NO = #{orderNo,jdbcType=VARCHAR}
+            </if>
+            <if test="paymentType != null ">
+                AND a.PAYMENT_TYPE = #{paymentType,jdbcType=VARCHAR}
+            </if>
+            <if test="redoResult != null and redoResult !=''">
+                AND a.REDO_RESULT = #{redoResult,jdbcType=VARCHAR}
+            </if>
+            <if test="channelList != null">
+                AND a.CHANNEL_SOURCE IN
+                <foreach item="item" index="index" collection="channelList" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+    </select>
+  
+  <insert id="insertSelective">
+    insert into VC_ONLINE_PAYMENT(
+        MERCH_ID,
+        ORDER_NO,
+        CASH_AMOUNT,
+        ACTUAL_AMOUNT,
+        TRA_TOTAL_AMOUNT,
+        DISABLED_TOTAL_AMOUNT,
+        CASHD_TOTAL_AMOUNT,
+        USABLE_TOTAL_AMOUNT,
+        POUNDAGE_RATE,
+        WAIT_TOTAL_AMOUNT,
+        BANK_ACCOUNT,
+        BANK_NAME,
+        BANK_CARD,
+        BANK_NO,
+        SUB_BANK_NO,
+        MERCH_NO,
+        CASH_KEY,
+        CASH_MODE,
+        TRAN_RATE,
+        CASH_SIGN,
+        STATUS,
+        REMARK,
+        REASON,
+        P_ORDER_NO,
+        P_KEY,
+        P_SIGN,
+        P_ALL_RES,
+        REMARKS,
+        DEL_FLAG,
+        CASH_ORDER_NO,
+        CHANNEL_SOURCE,
+        CHANNEL_ID,
+        CREATE_BY,
+        CREATE_DATE,
+        UPDATE_BY,
+        isAccounted,
+        ORDER_SOURCE,
+        C_NOTIFY_URL,
+        C_NOTIFY_RESULT,
+        C_NOTIFY_NUM,
+        PAYMENT_TYPE,
+        REDO_RESULT,
+        RELATE_ORDER,
+      	UPDATE_DATE
+    ) VALUES (
+        #{merchId,jdbcType=DECIMAL},
+        #{orderNo,jdbcType=VARCHAR},
+        #{cashAmount,jdbcType=DECIMAL},
+        #{actualAmount,jdbcType=DECIMAL},
+        #{traTotalAmount,jdbcType=DECIMAL},
+        #{disabledTotalAmount,jdbcType=DECIMAL},
+        #{cashdTotalAmount,jdbcType=DECIMAL},
+        #{usableTotalAmount,jdbcType=DECIMAL},
+        #{poundageRate,jdbcType=DECIMAL},
+        #{waitTotalAmount,jdbcType=DECIMAL},
+        #{bankAccount,jdbcType=VARCHAR},
+        #{bankName,jdbcType=VARCHAR},
+        #{bankCard,jdbcType=VARCHAR},
+        #{bankNo,jdbcType=DECIMAL},
+        #{subBankNo,jdbcType=DECIMAL},
+        #{merchNo,jdbcType=VARCHAR},
+        #{cashKey,jdbcType=VARCHAR},
+        #{cashMode,jdbcType=DECIMAL},
+        #{tranRate,jdbcType=DECIMAL},
+        #{cashSign,jdbcType=VARCHAR},
+        #{status,jdbcType=DECIMAL},
+        #{remark,jdbcType=VARCHAR},
+        #{reason,jdbcType=VARCHAR},
+        #{pOrderNo,jdbcType=VARCHAR},
+        #{pKey,jdbcType=VARCHAR},
+        #{pSign,jdbcType=VARCHAR},
+        #{pAllRes,jdbcType=VARCHAR},
+        #{remarks,jdbcType=VARCHAR},
+        0,
+        #{cashOrderNo,jdbcType=VARCHAR},
+        #{channelSource,jdbcType=DECIMAL},
+        #{channelId,jdbcType=DECIMAL},
+        'admin',
+        sysdate(),
+        'admin',
+        0,
+        #{orderSource,jdbcType=DECIMAL},
+        #{cNotifyUrl,jdbcType=VARCHAR},
+        #{cNotifyResult,jdbcType=VARCHAR},
+        0,
+        #{paymentType},
+        '2',
+        #{relateOrder},
+        sysdate()
+    )
+  </insert>
+  
+   <!--修改订单通知信息 -->
+  <update id="updateOrderNotify" parameterType="VcOnlinePayment">
+    UPDATE VC_ONLINE_PAYMENT  SET
+        <if test="cNotifyResult != null and cNotifyResult !='' ">
+            C_NOTIFY_RESULT = #{cNotifyResult},
+        </if>
+        <if test="redoResult != null and redoResult !='' ">
+            REDO_RESULT = #{redoResult,jdbcType=VARCHAR},
+        </if>
+        <if test="relateOrder != null and relateOrder !='' ">
+          RELATE_ORDER = #{relateOrder,jdbcType=VARCHAR},
+        </if>
+        C_NOTIFY_NUM = IFNULL(C_NOTIFY_NUM,0) +1,
+        update_date = sysdate()
+    WHERE P_ORDER_NO = #{pOrderNo,jdbcType=VARCHAR}
+  </update>
+  
+  <update id="updatePaymentByPnum" parameterType="VcOnlinePayment" >
+    update VC_ONLINE_PAYMENT
+        <set >
+        <if test="reason != null" >
+          REASON = #{reason,jdbcType=VARCHAR},
+        </if>
+        <if test="status != null" >
+          STATUS = #{status,jdbcType=DECIMAL},
+        </if>
+        <if test="remark != null" >
+          REMARK = #{remark,jdbcType=VARCHAR},
+        </if>
+        <if test="pKey != null" >
+          P_KEY = #{pKey,jdbcType=VARCHAR},
+        </if>
+        <if test="pSign != null" >
+          P_SIGN = #{pSign,jdbcType=VARCHAR},
+        </if>
+        <if test="pAllRes != null" >
+          P_ALL_RES = #{pAllRes,jdbcType=VARCHAR},
+        </if>
+        <if test="remarks != null" >
+          REMARKS = #{remarks,jdbcType=VARCHAR},
+        </if>
+        <if test="redoResult != null and redoResult !='' ">
+          REDO_RESULT = #{redoResult,jdbcType=VARCHAR},
+        </if>
+        <if test="relateOrder != null and relateOrder !='' ">
+          RELATE_ORDER = #{relateOrder,jdbcType=VARCHAR},
+        </if>
+        <if test="channelSource != null" >
+          CHANNEL_SOURCE = #{channelSource,jdbcType=VARCHAR},
+        </if>
+          UPDATE_DATE = sysdate()
+        </set>
+    WHERE 1=1
+        <if test="orderNo != null and orderNo !='' " >
+          AND ORDER_NO = #{orderNo,jdbcType=VARCHAR}
+        </if>
+        <if test="pOrderNo != null and pOrderNo !='' " >
+          AND P_ORDER_NO = #{pOrderNo,jdbcType=VARCHAR}
+        </if>
+  </update>
+  
+  
+  <update id="updatePaymentStatus" parameterType="VcOnlinePayment" >
+    update VC_ONLINE_PAYMENT
+    <set >
+      <if test="reason != null" >
+        REASON = #{reason,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status,jdbcType=DECIMAL},
+      </if>
+      <if test="remark != null" >
+        REMARK = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="pKey != null" >
+        P_KEY = #{pKey,jdbcType=VARCHAR},
+      </if>
+      <if test="pSign != null" >
+        P_SIGN = #{pSign,jdbcType=VARCHAR},
+      </if>
+      <if test="pAllRes != null" >
+        P_ALL_RES = #{pAllRes,jdbcType=VARCHAR},
+      </if>
+      <if test="remarks != null" >
+        REMARKS = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="redoResult != null and redoResult !='' ">
+        REDO_RESULT = #{redoResult,jdbcType=VARCHAR},
+      </if>
+        <if test="relateOrder != null and relateOrder !='' ">
+            RELATE_ORDER = #{relateOrder,jdbcType=VARCHAR},
+        </if>
+      UPDATE_DATE = sysdate() 
+    </set>
+    where 1=1  and ORDER_NO = #{orderNo,jdbcType=VARCHAR} and STATUS not in (1,3)
+  </update>
+</mapper>

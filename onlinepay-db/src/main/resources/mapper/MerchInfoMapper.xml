@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vc.onlinepay.persistent.mapper.merch.MerchInfoMapper">
+
+	<resultMap id="MerchInfoResultMap" type="com.vc.onlinepay.persistent.entity.merch.MerchInfo">
+		<id column="id" jdbcType="BIGINT" property="id" />
+		<result column="uuid" jdbcType="BIGINT" property="uuid" />
+		<result column="merch_no" jdbcType="BIGINT" property="merchNo" />
+		<result column="name" jdbcType="VARCHAR" property="name" />
+		<result column="merch_category" jdbcType="BIGINT" property="merchCategory" />
+		<result column="phone_no" jdbcType="VARCHAR" property="phoneNo" />
+		<result column="parent_id" jdbcType="BIGINT" property="parentId" />
+		<result column="shop_name" jdbcType="VARCHAR" property="shopName" />
+		<result column="merch_level" jdbcType="VARCHAR" property="merchLevel" />
+		<result column="shop_addr" jdbcType="VARCHAR" property="shopAddr" />
+		<result column="bus_license_no" jdbcType="VARCHAR" property="busLicenseNo" />
+		<result column="login_name" jdbcType="VARCHAR" property="loginName" />
+		<result column="address" jdbcType="VARCHAR" property="address" />
+		<result column="account_type" jdbcType="BIGINT" property="accountType" />
+		<result column="account_name" jdbcType="VARCHAR" property="accountName" />
+		<result column="id_card_no" jdbcType="VARCHAR" property="idCardNo" />
+		<result column="bank_no" jdbcType="VARCHAR" property="bankNo" />
+		<result column="bank_phone_no" jdbcType="VARCHAR" property="bankPhoneNo" />
+		<result column="status" jdbcType="BIGINT" property="status" />
+		<result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+		<result column="merch_source" jdbcType="BIGINT" property="merchSource" />
+		<result column="LEGAL_PERSON" jdbcType="VARCHAR" property="legalPerson" />
+		<result column="MERCH_TYPE" jdbcType="BIGINT" property="merchType" />
+		<result column="REGION_ID" jdbcType="BIGINT" property="regionId" />
+		<result column="PROVINCE_ID" jdbcType="BIGINT" property="provinceId" />
+		<result column="CITY_ID" jdbcType="BIGINT" property="cityId" />
+		<result column="BANK_ID" jdbcType="BIGINT" property="bankId" />
+		<result column="SUB_BANK_ID" jdbcType="BIGINT" property="subBankId" />
+		<result column="COUNTY_ID" jdbcType="BIGINT" property="countyId" />
+		<result column="STAR_LEVEL" jdbcType="BIGINT" property="starLevel" />
+		<result column="bankname" jdbcType="VARCHAR" property="bankName" />
+		<result column="sub_bank_name" jdbcType="VARCHAR" property="subBankName" />
+		<result column="UPPER_LICENSE" jdbcType="VARCHAR" property="upperLicense" />
+		<result column="is_security" jdbcType="BIGINT" property="isSecurity" />
+		<result column="IS_CASHIER" jdbcType="BIGINT" property="isCashier" />
+		<result column="is_notice" jdbcType="VARCHAR" property="isNotice" />
+		<result column="IP_ADDRESS" jdbcType="VARCHAR" property="ipAddress" />
+		<result column="replace_mode" jdbcType="BIGINT" property="replaceMode" />
+		<result column="REPLACE_CHANNEL" jdbcType="BIGINT" property="replaceChannel"/>
+		<result column="check_rate" jdbcType="BIGINT" property="checkRate" />
+		<result column="USABLE_TRA_MONEY" jdbcType="BIGINT" property="usableTraMoney"/>
+		<result column="tra_total_amount" jdbcType="BIGINT" property="tra_total_amount"/>
+	</resultMap>
+
+	<!-- 根据编号获取商户信息 -->
+	<select id="getMerchInfoByNo" resultMap="MerchInfoResultMap">
+		SELECT
+		    a.ID,a.UUID,a.NAME,a.SHOP_NAME,a.LOGIN_NAME,a.PASSWORD,a.PARENT_ID,a.MERCH_NO,a.INDUSTRY,a.SUB_INDUSTRY,a.MERCH_LEVEL,a.LEVEL_NO,a.LEVEL_VIEW_NO,
+		    a.LEGAL_PERSON,a.MERCH_SOURCE,a.MERCH_TYPE,a.MERCH_CATEGORY,a.ID_CARD_NO,a.PHONE_NO,a.REGION_ID,a.PROVINCE_ID,a.CITY_ID,
+		    a.BANK_NO,a.ACCOUNT_TYPE,a.ACCOUNT_NAME,a.BANK_ID,a.SUB_BANK_ID,a.BANK_PHONE_NO,a.STATUS,a.CREATE_DATE,a.SHOP_ADDR,a.BUS_LICENSE_NO,
+			a.COUNTY_ID,a.ADDRESS,a.UPPER_LICENSE,a.IS_CASHIER,a.is_notice,a.IS_SECURITY,a.IP_ADDRESS,a.replace_mode,a.REPLACE_CHANNEL,a.check_rate,a.USABLE_TRA_MONEY
+			,CAST(
+    			o.tra_total_amount AS DECIMAL (18, 2)
+  			) tra_total_amount
+		FROM  vc_a1_merch_info a
+		LEFT JOIN vc_online_wallet o 
+    	ON o.merch_id = a.id 
+		WHERE  a.del_flag=0 and a.MERCH_NO = #{merchNo}
+	</select>
+</mapper>

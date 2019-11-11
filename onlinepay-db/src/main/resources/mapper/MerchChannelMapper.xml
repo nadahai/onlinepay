@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.vc.onlinepay.persistent.mapper.channel.MerchChannelMapper">
+
+	<resultMap id="MerchChannelResultMap" type="com.vc.onlinepay.persistent.entity.channel.MerchChannel">
+	    <id column="id" jdbcType="BIGINT" property="id" />
+		<result column="MERCH_ID" jdbcType="BIGINT" property="merchId" />
+		<result column="CHANNEL_ID" jdbcType="BIGINT" property="channelId" />
+		<result column="RATE_NAME" jdbcType="VARCHAR" property="rateName" />
+		<result column="CURRENCY" jdbcType="BIGINT" property="currency" />
+		<result column="SETTLE_TYPE" jdbcType="BIGINT" property="settleType" />
+		<result column="POUNDAGE_RATE" jdbcType="BIGINT" property="poundageRate" />
+		<result column="TRAN_RATE" jdbcType="BIGINT" property="tranRate" />
+		<result column="CREATE_DATE" jdbcType="TIMESTAMP" property="createDate" />
+		<result column="UPDATE_DATE" jdbcType="TIMESTAMP" property="updateDate" />
+		<result column="MERCH_TRADE_NO" jdbcType="VARCHAR" property="merchTradeNo" />
+		<result column="TRADE_MODE" jdbcType="BIGINT" property="tradeMode" />
+		<result column="STATUS" jdbcType="BIGINT" property="status" />
+		<result column="PAY_TYPE" jdbcType="BIGINT" property="payType" />
+		
+		<result column="channel_name" jdbcType="VARCHAR" property="channelName" />
+		<result column="channel_code" jdbcType="BIGINT" property="channelCode" />
+		<result column="channel_source" jdbcType="BIGINT" property="channelSource" />
+		<result column="CHANNEL_NO" jdbcType="BIGINT" property="channelNo" />
+		<result column="CHANNEL_TYPE" jdbcType="BIGINT" property="channelType" />
+		<result column="TRA_TYPE" jdbcType="BIGINT" property="tradeType" />
+		<result column="SEQ" jdbcType="BIGINT" property="seq" />
+        <result column="MIN_TRA_PRICE" jdbcType="BIGINT" property="minTraPrice" />
+        <result column="MAX_TRA_PRICE" jdbcType="BIGINT" property="maxTraPrice" />
+        <result column="SETTLE_RATE" jdbcType="BIGINT" property="settleRate" />
+        <result column="TRA_START_TIME" jdbcType="VARCHAR" property="traStartTime" />
+        <result column="TRA_END_TIME" jdbcType="VARCHAR" property="traEndTime" />
+        <result column="channel_cost" jdbcType="BIGINT" property="channelCost" />
+		<result column="day_quota" jdbcType="BIGINT" property="dayQuota" />
+        <result column="channel_key" jdbcType="VARCHAR" property="channelKey" />
+		<result column="channel_des_key" jdbcType="VARCHAR" property="channelDesKey" />
+		<result column="pay_url" jdbcType="VARCHAR" property="payUrl" />
+		<result column="notify_url" jdbcType="VARCHAR" property="serviceCallbackUrl" />
+		<result column="extend1" jdbcType="VARCHAR" property="channelName1"/>
+		<result column="extend3" jdbcType="VARCHAR" property="channelNickName"/>
+		<result column="SUBNO_STATUS" jdbcType="BIGINT" property="subNoStatus"/>
+		<result column="MERCH_TRADE_KEY" jdbcType="BIGINT" property="merchTradeKey"/>
+		<result column="AGENT_ID" jdbcType="BIGINT" property="agentId"/>
+		<result column="MANGER_ID" jdbcType="BIGINT" property="mangerId"/>
+		<result column="AGENT_TRAN_RATE" jdbcType="BIGINT" property="agentRate"/>
+		<result column="MANGER_TRAN_RATE" jdbcType="BIGINT" property="mangerRate"/>
+
+		<result column="routeChannel" jdbcType="BIGINT" property="routeChannel" />
+		<result column="routeMinAmount" jdbcType="BIGINT" property="routeMinAmount" />
+		<result column="routeMaxAmount" jdbcType="BIGINT" property="routeMaxAmount" />
+		<result column="routeRegularEx" jdbcType="VARCHAR" property="routeRegularEx" />
+		<result column="includeMerchno" jdbcType="VARCHAR" property="includeMerchno" />
+		<result column="excludeMerchno" jdbcType="VARCHAR" property="excludeMerchno" />
+
+  	</resultMap>
+  	
+  	<!--根据商户编号,支付方式，结算方式 查商户通道信息-->
+	<select id="findMerchChannel" resultMap="MerchChannelResultMap">
+		select 
+			 a.* , 
+			 b.channel_name,
+			 b.channel_code,
+			 b.channel_source ,
+			 b.CHANNEL_TYPE,
+			 b.CHANNEL_NO ,
+			 b.pay_url,
+			 b.notify_url,
+			 b.channel_key,
+			 b.channel_des_key,
+			 b.extend1,
+			 IFNULL(b.MIN_TRA_PRICE,0) as MIN_TRA_PRICE,
+			 IFNULL(b.MAX_TRA_PRICE,0) as MAX_TRA_PRICE,
+			 IFNULL(b.SETTLE_RATE,0) as SETTLE_RATE,
+			 IFNULL(b.TRA_START_TIME,0) as TRA_START_TIME,
+			 IFNULL(b.TRA_END_TIME,0) as TRA_END_TIME,
+			 IFNULL(b.channel_cost,0) as channel_cost,
+			 IFNULL(b.day_quota,0) as day_quota
+		from 
+			vc_a1_merch_channel a  inner join vc_a1_channel b 
+		on 
+			a.channel_id= b.id and a.del_flag=0 and b.del_flag=0 and a.status=1 and b.status=1 and a.PAY_TYPE=b.TRA_TYPE and a.CHANNEL_ID=b.id
+		where 
+      		a.merch_id = #{merchId}  and  a.channel_id=#{channelId}  order by b.SEQ asc 
+	</select>
+	
+	<!--根据商户编号,支付方式，结算方式 查商户启用通道信息-->
+	<select id="findMerchChannelPayTypes" resultMap="MerchChannelResultMap">
+		SELECT
+			a.* ,
+			b.channel_name,
+			b.channel_code,
+			b.channel_source ,
+			b.CHANNEL_TYPE,
+			b.CHANNEL_NO ,
+			b.pay_url,
+			b.notify_url,
+			b.channel_key,
+			b.channel_des_key,
+			b.extend1,
+			IFNULL(b.SUBNO_STATUS,0) as SUBNO_STATUS,
+			IFNULL(b.MIN_TRA_PRICE,0) as MIN_TRA_PRICE,
+			IFNULL(b.MAX_TRA_PRICE,0) as MAX_TRA_PRICE,
+			IFNULL(b.SETTLE_RATE,0) as SETTLE_RATE,
+			IFNULL(b.TRA_START_TIME,0) as TRA_START_TIME,
+			IFNULL(b.TRA_END_TIME,0) as TRA_END_TIME,
+			IFNULL(b.channel_cost,0) as channel_cost,
+			IFNULL(b.day_quota,0) as day_quota,
+			c.route_channel AS "routeChannel",
+			c.route_min_amount AS "routeMinAmount",
+			c.route_max_amount AS "routeMaxAmount",
+			c.route_regular_ex AS "routeRegularEx",
+			c.include_merchno AS "includeMerchno",
+			c.exclude_merchno AS "excludeMerchno"
+		FROM vc_a1_merch_channel a
+			INNER JOIN vc_a1_channel b	ON	b.del_flag=0 AND b.status=1 and b.id = a.channel_id AND b.TRA_TYPE = a.PAY_TYPE
+			LEFT JOIN  vc_a1_channel_route c ON c.del_flag=0 AND c.status=1 AND c.channel_id = a.channel_id
+		WHERE
+      		a.status=1 and a.del_flag=0 and a.merch_id = #{merchId}
+			AND  a.PAY_TYPE in
+      		<foreach item="item" index="index" collection="payTypes" open="(" separator="," close=")">  
+			  #{item}  
+			</foreach>
+      	 ORDER BY a.SETTLE_TYPE ASC
+	</select>
+
+    <!-- 根据id获取商户通道信息 -->
+    <select id="findCanUsedMerchChannelByMerchId" resultMap="MerchChannelResultMap">
+        select
+        a.* ,b.MIN_TRA_PRICE,b.MAX_TRA_PRICE,b.extend3
+        from
+        vc_a1_merch_channel a
+        inner join vc_a1_channel b on a.channel_id= b.id
+        where
+        a.del_flag=0 and b.del_flag=0 and a.status=1 and b.status=1 and a.PAY_TYPE=b.TRA_TYPE and
+        a.merch_id= #{merchId}
+        <if test="payType != null">
+            AND pay_type= #{payType}
+        </if>
+        order by
+        b.SEQ asc
+    </select>
+
+	<select id="findSameChannelBysource" resultMap="MerchChannelResultMap">
+		SELECT
+			 b.id As "CHANNEL_ID",
+			 b.SETTLE_TYPE AS "SETTLE_TYPE",
+			 b.TRA_TYPE AS "PAY_TYPE",
+			 b.STATUS AS "STATUS",
+			 b.channel_name,
+			 b.channel_code,
+			 b.channel_source ,
+			 b.CHANNEL_TYPE,
+			 b.CHANNEL_NO ,
+			 b.pay_url,
+			 b.notify_url,
+			 b.channel_key,
+			 b.channel_des_key,
+			 b.extend1,
+			 IFNULL(b.SUBNO_STATUS,0) as SUBNO_STATUS,
+			 IFNULL(b.MIN_TRA_PRICE,0) as MIN_TRA_PRICE,
+			 IFNULL(b.MAX_TRA_PRICE,0) as MAX_TRA_PRICE,
+			 IFNULL(b.SETTLE_RATE,0) as SETTLE_RATE,
+			 IFNULL(b.TRA_START_TIME,0) as TRA_START_TIME,
+			 IFNULL(b.TRA_END_TIME,0) as TRA_END_TIME,
+			 IFNULL(b.channel_cost,0) as channel_cost,
+			 IFNULL(b.day_quota,0) as day_quota
+		FROM  vc_a1_channel b
+		WHERE   b.del_flag=0
+			AND b.TRA_TYPE = #{payType}
+			AND b.SETTLE_TYPE = #{settleType}
+			AND b.channel_source=#{channelSource}
+		ORDER BY b.STATUS ASC
+	</select>
+
+
+</mapper>

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vc.onlinepay.persistent.mapper.channel.ChannelWxnoMapper">
+    
+	<sql id="channelWxnoColumns">
+		a.id AS "id",
+		a.status AS "status",
+		a.up_merch_no AS "upMerchNo",
+		a.up_merch_key AS "upMerchKey",
+		a.day_quota_amount AS "dayQuotaAmount",
+		a.quota_amount AS "quotaAmount",
+		a.day_tra_amount AS "dayTraAmount",
+		a.tra_amount AS "traAmount",
+		a.min_price AS "minPrice",
+		a.max_price AS "maxPrice",
+		a.tra_start_time AS "traStartTime",
+		a.tra_end_time AS "traEndTime",
+		a.name AS "name",
+		a.bank_no AS "bankNo",
+		IFNULL(a.weight,1) AS "weight",
+		a.succ_rate AS "succRate",
+		a.seq AS "seq",
+		a.last_order_time AS "lastOrderTime",
+		a.remark AS "remark",
+		a.remarks AS "remarks",
+		a.last_day AS "lastDay",
+		a.create_date AS "createDate",
+		a.update_date AS "updateDate",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="channelWxnoJoins">
+	</sql>
+
+	<select id="getByUpMerchNo" resultType="ChannelWxno">
+		SELECT
+		<include refid="channelWxnoColumns"/>
+		FROM vc_a1_channel_wxno a  AND DEL_FLAG=0
+		WHERE a.up_merch_no = #{upMerchNo} 
+	</select>
+
+	<select id="getNameList" resultType="ChannelWxno">
+		SELECT NAME,COUNT(1) as weight
+		FROM vc_a1_channel_wxno
+		where del_flag=0
+            and status=1
+            and up_merch_key = #{upMerchKey}
+		GROUP BY NAME
+	</select>
+
+	<select id="getAllChannelWxNoList" resultType="ChannelWxno">
+		SELECT
+			<include refid="channelWxnoColumns"/>
+		FROM vc_a1_channel_wxno a
+		WHERE a.status = 1 AND DEL_FLAG=0
+				AND IFNULL(TRA_AMOUNT,0) &lt;= IFNULL(QUOTA_AMOUNT,0)
+				AND IFNULL(DAY_TRA_AMOUNT,0) &lt;= IFNULL(DAY_QUOTA_AMOUNT,0)
+			<if test="upMerchKey !='' and upMerchKey != null">
+				AND up_merch_key = #{upMerchKey}
+			</if>
+			<if test="upMerchNo !='' and upMerchNo != null">
+				AND up_merch_no = #{upMerchNo}
+			</if>
+			<if test="traAmount !='' and traAmount != null">
+				AND min_price &lt;= #{traAmount} and max_price>= #{traAmount}
+			</if>
+			<if test="name !='' and name != null">
+				AND name=#{name}
+			</if>
+			<if test="lastOrderExpiredTime !='' and lastOrderExpiredTime != null and lastOrderExpiredTime !=0 ">
+				AND last_order_time &lt;= DATE_ADD(SYSDATE(), INTERVAL -#{lastOrderExpiredTime} SECOND)
+			</if>
+	</select>
+
+	<!--修改状态-->
+	<update id="updateStatus">
+		UPDATE vc_a1_channel_wxno
+		SET status = #{status}
+		WHERE id = #{id}
+	</update>
+
+	<!--剔除微信子商户-->
+	<update id="removeSubNo">
+		UPDATE vc_a1_channel_wxno SET
+			status = #{status},
+			remark = #{remark},
+			update_date = sysdate()
+		WHERE	del_flag = 0
+			AND up_merch_key = #{upMerchKey}
+			AND up_merch_no = #{upMerchNo}
+	</update>
+
+	<!--更新金额 -->
+	<update id="updateWxbNoAmount" parameterType="ChannelWxno">
+		UPDATE
+		vc_a1_channel_wxno a SET DAY_TRA_AMOUNT=(
+		CASE WHEN LAST_DAY &lt; CURRENT_DATE() THEN #{actualAmount} ELSE
+		IFNULL(DAY_TRA_AMOUNT,0)+#{actualAmount} END
+		),
+		LAST_DAY = current_date(),
+		TRA_AMOUNT=IFNULL(TRA_AMOUNT,0)+#{actualAmount},
+		update_date = sysdate()
+		WHERE up_merch_no=#{upMerchNo} and del_flag = 0
+	</update>
+
+	<!--更新最后一次下单时间 -->
+	<update id="updateLastOrderTime" parameterType="ChannelSubNo">
+		UPDATE vc_a1_channel_wxno a SET LAST_ORDER_TIME = sysdate(),update_date = 	sysdate() 	WHERE up_merch_no=#{upMerchNo} and del_flag = 0
+	</update>
+	
+</mapper>

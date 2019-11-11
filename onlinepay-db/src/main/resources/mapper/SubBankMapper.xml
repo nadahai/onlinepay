@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vc.onlinepay.persistent.mapper.dict.SubbankMapper">
+ 
+  <resultMap id="SubbankResultMap" type="com.vc.onlinepay.persistent.entity.dict.SubbankLinked">
+		<result column="province" jdbcType="VARCHAR" property="province"/>
+		<result column="city" jdbcType="VARCHAR" property="city"/>
+	    <result column="provinceid" jdbcType="VARCHAR" property="provinceId"/>
+	    <result column="cityid" jdbcType="VARCHAR" property="cityId"/>
+	  	<result column="bank_code" jdbcType="VARCHAR" property="bankCode"/>
+	  	<result column="sx_bank_no" jdbcType="VARCHAR" property="bankNo"/>
+		<result column="sub_bank_id" jdbcType="BIGINT" property="subBankId"/>
+	    <result column="bankname" jdbcType="VARCHAR" property="bankName"/>
+	    <result column="sub_bank_name" jdbcType="VARCHAR" property="subBankName"/>
+  	</resultMap>
+  	
+	<!-- 根据编号查找支行信息 -->
+	<select id="findSubbankByBankLink" resultMap="SubbankResultMap">
+		SELECT b.bank_code,b.sx_bank_no,c.cityid,c.provinceid,c.city,p.province,b.bankname,t.sub_bank_name
+		FROM  vcjf_sub_bank t
+			left join vcjf_province p on p.provinceid = t.province_id
+			left join vcjf_city c on c.cityid = t.city_id
+			left join vcjf_bank b on b.bankid = t.bankid
+		WHERE  t.sub_bank_id = #{subBankId}
+	</select>
+
+	<!-- 根据省市查找省市编码 -->
+	<select id="findBycity" resultType="SubbankLinked">
+		SELECT c.cityid As "cityId",c.PROVINCEID As "provinceId"
+		FROM vcjf_city c
+		LEFT JOIN vcjf_province p ON c.`PROVINCEID`=p.`PROVINCEID`
+		WHERE 1=1
+		<if test="city != null and city != ''">
+			AND c.CITY LIKE #{city}
+		</if>
+		<if test="province != null and province != ''">
+			AND p.PROVINCE LIKE #{province}
+		</if>
+	</select>
+	<!--随机获取省市编码-->
+	<select id="findRandom" resultType="SubbankLinked">
+		SELECT g.cityid AS "cityId",g.provinceid AS "provinceId" FROM (
+			SELECT c.cityid, c.provinceid,(SELECT ROUND(RAND() * 350)) AS "id"
+			FROM vcjf_city c WHERE 1=1
+		) g ORDER BY g.id LIMIT 1
+	</select>
+
+</mapper>

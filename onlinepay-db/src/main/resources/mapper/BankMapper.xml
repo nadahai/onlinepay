@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vc.onlinepay.persistent.mapper.dict.BankMapper">
+    
+   <resultMap id="BankResultMap" type="com.vc.onlinepay.persistent.entity.dict.Bank">
+		<result column="BANKID" jdbcType="DECIMAL" property="bankId" />
+		<result column="BANKNAME" jdbcType="VARCHAR" property="bankName" />
+		<result column="BANK_CODE" jdbcType="VARCHAR" property="bankCode" />
+		<result column="SX_BANK_NO" jdbcType="VARCHAR" property="sxBankNo" />
+	</resultMap>
+	
+	<!-- 根据编号查找订单信息 -->
+	<select id="findBankByBankId" resultMap="BankResultMap">
+		select * from vcjf_bank b where b.BANKID= #{bankId} 
+	</select>
+</mapper>

@@ -1,0 +1,187 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.vc.onlinepay</groupId>
+  <artifactId>onlinepay</artifactId>
+  <version>1.0.0</version>
+  <packaging>war</packaging>
+  <name>onlinepay</name>
+  <description>onlinepay-boot</description>
+
+  <parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>2.0.0.RELEASE</version>
+  </parent>
+
+  <dependencies>
+    <!-- 私有依赖开始 -->
+    <dependency>
+      <groupId>com.vc.onlinepay</groupId>
+      <artifactId>onlinepay-common</artifactId>
+      <version>1.0.0</version>
+    </dependency>
+    <dependency>
+      <groupId>com.vc.onlinepay</groupId>
+      <artifactId>onlinepay-db</artifactId>
+      <version>1.0.0</version>
+    </dependency>
+    <!-- 私有依赖结束 -->
+    
+    
+    
+    <!-- Email -->
+	<dependency>
+		<groupId>javax.mail</groupId>
+		<artifactId>mail</artifactId>
+		<version>1.4</version>
+	</dependency>
+	 
+	<dependency>
+		<groupId>javax.activation</groupId>
+		<artifactId>activation</artifactId>
+		<version>1.1.1</version>
+	</dependency>
+
+
+    <!--spring-boot依赖开始 -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
+      <exclusions>
+        <exclusion>
+          <groupId>org.apache</groupId>
+          <artifactId>log4j</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>ch.qos.logback</groupId>
+          <artifactId>logback-classic</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-freemarker</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-configuration-processor</artifactId>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-aop</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+    </dependency>
+    <!--<dependency>
+     <groupId>org.springframework.boot</groupId>
+     <artifactId>spring-boot-starter-tomcat</artifactId>
+     <scope>provided</scope>
+   </dependency>-->
+    <!--spring-boot依赖结束 -->
+    <!-- maven依赖 -->
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.5.2</version>
+        </dependency>
+    <dependency>
+      <!-- jsoup HTML parser library @ https://jsoup.org/ -->
+      <groupId>org.jsoup</groupId>
+      <artifactId>jsoup</artifactId>
+      <version>1.11.3</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <version>2.9.5</version>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-annotations</artifactId>
+      <version>2.9.0</version>
+    </dependency>
+  </dependencies>
+
+  <profiles>
+    <profile>
+      <id>test</id>
+      <properties>
+        <profileActive>test</profileActive>
+        <env.warname>onlinepay</env.warname>
+      </properties>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+    </profile>
+    
+    <profile>
+      <id>xpay</id>
+      <properties>
+        <profileActive>xpay</profileActive>
+        <env.warname>xpay</env.warname>
+      </properties>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+      </activation>
+    </profile>
+  </profiles>
+
+  <build>
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+        <includes>
+          <include>application-${profileActive}.yaml</include>
+          <include>application.yaml</include>
+          <include>MyBatisConf.xml</include>
+          <include>*.properties</include>
+        </includes>
+        <filtering>true</filtering>
+      </resource>
+      <resource>
+        <directory>src/main/resources</directory>
+        <includes>
+          <include>**/*.xml</include>
+          <include>**/*.ftl</include>
+          <include>cert/**</include>
+          <include>static/**</include>
+        </includes>
+        <filtering>false</filtering>
+      </resource>
+    </resources>
+
+    <plugins>
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+        <configuration>
+          <warSourceExcludes>src/main/resources/**</warSourceExcludes>
+          <warName>${env.warname}</warName>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>1.8</source>
+          <target>1.8</target>
+          <encoding>UTF-8</encoding>
+          <compilerArguments>
+            <extdirs>${basedir}/src/main/webapp/WEB-INF/lib</extdirs>
+          </compilerArguments>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>

@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <artifactId>onlinepay-master</artifactId>
+        <groupId>com.vc.onlinepay</groupId>
+        <version>1.0.0</version>
+    </parent>
+
+    <artifactId>onlinepay-common</artifactId>
+    <version>1.0.0</version>
+    <packaging>jar</packaging>
+    <name>onlinepay-common</name>
+    <description>onlinepay common</description>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <java.version>1.8</java.version>
+        <commons.springboot.version>2.0.0.RELEASE</commons.springboot.version>
+        <commons-pool2.version>2.5.0</commons-pool2.version>
+        <httpclient.version>4.5.5</httpclient.version>
+        <jackson.version>2.9.4</jackson.version>
+        <jackson.version.annotations>2.9.0</jackson.version.annotations>
+    </properties>
+
+    <dependencies>
+        <!--redis依赖开始 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+            <version>${commons.springboot.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-pool2</artifactId>
+            <version>${commons-pool2.version}</version>
+        </dependency>
+        <!--redis依赖结束 -->
+
+        <!-- http依赖开始 -->
+        <dependency>
+            <groupId>commons-httpclient</groupId>
+            <artifactId>commons-httpclient</artifactId>
+            <version>3.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>${httpclient.version}</version>
+        </dependency>
+        <!-- http依赖结束 -->
+
+        <!--工具类依赖开始 -->
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.5</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>2.8.8</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.5</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-text -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-text</artifactId>
+            <version>1.6</version>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.json-lib</groupId>
+            <artifactId>json-lib</artifactId>
+            <version>2.4</version>
+            <classifier>jdk15</classifier>
+        </dependency>
+        <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcprov-jdk15on</artifactId>
+            <version>1.54</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.47</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>1.7.7</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>${jackson.version.annotations}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-joda</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.module</groupId>
+            <artifactId>jackson-module-parameter-names</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+        <!-- hutool工具类 -->
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>4.1.19</version>
+        </dependency>
+        <!--工具类依赖结束 -->
+
+        <!-- https://mvnrepository.com/artifact/org.apache.axis2/axis2-transport-local -->
+        <!--<dependency>
+          <groupId>org.apache.axis2</groupId>
+          <artifactId>axis2-transport-http</artifactId>
+          <version>1.7.8</version>
+        </dependency>
+        <dependency>
+          <groupId>org.apache.axis2</groupId>
+          <artifactId>axis2-transport-local</artifactId>
+          <version>1.7.8</version>
+        </dependency>
+        <dependency>
+          <groupId>org.apache.axis2</groupId>
+          <artifactId>axis2-kernel</artifactId>
+          <version>1.7.8</version>
+        </dependency>
+        <dependency>
+          <groupId>org.apache.axis2</groupId>
+          <artifactId>axis2-adb</artifactId>
+          <version>1.7.8</version>
+        </dependency>-->
+        <dependency>
+            <groupId>com.iceyyy</groupId>
+            <artifactId>icenongli</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>eu.bitwalker</groupId>
+            <artifactId>UserAgentUtils</artifactId>
+            <version>1.21</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.apache.axis2/axis2-transport-local -->
+
+        <!--alipay tools依赖-->
+        <dependency>
+            <groupId>com.alipay.sdk</groupId>
+            <artifactId>alipay-sdk-java</artifactId>
+            <version>3.4.49.ALL</version>
+        </dependency>
+    </dependencies>
+
+</project>

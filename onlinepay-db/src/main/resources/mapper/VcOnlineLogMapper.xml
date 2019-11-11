@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vc.onlinepay.persistent.mapper.online.VcOnlineLogMapper">
+	
+	<!-- 保存日志 -->
+	<insert id="save" parameterType="VcOnlineLog">
+		INSERT INTO vc_online_log(
+			log_level,
+			type,
+			status,
+			log_des,
+			remark,
+			remarks,
+			create_date,
+			del_flag,
+			title
+		) VALUES (
+			#{logLevel,jdbcType=DECIMAL},
+			#{type,jdbcType=DECIMAL},
+			#{status,jdbcType=DECIMAL},
+			#{logDes,jdbcType=VARCHAR},
+			#{remark,jdbcType=VARCHAR},
+			#{remarks,jdbcType=VARCHAR},
+			sysdate(),
+			0,
+			#{title,jdbcType=VARCHAR}
+		)
+	</insert>
+	
+</mapper>

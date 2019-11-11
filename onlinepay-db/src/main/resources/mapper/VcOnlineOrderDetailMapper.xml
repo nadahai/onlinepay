@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vc.onlinepay.persistent.mapper.online.VcOnlineOrderDetailMapper">
+
+	<resultMap id="VcOnlineOrderResultMap" type="com.vc.onlinepay.persistent.entity.online.VcOnlineOrderDetail">
+		<id column="id" jdbcType="BIGINT" property="id" />
+		<result column="ORDER_NO" jdbcType="VARCHAR" property="orderNo" />
+		<result column="agent_id" jdbcType="BIGINT" property="agentId" />
+		<result column="manger_id" jdbcType="BIGINT" property="mangerId" />
+		<result column="AGENT_RATE" jdbcType="BIGINT" property="agentRate" />
+		<result column="MANGER_RATE" jdbcType="BIGINT" property="mangerRate" />
+		<result column="remarks" jdbcType="VARCHAR" property="remarks" />
+	</resultMap>
+
+    <!-- 保存订单 -->
+    <insert id="save">
+    	INSERT INTO vc_online_order_detail (
+		  ORDER_NO,
+		  agent_id,
+		  manger_id,
+		  AGENT_RATE,
+		  MANGER_RATE,
+		  REMARKS,
+		  TRA_AMOUNT,
+		  CREATE_DATE,
+		  update_date,
+		  DEL_FLAG
+		) 
+		VALUES (
+	     #{orderNo},
+	     #{agentId},
+	     #{mangerId},
+	     #{agentRate},
+	     #{mangerRate},
+	     #{remarks},
+	     #{traAmount},
+	     sysdate(),
+	     sysdate(),
+		 0
+	  )
+	</insert>
+
+	<update id="updateOrderDetailRealAmount" parameterType="VcOnlineOrderDetail">
+		UPDATE vc_online_order_detail SET
+			ACTUAL_AMOUNT = #{actualAmount}
+		WHERE ORDER_NO = #{orderNo}
+	</update>
+
+</mapper>

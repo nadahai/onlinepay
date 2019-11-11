@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vc.onlinepay.persistent.mapper.channel.SupplierSubnoMapper">
+
+	<sql id="supplierSubnoColumns">
+		a.id AS "id",
+		a.merch_id AS "merchId",
+		a.status AS "status",
+		a.up_merch_no AS "upMerchNo",
+		a.up_merch_key AS "upMerchKey",
+		a.day_quota_amount AS "dayQuotaAmount",
+		a.quota_amount AS
+		"quotaAmount",
+		a.day_tra_amount AS "dayTraAmount",
+		a.tra_amount AS
+		"traAmount",
+		a.seq AS "seq",
+		a.remark AS "remark",
+		a.remarks AS
+		"remarks",
+		a.last_day AS "lastDay",
+		a.create_date AS "createDate",
+		a.update_date AS "updateDate",
+		a.del_flag AS "delFlag",
+		a.min_price AS "minPrice",
+		a.max_price AS "maxPrice",
+		a.last_order_time AS "lastOrderTime",
+		a.APPID AS "appId",
+		a.PRIVATE_KEY AS "privateKey",
+		a.PUBLIC_KEY AS "publicKey",
+		a.USER_ID AS "userId",
+		a.PAY_NUM AS "payNum",
+		a.SETTLE_AMOUNT AS "settleAmount",
+		a.name as name,
+		a.bank_no as bankNo,
+		a.bank_mark as bankMark,
+		a.type as type,
+		a.cardIdx as cardIdx,
+		weight as weight,
+		a.SETTLE_SUB_NO_ID as "settleSubNoId"
+	</sql>
+
+
+	<update id="updateUserId" parameterType="SupplierSubno">
+		UPDATE vc_a1_supplier_subno a SET USER_ID = #{userId} WHERE up_merch_no=#{upMerchNo} and TYPE=3
+	</update>
+
+	<select id="getSubnoById" resultType="SupplierSubno">
+		SELECT
+		<include refid="supplierSubnoColumns" />
+		FROM vc_a1_supplier_subno a
+		WHERE a.DEL_FLAG=0 and id = #{id }
+	</select>
+
+	<!-- 根据渠道获取账号(包含禁用)-->
+	<select id="getOneByUpMerchNo" resultType="SupplierSubno">
+		SELECT
+		<include refid="supplierSubnoColumns" />
+		FROM vc_a1_supplier_subno a
+		WHERE a.DEL_FLAG=0
+		<if test="upMerchNo !='' and upMerchNo != null">
+			and up_merch_no = #{upMerchNo}
+		</if>
+		<if test="upMerchKey !='' and upMerchKey != null">
+			and up_merch_key = #{upMerchKey}
+		</if>
+		ORDER BY SEQ ASC,id DESC
+	</select>
+
+	<!--更新最后一次下单时间 -->
+	<update id="updateCardIdx" parameterType="SupplierSubno">
+		UPDATE vc_a1_supplier_subno a SET cardIdx = #{cardIdx},remarks=#{bankNo} WHERE up_merch_no=#{upMerchNo}
+	</update>
+
+	<!-- 根据渠道获取账号-->
+	<select id="getByUpMerchNo" resultType="SupplierSubno">
+		SELECT
+		<include refid="supplierSubnoColumns" />
+		FROM vc_a1_supplier_subno a
+		WHERE status =1 and a.DEL_FLAG=0
+		<if test="upMerchNo !='' and upMerchNo != null">
+			and up_merch_no = #{upMerchNo}
+		</if>
+		<if test="upMerchKey !='' and upMerchKey != null">
+			and up_merch_key = #{upMerchKey}
+		</if>
+		<if test="channelId !='' and channelId != null">
+			and up_merch_key IN (SELECT up_merch_no FROM VC_A1_CHANNEL_SUBNO WHERE channel_id=#{channelId} and STATUS=1 AND del_flag=0)
+		</if>
+		AND IFNULL(DAY_TRA_AMOUNT,0) &lt;= IFNULL(DAY_QUOTA_AMOUNT,0)
+		AND IFNULL(TRA_AMOUNT,0) &lt;= IFNULL(QUOTA_AMOUNT,0)
+		and a.DEL_FLAG=0 ORDER BY SEQ ASC,id DESC
+	</select>
+
+	<!-- 获取子子账号列表 -->
+	<select id="getAllSupplierList" resultType="SupplierSubno">
+		SELECT
+		<include refid="supplierSubnoColumns" />
+		FROM vc_a1_supplier_subno a
+		WHERE status =1 
+		<if test="channelId !='' and channelId != null">
+			and up_merch_key IN (SELECT up_merch_no FROM VC_A1_CHANNEL_SUBNO WHERE channel_id=#{channelId} and STATUS=1 AND del_flag=0)
+		</if>
+		<if test="channelSource !='' and channelSource != null and channelSource !=0 ">
+			AND up_merch_key IN (
+		 		SELECT up_merch_no FROM VC_A1_CHANNEL_SUBNO b LEFT JOIN vc_a1_channel c  ON b.`channel_id`=c.`id` WHERE  c.`CHANNEL_SOURCE`=#{channelSource} AND b.STATUS=1 AND b.del_flag=0 AND c.`STATUS`=1 AND c.`DEL_FLAG`=0 
+			)
+		</if>
+		<if test="traAmount !='' and traAmount != null">
+			and min_price &lt;= #{traAmount} and max_price>= #{traAmount}
+		</if>
+		<if test="lastOrderExpiredTime !='' and lastOrderExpiredTime != null and lastOrderExpiredTime !=0 ">
+			AND last_order_time &lt;= DATE_ADD(SYSDATE(), INTERVAL -#{lastOrderExpiredTime} SECOND)
+		</if>
+		AND IFNULL(DAY_TRA_AMOUNT,0) &lt;= IFNULL(DAY_QUOTA_AMOUNT,0)
+		AND IFNULL(TRA_AMOUNT,0) &lt;= IFNULL(QUOTA_AMOUNT,0)
+		and a.DEL_FLAG=0 ORDER BY SEQ ASC,id DESC
+	</select>
+
+	<!--更新金额 -->
+	<update id="updateSubNoAmount" parameterType="ChannelSubNo">
+		UPDATE
+		vc_a1_supplier_subno a SET DAY_TRA_AMOUNT= IFNULL(DAY_TRA_AMOUNT,0)+#{actualAmount},
+		TRA_AMOUNT=IFNULL(TRA_AMOUNT,0)+#{actualAmount},
+		LAST_ORDER_TIME = sysdate()
+		WHERE up_merch_no=#{upMerchNo} and del_flag = 0
+	</update>
+	
+	<!--更新归集金额 -->
+	<update id="updateSettleAmount" parameterType="ChannelSubNo">
+		UPDATE
+		vc_a1_supplier_subno a SET DAY_SETTLE_AMOUNT=IFNULL(DAY_SETTLE_AMOUNT,0)+#{actualAmount},
+		SETTLE_AMOUNT=IFNULL(SETTLE_AMOUNT,0)+#{actualAmount}
+		WHERE up_merch_no=#{upMerchNo} and del_flag = 0
+	</update>
+
+	<!--更新最后一次下单时间 -->
+	<update id="updateLastOrderTime" parameterType="ChannelSubNo">
+		UPDATE
+		vc_a1_supplier_subno a SET LAST_ORDER_TIME = sysdate(),update_date = 	sysdate() 	WHERE up_merch_no=#{upMerchNo} and del_flag = 0
+	</update>
+
+	<!--更新状态-->
+	<update id="updateStatus">
+		UPDATE vc_a1_supplier_subno SET
+		<if test="status != null and status != ''">
+			status = #{status},
+		</if>
+		<if test="remark != null and remark != ''">
+			remark = #{remark},
+		</if>
+		update_date = sysdate()
+		WHERE up_merch_no=#{upMerchNo} 
+	</update>
+
+</mapper>

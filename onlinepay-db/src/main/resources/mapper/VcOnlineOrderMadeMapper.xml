@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vc.onlinepay.persistent.mapper.online.VcOnlineOrderMadeMapper">
+    
+	<sql id="vcOnlineOrderMadeColumns">
+		a.id AS "id",
+		a.order_no AS "orderNo",
+		a.merch_no AS "merchNo",
+		a.tra_amount AS "traAmount",
+		a.open_url AS "openUrl",
+		a.qrcode_url AS "qrcodeUrl",
+		a.channel_id AS "channelId",
+		a.pay_source AS "paySource",
+		a.expired_time AS "expiredTime",
+		a.up_merch_no AS "upMerchNo",
+		a.up_merch_key AS "upMerchKey",
+		a.open_type AS "openType",
+		a.open_num AS "openNum",
+		a.remarks AS "remarks",
+		a.create_date AS "createDate",
+		a.update_date AS "updateDate",
+		a.User_ID AS "userId",
+		a.USER_NAME AS "userName",
+		a.NET_ORDER AS "netOrder",
+	  a.Pay_USER_ID AS "payUserId"
+	</sql>
+    
+	<select id="findOrderByOrderNo" resultType="VcOnlineOrderMade">
+		SELECT 
+			<include refid="vcOnlineOrderMadeColumns"/>
+		FROM 
+			vc_online_order_made a
+		WHERE 
+			a.order_no = #{orderNo}  limit 1
+	</select>
+
+	<select id="findFlmOrders" resultType="VcOnlineOrderMade">
+		SELECT
+		<include refid="vcOnlineOrderMadeColumns"/>
+		FROM
+		vc_online_order_made a
+		LEFT JOIN vc_online_order b ON a.`ORDER_NO` = b.`ORDER_NO`
+		WHERE
+		
+		<choose>
+            <when test="orderNo != null and orderNo != ''">
+                a.`ORDER_NO` = #{orderNo}
+            </when>
+            <otherwise>
+                a.pay_source = 101 and b.status IN( 1,3) and a.DEL_FLAG=0 and a.create_date >= DATE_ADD(SYSDATE(), INTERVAL -300 SECOND)
+            </otherwise>
+        </choose>
+	</select>
+
+	<!-- 获取历史订单列表 -->
+	<select id="getRecordOrder" resultType="VcOnlineOrderMade">
+		SELECT 
+			<include refid="vcOnlineOrderMadeColumns"/>,a.pay_amount as payAmount
+		FROM 
+			vc_online_h5template a 
+		WHERE 
+			a.DEL_FLAG=0 AND a.tra_amount=#{traAmount} AND a.update_date &lt; DATE_ADD(SYSDATE(), INTERVAL - 300 SECOND) 
+			AND a.`up_merch_no` IN (
+				SELECT c.`UP_MERCH_NO` FROM vc_a1_supplier_subno c WHERE c.`DEL_FLAG`=0 AND c.`STATUS`=1 AND IFNULL(DAY_TRA_AMOUNT,0) &lt;= IFNULL(DAY_QUOTA_AMOUNT,0) AND IFNULL(TRA_AMOUNT,0) &lt;= IFNULL(QUOTA_AMOUNT,0)
+			) 
+			<!-- AND a.up_merch_no NOT IN (
+				SELECT b.`up_merch_no` FROM vc_online_order b WHERE b.`PAY_SOURCE`=51 AND b.tra_amount=#{traAmount} AND b.`CREATE_DATE` &gt;=DATE_ADD(SYSDATE(), INTERVAL - 300 SECOND)
+			) -->
+			AND a.order_no NOT IN (
+				SELECT b.smstrxid FROM vc_online_order b WHERE b.`PAY_SOURCE`=51 AND b.tra_amount=#{traAmount} AND b.`CREATE_DATE` &gt;=DATE_ADD(SYSDATE(), INTERVAL - 300 SECOND)
+			)
+			ORDER BY a.update_date ASC,a.pay_amount asc LIMIT 1
+	</select>
+
+
+	<select id="getOrderInfo" resultType="VcOnlineOrderMade">
+		SELECT
+			<include refid="vcOnlineOrderMadeColumns"/>
+		FROM  vc_online_order_made a
+		INNER JOIN vc_online_order o ON o.ORDER_NO = a.ORDER_NO AND o.DEL_FLAG=0 AND o.STATUS = 1
+		WHERE   a.up_merch_no = #{upMerchNo}
+			AND a.open_type   = #{openType}
+			<if test="orderNo != null and orderNo != '' ">
+				AND a.order_no = #{orderNo}
+			</if>
+			<if test="updateDate != null ">
+				AND a.update_date BETWEEN DATE_ADD(#{updateDate}, INTERVAL -a.expired_time SECOND) AND DATE_ADD(#{updateDate}, INTERVAL 60 SECOND)
+			</if>
+	</select>
+	
+	
+	<insert id="saveTemplate">
+		INSERT INTO vc_online_h5template (
+		  `ORDER_NO`,
+		  `MERCH_NO`,
+		  `TRA_AMOUNT`,
+		  `OPEN_url`,
+		  `QRcode_url`,
+		  `channel_id`,
+		  `PAY_SOURCE`,
+		  `Expired_time`,
+		  `up_merch_no`,
+		  `up_merch_key`,
+		  `CREATE_DATE`,
+		  `update_date`,
+		  `REMARKS`,
+		  `DEL_FLAG`,
+		  `OPEN_NUM`,
+		  `open_type`,
+		   PAY_AMOUNT
+		)   
+		SELECT 
+			`ORDER_NO`,
+			`MERCH_NO`,
+			`TRA_AMOUNT`,
+			`OPEN_url`,
+			`QRcode_url`,
+			`channel_id`,
+			`PAY_SOURCE`,
+			`Expired_time`,
+			`up_merch_no`,
+			`up_merch_key`,
+			`CREATE_DATE`,
+			`update_date`,
+			`REMARKS`,
+			`DEL_FLAG`,
+			`OPEN_NUM`,
+			`open_type`,
+			`TRA_AMOUNT`
+		 FROM 
+		 	vc_online_order_made WHERE ORDER_NO=#{orderNo}
+	</insert>
+
+	
+	<insert id="save">
+		INSERT INTO vc_online_order_made(
+			order_no,
+			merch_no,
+			tra_amount,
+			open_url,
+			qrcode_url,
+			channel_id,
+			pay_source,
+			expired_time,
+			up_merch_no,
+			up_merch_key,
+			create_date,
+			update_date,
+			remarks,
+			open_type,
+			del_flag,
+			User_ID,
+			USER_NAME,
+			NET_ORDER
+		) VALUES (
+			#{orderNo},
+			#{merchNo},
+			#{traAmount},
+			#{openUrl},
+			#{qrcodeUrl},
+			#{channelId},
+			#{paySource},
+			#{expiredTime},
+			#{upMerchNo},
+			#{upMerchKey},
+			sysdate(),
+			sysdate(),
+			#{remarks},
+			#{openType},
+			0,
+			#{userId},
+			#{userName},
+			#{netOrder}
+		)
+	</insert>
+	
+	<update id="updateByOrderNo">
+		UPDATE vc_online_order_made SET 	
+			<if test="openNum != null">
+				OPEN_NUM =  IFNULL(OPEN_NUM,0)+1,
+			</if>
+			<if test="openType != null">
+				open_type = #{openType},
+			</if>
+			update_date = sysdate()
+		WHERE order_no = #{orderNo}
+	</update>
+	
+	<update id="updateQrcodelByOrderNo">
+		UPDATE vc_online_order_made SET
+		OPEN_NUM =  IFNULL(OPEN_NUM,0)+1,
+		<if test="qrcodeUrl != null">
+			qrcode_url = #{qrcodeUrl},
+		</if>
+		<if test="payUserId != null">
+			Pay_USER_ID = #{payUserId},
+		</if>
+		update_date = sysdate()
+		WHERE order_no = #{orderNo}
+	</update>
+	
+	<!--修改模板-->
+	<update id="updateTemplateByOrderNo">
+		UPDATE vc_online_h5template SET 	
+			OPEN_NUM =  IFNULL(OPEN_NUM,0)+1,
+			update_date = sysdate()
+		WHERE order_no = #{orderNo}
+	</update>
+	
+	<!--修改模板-->
+	<update id="updateRemarksByOrderNo">
+		UPDATE vc_online_order_made SET 	
+			REMARKS=#{remarks}
+		WHERE order_no = #{orderNo}
+	</update>
+	
+</mapper>

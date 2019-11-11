@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vc.onlinepay.persistent.mapper.online.VcOnlineContactMapper">
+    
+   <resultMap id="ContactResultMap" type="com.vc.onlinepay.persistent.entity.online.VcOnlineContact">
+		<id column="id" jdbcType="DECIMAL" property="id" />
+		<result column="MEMBERID" jdbcType="VARCHAR" property="memberId" />
+		<result column="ORDERID" jdbcType="VARCHAR" property="orderId" />
+		<result column="IDTYPE" jdbcType="VARCHAR" property="idType" />
+		<result column="IDNO" jdbcType="VARCHAR" property="idNo" />
+		<result column="USERNAME" jdbcType="VARCHAR" property="userName" />
+		<result column="PHONE" jdbcType="VARCHAR" property="phone" />
+		<result column="CARDNO" jdbcType="VARCHAR" property="cardNo" />
+		<result column="CARDTYPE" jdbcType="VARCHAR" property="cardType" />
+		
+		<result column="EXPIREDATE" jdbcType="VARCHAR" property="expireDate" />
+		<result column="CVN2" jdbcType="VARCHAR" property="cvn2" />
+		<result column="CONTRACTID" jdbcType="VARCHAR" property="contractId" />
+		<result column="BANKNAME" jdbcType="VARCHAR" property="bankName" />
+		<result column="BANKABBR" jdbcType="VARCHAR" property="bankAbbr" />
+		<result column="EXTENSION" jdbcType="VARCHAR" property="extension" />
+		<result column="STATUS" jdbcType="DECIMAL" property="status" />
+		
+		<result column="MERCHANTNO" jdbcType="DECIMAL" property="merchantNo" />
+		<result column="CREATEDATE" jdbcType="DATE" property="createDate" />
+		<result column="SMS_COUNT" jdbcType="DECIMAL" property="smsCount" />
+
+       <result column="MERCH_TYPE" jdbcType="DECIMAL" property="merchType" />
+       <result column="NOTIFY_URL" jdbcType="VARCHAR" property="notifyUrl" />
+       <result column="ACTIVATE_STATUS" jdbcType="DECIMAL" property="activateStatus" />
+       <result column="CARD_ID" jdbcType="VARCHAR" property="cardId" />
+       <result column="upperType" jdbcType="BIGINT" property="upperType"/>
+	   <result column="USER_VC_ID" jdbcType="BIGINT" property="userVcId"/>
+	   <result column="BIND_SNO" jdbcType="VARCHAR" property="bindSno" />
+	</resultMap>
+	
+	<!-- 保存订单 -->
+	<insert id="saveNetContact" parameterType="VcOnlineContact">
+		INSERT INTO vc_online_contact(
+			MEMBERID,
+			ORDERID,
+			IDTYPE,
+			IDNO,
+			USERNAME,
+			PHONE,
+			CARDNO,
+			CARDTYPE,
+			EXPIREDATE,
+			CVN2,
+			CONTRACTID,
+			BANKNAME,
+			BANKABBR,
+			EXTENSION,
+			status,
+			MERCHANTNO,
+			CREATEDATE,
+			SMS_COUNT,
+            MERCH_TYPE,
+            NOTIFY_URL,
+            ACTIVATE_STATUS,
+            CARD_ID,
+            upperType,
+            USER_VC_ID,
+            BIND_SNO
+		) VALUES (
+			#{memberId,jdbcType=VARCHAR},
+			#{orderId,jdbcType=VARCHAR},
+			#{idType,jdbcType=VARCHAR},
+			#{idNo,jdbcType=VARCHAR},
+			#{userName,jdbcType=VARCHAR},
+			#{phone,jdbcType=VARCHAR},
+			#{cardNo,jdbcType=VARCHAR},
+			#{cardType,jdbcType=VARCHAR},
+			#{expireDate,jdbcType=VARCHAR},
+			#{cvn2,jdbcType=VARCHAR},
+			#{contractId,jdbcType=VARCHAR},
+			#{bankName,jdbcType=VARCHAR},
+			#{bankAbbr,jdbcType=VARCHAR},
+			#{extension,jdbcType=VARCHAR},
+			#{status,jdbcType=DECIMAL},
+			#{merchantNo,jdbcType=DECIMAL},
+			sysdate(),
+			#{smsCount,jdbcType=DECIMAL},
+            #{merchType,jdbcType=DECIMAL},
+            #{notifyUrl,jdbcType=VARCHAR},
+            #{activateStatus,jdbcType=DECIMAL},
+            #{cardId,jdbcType=VARCHAR},
+            #{upperType,jdbcType=VARCHAR},
+            #{userVcId,jdbcType=DECIMAL},
+            #{bindSno,jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<!-- 批量保存信息 -->
+	<insert id="batchSaveNetContact" parameterType="com.vc.onlinepay.persistent.entity.online.VcOnlineContact">		
+		  insert into vc_online_contact (MEMBERID,MERCHANTNO,CREATEDATE,CARDNO)
+		    values
+		     <foreach collection="vcOnlineContacts" item="item" separator=",">
+	            (
+		            #{item.memberId}, 
+		            #{item.merchantNo},
+		            sysdate(),
+		            #{item.cardNo}
+	            )
+	        </foreach>
+	</insert>
+	
+	<!-- 批量删除信息 -->
+	<delete id="batchUpdateNetContact" parameterType="VcOnlineContact">		
+		delete from 
+			vc_online_contact 
+		where MERCHANTNO =  #{merchantNo}
+		and MEMBERID = #{memberId} 
+	</delete>
+	
+	<!-- 修改订单信息 -->
+	<update id="updateNetContact" parameterType="VcOnlineContact">
+		UPDATE vc_online_contact SET 
+			<if test="status != null">
+				status = #{status,jdbcType=DECIMAL}
+			</if>
+			<if test="contractId != null">
+				,contractId = #{contractId,jdbcType=VARCHAR}
+			</if>	
+			<if test="bankName != null">
+				,bankName = #{bankName,jdbcType=VARCHAR}
+			</if>
+			<if test="bankAbbr != null">
+				,bankAbbr = #{bankAbbr,jdbcType=VARCHAR}
+			</if>
+			<if test="bankAbbr != null">
+				,extension = #{extension,jdbcType=VARCHAR}
+			</if>
+			<if test="smsCount != null">
+				,SMS_COUNT = #{smsCount,jdbcType=VARCHAR}
+			</if>
+            <if test="activateStatus != null">
+                ,ACTIVATE_STATUS = #{ACTIVATE_STATUS,jdbcType=DECIMAL}
+            </if>
+            <if test="cardId != null">
+                ,CARD_ID = #{cardId,jdbcType=VARCHAR}
+            </if>
+		WHERE  1=1
+			<if test="orderId != null">
+				and ORDERID = #{orderId}
+			</if>
+			<if test="memberId != null">
+				and memberId = #{memberId}
+			</if>
+            <if test="merchType != null">
+                and MERCH_TYPE = #{merchType}
+            </if>
+            <if test="cardNo != null and cardNo != ''">
+				AND cardNo = #{cardNo} 
+			</if>
+	</update>
+	
+	<!-- 修改订单信息 -->
+	<update id="updateNetContactById" parameterType="VcOnlineContact">
+		UPDATE vc_online_contact SET 
+			<if test="userName != null and userName != ''">
+				userName = #{userName}
+			</if>
+			<if test="phone != null and phone != ''">
+				,PHONE = #{phone}
+			</if>
+			<if test="idNo != null and idNo != ''">
+				,IDNO = #{idNo}
+			</if>
+			<if test="cardNo != null and cardNo != ''">
+				,CARDNO = #{cardNo}
+			</if>
+		WHERE  1=1
+			AND DEL_FLAG = 0
+			AND id = #{id} 		
+	</update>
+	
+	
+	
+	<!-- 删除银行信息 -->
+	<update id="delCardInfoById" parameterType="VcOnlineContact">
+			UPDATE vc_online_contact SET
+		id = #{id}
+			<if test="delFlag!=null and delFlag!=''">
+			   	,DEL_FLAG = #{delFlag}
+			</if>
+		<if test="extension!=null">
+			,EXTENSION = #{extension}
+		</if>
+			WHERE 1=1 
+			<if test="id!=null and id!=''">
+			   	and id = #{id}
+			</if>
+	</update>
+	
+	<!-- 修改订单信息 -->
+	<update id="updateStatusContact" parameterType="VcOnlineContact">
+		UPDATE vc_online_contact SET 
+			<if test="status != null">
+				status = #{status,jdbcType=DECIMAL}
+			</if>
+			<if test="contractId != null">
+				,contractId = #{contractId,jdbcType=VARCHAR}
+			</if>
+			<if test="smsCount != null">
+				,SMS_COUNT = #{smsCount,jdbcType=VARCHAR}
+			</if>
+			<if test="bindSno != null">
+				,bind_Sno = #{bindSno,jdbcType=VARCHAR}
+			</if>
+		WHERE  1=1
+			<if test="merchantNo != null">
+				and merchantNo = #{merchantNo}
+			</if>
+			<if test="memberId != null">
+				and memberId = #{memberId}
+			</if>
+            <if test="merchType != null">
+                and MERCH_TYPE = #{merchType}
+            </if>
+            <if test="cardNo != null and cardNo != ''">
+				AND cardNo = #{cardNo} 
+			</if>
+	</update>
+	
+	<!-- 修改订单信息 -->
+	<update id="updateNetContactSms" parameterType="VcOnlineContact">
+		UPDATE vc_online_contact SET 
+			<if test="memberId != null">
+				memberId = #{memberId}
+			</if>
+			<if test="contractId != null">
+				,contractId = #{contractId,jdbcType=VARCHAR}
+			</if>
+			<if test="smsCount != null">
+				,SMS_COUNT = #{smsCount,jdbcType=VARCHAR}
+			</if>
+			<if test="bindSno != null">
+				,bind_Sno = #{bindSno,jdbcType=VARCHAR}
+			</if>
+		WHERE  1=1
+			<if test="merchantNo != null">
+				and merchantNo = #{merchantNo}
+			</if>
+			<if test="memberId != null">
+				and memberId = #{memberId}
+			</if>
+            <if test="merchType != null">
+                and MERCH_TYPE = #{merchType}
+            </if>
+			<if test="status != null">
+				and status = #{status}
+			</if>
+	</update>
+	
+	<!-- 根据编号查找订单信息 -->
+	<select id="findContactByCondition" resultMap="ContactResultMap">
+		select * from vc_online_contact c where 1=1 
+		<if test="id != null and id != ''">
+			and c.id = #{id} 
+		</if>
+		<if test="orderId != null and orderId != ''">
+			and c.ORDERID = #{orderId} 
+		</if>
+		<if test="cardNo != null and cardNo != ''">
+			AND c.cardNo = #{cardNo} 
+		</if>
+		<if test="status != null">
+			AND c.STATUS = #{status}
+		</if>
+		<if test="memberId != null and memberId != ''">
+			and c.memberId = #{memberId} 
+		</if>
+		<if test="contractId != null and contractId != ''">
+			and c.contractId = #{contractId} 
+		</if>
+		<if test="merchantNo != null and merchantNo != ''">
+			and c.merchantNo = #{merchantNo} 
+		</if>
+        <if test="merchType != null">
+            and c.MERCH_TYPE = #{merchType}
+        </if>
+        <if test="upperType != null">
+            and c.upperType = #{upperType}
+        </if>
+        <if test="userVcId != null">
+            and c.user_vc_id = #{userVcId}
+        </if>
+        and c.del_flag = 0
+	</select>
+	
+</mapper>

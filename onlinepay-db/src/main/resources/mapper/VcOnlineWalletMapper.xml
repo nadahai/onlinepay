@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vc.onlinepay.persistent.mapper.online.VcOnlineWalletMapper">
+    
+    <resultMap id="VcOnlineWalletResultMap" type="com.vc.onlinepay.persistent.entity.online.VcOnlineWallet">
+		<id column="id" jdbcType="BIGINT" property="id" />
+		<result column="merch_id" jdbcType="BIGINT" property="merchId"/>
+		<result column="merch_no" jdbcType="VARCHAR" property="merchNo"/>
+		<result column="tra_total_amount" jdbcType="BIGINT" property="traTotalAmount"/>
+		<result column="disabled_total_amount" jdbcType="BIGINT" property="disabledTotalAmount"/>
+		<result column="cashd_total_amount" jdbcType="BIGINT" property="cashdTotalAmount"/>
+		<result column="last_cash_amount" jdbcType="BIGINT" property="lastCashAmount"/>
+		<result column="min_cash_amount" jdbcType="BIGINT" property="minCashAmount"/>
+		<result column="max_cash_amount" jdbcType="BIGINT" property="maxCashAmount"/>
+		<result column="wait_total_amount" jdbcType="BIGINT" property="waitTotalAmount"/>
+		<result column="usable_total_amount" jdbcType="BIGINT" property="usableTotalAmount"/>
+		<result column="status" jdbcType="BIGINT" property="status"/>
+		<result column="reason" jdbcType="VARCHAR" property="reason"/>
+		<result column="remark" jdbcType="VARCHAR" property="remark"/>
+		<result column="create_date" jdbcType="DATE" property="createDate"/>
+		<result column="remarks" jdbcType="VARCHAR" property="remarks"/>
+		<result column="service_charge" jdbcType="BIGINT" property="serviceCharge"/>
+		<result column="timing" jdbcType="BIGINT" property="timing"/>
+		<result column="D0_WAIT_TOTAL_AMOUNT" jdbcType="BIGINT" property="d0WaitAmount"/>
+		<result column="D0_USABLE_TOTAL_AMOUNT" jdbcType="BIGINT" property="d0UsableAmount"/>
+		<result column="D0_DISABLED_TOTAL_AMOUNT" jdbcType="BIGINT" property="d0DisabledAmount"/>
+		<result column="TS_TOTAL_AMOUNT" jdbcType="BIGINT" property="tsTraTotalAmount"/>
+	</resultMap>
+
+	<sql id="vcOnlineWalletColumns">
+		a.id AS "id",
+		a.merch_id AS "merchId",
+		a.merch_no AS "merchNo",
+		IFNULL(a.tra_total_amount,0) AS "traTotalAmount",
+		IFNULL(a.cashd_total_amount,0) AS "cashdTotalAmount",
+		IFNULL(a.last_cash_amount,0) AS "lastCashAmount",
+		IFNULL(a.min_cash_amount,0) AS "minCashAmount",
+		IFNULL(a.max_cash_amount,0) AS "maxCashAmount",
+		IFNULL(a.wait_total_amount,0) AS "waitTotalAmount",
+		IFNULL(a.usable_total_amount,0) AS "usableTotalAmount",
+		IFNULL(a.disabled_total_amount,0) AS "disabledTotalAmount",
+		IFNULL(a.D0_DISABLED_TOTAL_AMOUNT,0) AS "d0DisabledAmount",
+		IFNULL(a.D0_WAIT_TOTAL_AMOUNT,0) AS "d0WaitAmount",
+		IFNULL(a.D0_USABLE_TOTAL_AMOUNT,0) AS "d0UsableAmount",
+		IFNULL(a.service_charge,0) AS "serviceCharge",
+		a.status AS "status",
+		a.reason AS "reason",
+		a.remark AS "remark",
+		a.create_date AS "createDate",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks"
+	</sql>
+    
+    <!--获取商户信息根据商户号 -->
+	<select id="findBymerchNo" resultType="VcOnlineWallet">
+		SELECT 
+			<include refid="vcOnlineWalletColumns"/>
+		FROM vc_online_wallet a
+		WHERE a.merch_no = #{merchNo} and del_flag = 0 
+	</select>
+	
+	<!--获取商户信息根据商户ID -->
+	<select id="findByMerchId" resultType="VcOnlineWallet">
+		SELECT 
+			<include refid="vcOnlineWalletColumns"/>
+		FROM vc_online_wallet a
+		WHERE  a.merch_id = #{merchId} and del_flag = 0 
+	</select>
+ 	
+	<!--D1交易成功更新  -->
+	<update id="updateD1SuccessOrder">
+		UPDATE vc_online_wallet SET 
+			tra_total_amount = IFNULL(tra_total_amount,0) + #{traTotalAmount},
+			<if test="waitTotalAmount != null and waitTotalAmount !='' ">
+				WAIT_TOTAL_AMOUNT = IFNULL(WAIT_TOTAL_AMOUNT,0) + #{waitTotalAmount},
+			</if>
+			<if test="usableTotalAmount != null and usableTotalAmount !='' ">
+				USABLE_TOTAL_AMOUNT = IFNULL(USABLE_TOTAL_AMOUNT,0) + #{usableTotalAmount},
+			</if>
+			update_date = sysdate()
+		WHERE merch_id = #{merchId} 
+	</update>
+	
+	<!--D0交易成功更新  -->
+	<update id="updateD0SuccessOrder">
+		UPDATE vc_online_wallet SET 
+			tra_total_amount = IFNULL(tra_total_amount,0) + #{traTotalAmount},
+			<if test="d0WaitAmount != null and d0WaitAmount !='' ">
+				D0_WAIT_TOTAL_AMOUNT = IFNULL(D0_WAIT_TOTAL_AMOUNT,0) + #{d0WaitAmount},
+			</if>
+			<if test="d0UsableAmount != null and d0UsableAmount !='' ">
+				D0_USABLE_TOTAL_AMOUNT = IFNULL(D0_USABLE_TOTAL_AMOUNT,0) + #{d0UsableAmount},
+			</if>
+			update_date = sysdate()
+		WHERE merch_id = #{merchId} 
+	</update>
+	
+	<!--更新直清财富-->
+	<update id="updatStraightSuccessOrder">
+		UPDATE vc_online_wallet SET TS_TOTAL_AMOUNT = IFNULL(TS_TOTAL_AMOUNT,0) + #{tsTraTotalAmount},update_date = sysdate()
+		WHERE merch_id = #{merchId} 
+	</update>
+	
+	
+	<!--D1代付中财富计算更新  -->
+	<update id="updateD1WalletCashStart">
+		UPDATE vc_online_wallet SET 
+		    last_cash_amount = #{lastCashAmount},
+			cashd_total_amount = IFNULL(cashd_total_amount,0) + #{lastCashAmount},
+			USABLE_TOTAL_AMOUNT = USABLE_TOTAL_AMOUNT - #{lastCashAmount} - #{serviceCharge},
+			DISABLED_TOTAL_AMOUNT = IFNULL(DISABLED_TOTAL_AMOUNT,0) + #{lastCashAmount} + #{serviceCharge},
+			update_date = sysdate()
+		WHERE merch_id = #{merchId} and (USABLE_TOTAL_AMOUNT - #{lastCashAmount}- #{serviceCharge})>=0
+	</update>
+	
+	<!--D0代付中财富计算更新  -->
+	<update id="updateD0WalletCashStart">
+		UPDATE vc_online_wallet SET 
+		    last_cash_amount = #{lastCashAmount},
+			cashd_total_amount = IFNULL(cashd_total_amount,0) + #{lastCashAmount},
+			D0_USABLE_TOTAL_AMOUNT = IFNULL(D0_USABLE_TOTAL_AMOUNT,0) - #{lastCashAmount} - #{serviceCharge},
+			D0_DISABLED_TOTAL_AMOUNT = IFNULL(D0_DISABLED_TOTAL_AMOUNT,0) + #{lastCashAmount}+#{serviceCharge},
+			update_date = sysdate()
+		WHERE merch_id = #{merchId} and (D0_USABLE_TOTAL_AMOUNT - #{lastCashAmount} - #{serviceCharge})>=0
+	</update>
+	
+	<!--D0代付失败财富回滚计算更新  -->
+	<update id="updateD0WalletCashRollback">
+		UPDATE vc_online_wallet SET 
+			cashd_total_amount = cashd_total_amount - #{lastCashAmount},
+			D0_USABLE_TOTAL_AMOUNT = IFNULL(D0_USABLE_TOTAL_AMOUNT,0) + #{lastCashAmount} + #{serviceCharge},
+			D0_DISABLED_TOTAL_AMOUNT = D0_DISABLED_TOTAL_AMOUNT - #{lastCashAmount} - #{serviceCharge},
+			update_date = sysdate() 
+		WHERE merch_id = #{merchId} 
+	</update>
+	
+	<!--D1代付失败财富回滚计算更新  -->
+	<update id="updateD1WalletCashRollback">
+		UPDATE vc_online_wallet SET 
+			cashd_total_amount = cashd_total_amount - #{lastCashAmount},
+			USABLE_TOTAL_AMOUNT = IFNULL(USABLE_TOTAL_AMOUNT,0) + #{lastCashAmount}+ #{serviceCharge},
+			DISABLED_TOTAL_AMOUNT = DISABLED_TOTAL_AMOUNT - #{lastCashAmount} - #{serviceCharge},
+			update_date = sysdate() 
+		WHERE merch_id = #{merchId} 
+	</update>
+	
+	<!--D0代付成功财富完成计算更新  -->
+	<update id="updateD0WalletCashDone">
+		UPDATE vc_online_wallet SET 
+			D0_DISABLED_TOTAL_AMOUNT = D0_DISABLED_TOTAL_AMOUNT - #{lastCashAmount},update_date = sysdate()
+		WHERE merch_id = #{merchId}
+	</update>
+	
+	<!--D1代付成功财富完成计算更新  -->
+	<update id="updateD1WalletCashDone">
+		UPDATE vc_online_wallet SET 
+			DISABLED_TOTAL_AMOUNT = DISABLED_TOTAL_AMOUNT - #{lastCashAmount},update_date = sysdate()
+		WHERE merch_id = #{merchId}
+	</update>
+	
+</mapper>

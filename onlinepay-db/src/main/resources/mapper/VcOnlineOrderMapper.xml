@@ -1,0 +1,569 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vc.onlinepay.persistent.mapper.online.VcOnlineOrderMapper">
+
+	<resultMap id="VcOnlineOrderResultMap" type="com.vc.onlinepay.persistent.entity.online.VcOnlineOrder">
+		<id column="id" jdbcType="BIGINT" property="id" />
+		<result column="merch_id" jdbcType="BIGINT" property="merchId" />
+		<result column="merch_no" jdbcType="VARCHAR" property="merchNo" />
+		<result column="merch_name" jdbcType="VARCHAR" property="merchName" />
+		<result column="order_no" jdbcType="VARCHAR" property="orderNo" />
+		<result column="tra_amount" jdbcType="BIGINT" property="traAmount" />
+		<result column="actual_amount" jdbcType="BIGINT" property="actualAmount" />
+		<result column="pay_code" jdbcType="VARCHAR" property="payCode" />
+		<result column="bank_no" jdbcType="VARCHAR" property="bankNo" />
+		<result column="tra_type" jdbcType="BIGINT" property="traType" />
+		<result column="pay_type" jdbcType="BIGINT" property="payType" />
+		<result column="pay_source" jdbcType="BIGINT" property="paySource" />
+		<result column="pay_mode" jdbcType="BIGINT" property="payMode" />
+		<result column="pay_key" jdbcType="VARCHAR" property="payKey" />
+		<result column="settle_poundage" jdbcType="BIGINT" property="settlePoundage" />
+		<result column="tra_rate" jdbcType="BIGINT" property="traRate" />
+		<result column="settle_date" jdbcType="DATE" property="settleDate" />
+		<result column="settle_status" jdbcType="BIGINT" property="settleStatus" />
+		<result column="status" jdbcType="BIGINT" property="status" />
+		<result column="remark" jdbcType="VARCHAR" property="remark" />
+		<result column="pay_date" jdbcType="DATE" property="payDate" />
+		<result column="c_order" jdbcType="VARCHAR" property="cOrder" />
+		<result column="c_product_des" jdbcType="VARCHAR" property="cProductDes" />
+		<result column="c_request_id" jdbcType="VARCHAR" property="cRequestId" />
+		<result column="c_notify_url" jdbcType="VARCHAR" property="cNotifyUrl" />
+		<result column="c_sign" jdbcType="VARCHAR" property="cSign" />
+		<result column="p_order" jdbcType="VARCHAR" property="pOrder" />
+		<result column="p_sign" jdbcType="VARCHAR" property="pSign" />
+		<result column="p_rescode" jdbcType="VARCHAR" property="pRescode" />
+		<result column="p_all_res" jdbcType="VARCHAR" property="pAllRes" />
+		<result column="order_des" jdbcType="VARCHAR" property="orderDes" />
+		<result column="create_by" jdbcType="VARCHAR" property="createBy.id" />
+		<result column="create_date" jdbcType="DATE" property="createDate" />
+		<result column="update_by" jdbcType="VARCHAR" property="updateBy.id" />
+		<result column="update_date" jdbcType="DATE" property="updateDate" />
+		<result column="remarks" jdbcType="VARCHAR" property="remarks" />
+		<result column="del_flag" jdbcType="BIGINT" property="delFlag" />
+		<result column="smstrxid" property="smstrxid" jdbcType="VARCHAR" />
+		<result column="isAccounted" jdbcType="BIGINT" property="isAccounted" />
+		<result column="channel_id" jdbcType="BIGINT" property="channelId" />
+	   <result column="C_NOTIFY_RESULT" jdbcType="VARCHAR" property="cNotifyResult" />
+	   <result column="C_NOTIFY_NUM" jdbcType="BIGINT" property="cNotifyNum" />
+	   
+	   <result column="up_merch_no" jdbcType="VARCHAR" property="upMerchNo" />
+	   <result column="up_merch_key" jdbcType="VARCHAR" property="upMerchKey" />
+	</resultMap>
+
+	<sql id="vcOnlineOrderColumns">
+		a.id AS "id",
+		a.merch_id AS "merchId",
+		a.merch_no AS "merchNo",
+		a.merch_name AS "merchName",
+		a.order_no AS "orderNo",
+		a.tra_amount AS "traAmount",
+		a.actual_amount AS "actualAmount",
+		a.pay_code AS "payCode",
+		a.bank_no AS "bankNo",
+		a.tra_type AS "traType",
+		a.pay_type AS "payType",
+		a.pay_source AS "paySource",
+		a.pay_mode AS "payMode",
+		a.pay_key AS "payKey",
+		a.settle_poundage AS "settlePoundage",
+		a.tra_rate AS "traRate",
+		a.settle_date AS "settleDate",
+		a.settle_status AS "settleStatus",
+		a.status AS "status",
+		a.remark AS "remark",
+		a.pay_date AS "payDate",
+		a.c_order AS "cOrder",
+		a.c_product_des AS "cProductDes",
+		a.c_request_id AS "cRequestId",
+		a.c_notify_url AS "cNotifyUrl",
+		a.c_sign AS "cSign",
+		a.p_order AS "pOrder",
+		a.p_sign AS "pSign",
+		a.p_rescode AS "pRescode",
+		a.order_des AS "orderDes",
+		a.create_date AS "createDate",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag",
+		a.smstrxid,
+		a.isAccounted,
+		a.p_all_res as pAllRes,
+		a.channel_id AS "channelId",
+		a.WAIT_AMOUNT as waitAmount ,
+		a.up_merch_no as upMerchNo,
+		a.up_merch_key as upMerchKey
+	</sql>
+
+	<!-- 根据客户订单编号查询在线交易订单 -->
+	<select id="findOrderByCOrderNo" resultType="VcOnlineOrder">
+		SELECT
+		<include refid="vcOnlineOrderColumns" />
+		FROM 
+			vc_online_order a
+		WHERE 
+			a.c_order =  #{cOrder} and a.del_flag = 0
+		order by id desc
+	</select>
+	
+	<!-- 根据自己订单编号查询在线交易订单 -->
+	<select id="findOrderByOrderNo" resultType="VcOnlineOrder">
+		SELECT
+		<include refid="vcOnlineOrderColumns" />
+		FROM 
+			vc_online_order a
+		WHERE 
+			a.order_no = #{orderNo} and a.del_flag = 0
+	</select>
+
+	<!-- 根据自己订单编号查询在线交易订单 -->
+	<select id="findNoPrifitOrderList" resultType="VcOnlineOrder">
+		SELECT
+			<include refid="vcOnlineOrderColumns" />
+		FROM  vc_online_order a
+		WHERE   del_flag = 0 AND STATUS=4
+			AND a.P_RESCODE IN ('0','3') AND pay_source IN (65,81)
+			AND a.pay_date BETWEEN DATE_ADD(SYSDATE(), INTERVAL - 1320 SECOND) AND  DATE_ADD(SYSDATE(), INTERVAL - 120 SECOND)
+	</select>
+
+	<!-- 根据订单号修改 -->
+	<update id="updateUpMerchNoOrderNo" parameterType="VcOnlineOrder">
+		UPDATE vc_online_order SET
+		<if test="upMerchNo != null">
+			up_merch_no = #{upMerchNo},
+		</if>
+		<if test="upMerchKey != null">
+			up_merch_key = #{upMerchKey},
+		</if>
+		<if test="orderDes != null">
+			order_des = #{orderDes},
+		</if>
+		<if test="pOrder != null">
+			p_order = #{pOrder},
+		</if>
+		update_date = sysdate(),
+		pay_date = sysdate()
+		WHERE
+		order_no = #{orderNo}
+	</update>
+
+	<!-- 根据自己订单编号查询在线交易订单 -->
+	<select id="findOrderBySmstrxId" resultType="VcOnlineOrder">
+		SELECT
+		<include refid="vcOnlineOrderColumns" />
+		FROM
+		vc_online_order a
+		WHERE
+		a.del_flag = 0
+		<if test="smstrxid!='' and smstrxid != null">
+			and a.SMSTRXID LIKE CONCAT('',#{smstrxid},'%')
+		</if>
+		<if test="orderNo!='' and orderNo != null">
+			AND a.order_no = #{orderNo}
+		</if>
+		<if test="upMerchNo!='' and upMerchNo != null">
+			and a.up_merch_no = #{upMerchNo}
+		</if>
+		<if test="pOrder!='' and pOrder != null">
+			and a.p_order = #{pOrder}
+		</if>
+		<if test="traAmount!='' and traAmount != null">
+			and a.tra_amount BETWEEN #{traAmount} - 1 and #{traAmount} + 1
+		</if>
+	</select>
+
+	<!--根据支付金额匹配订单-->
+	<select id="findOrderByUniqueAmount" resultType="VcOnlineOrder">
+		SELECT
+			<include refid="vcOnlineOrderColumns" />
+		FROM vc_online_order a
+		WHERE a.del_flag = 0
+			AND a.pay_code =#{traAmount}
+			AND a.up_merch_no = #{upMerchNo}
+			AND a.status = 1
+			AND a.p_order != #{pOrder}
+			AND a.create_date BETWEEN #{beginCreateDate} AND #{endCreateDate}
+	</select>
+
+	<update id="updateUpInfoByOrderNo" parameterType="VcOnlineOrder">
+		update vc_online_order SET
+		up_merch_no = #{upMerchNo},
+		up_merch_key = #{upMerchKey},
+		<if test="channelId != null">
+			channel_id = #{channelId},
+		</if>
+		<if test="orderDes != null">
+			order_des = #{orderDes},
+		</if>
+		<if test="status != null">
+			status = #{status},
+		</if>
+		<if test="bankNo != null">
+			bank_no = #{bankNo},
+		</if>
+		<if test="paySource != null">
+			PAY_SOURCE = #{paySource},
+		</if>
+		update_date = sysdate()
+		where order_no = #{orderNo} AND status <![CDATA[ <> ]]> 4
+	</update>
+
+	<!--更新订单信息-->
+	<update id="updateDesByOrderNo" parameterType="VcOnlineOrder">
+		UPDATE vc_online_order SET
+		<if test="orderDes != null">
+			order_des = #{orderDes},
+		</if>
+		update_date = sysdate()
+		WHERE
+		order_no = #{orderNo}
+	</update>
+	
+	<!--查询待更新订单(下单成功)-->
+	<select id="findPaddingOrder" resultType="VcOnlineOrder">
+		SELECT
+			a.id AS "id",
+			a.merch_id AS "merchId",
+			a.merch_no AS "merchNo",
+			a.merch_name AS "merchName",
+			a.order_no AS "orderNo",
+			a.tra_amount AS "traAmount",
+			a.actual_amount AS "actualAmount",
+			a.pay_code AS "payCode",
+			a.pay_type AS "payType",
+			a.pay_source AS "paySource",
+			a.pay_mode AS "payMode",
+			a.pay_key AS "payKey",
+			a.status AS "status",
+			a.c_order AS "cOrder",
+			a.c_notify_url AS "cNotifyUrl",
+			a.c_sign AS "cSign",
+			a.p_order AS "pOrder",
+			a.p_sign AS "pSign",
+			a.p_rescode AS "pRescode",
+			a.order_des AS "orderDes",
+			a.create_date AS "createDate",
+			a.remarks AS "remarks",
+			a.channel_id AS "channelId",
+			a.up_merch_no as upMerchNo,
+			a.up_merch_key as upMerchKey
+		FROM vc_online_order a
+		WHERE a.del_flag = 0 AND a.status =1
+			<if test="orderNo!='' and orderNo != null">
+				AND a.order_no = #{orderNo}
+			</if>
+			<if test="channelList != null">
+				AND a.pay_source IN
+				<foreach item="item" index="index" collection="channelList" open="(" separator="," close=")">#{item}</foreach>
+			</if>
+			<if test="beginCreateDate != null and endCreateDate !=null">
+				AND a.create_date BETWEEN #{beginCreateDate} AND #{endCreateDate}
+			</if>
+	</select>
+
+	<!-- 根据订单号修改 -->
+	<update id="updateByOrderNo" parameterType="VcOnlineOrder">
+		UPDATE vc_online_order SET 
+		<if test="status != null">
+			status = #{status},
+		</if>
+		<if test="remark != null">
+			remark = #{remark},
+		</if>
+		<if test="cProductDes != null">
+			c_product_des = #{cProductDes},
+		</if>
+		<if test="cRequestId != null">
+			c_request_id = #{cRequestId},
+		</if>
+		<if test="pOrder != null">
+			p_order = #{pOrder},
+		</if>
+		<if test="pSign != null">
+			p_sign = #{pSign},
+		</if>
+		<if test="pRescode != null">
+			p_rescode = #{pRescode},
+		</if>
+		<if test="pAllRes != null">
+			p_all_res = #{pAllRes},
+		</if>
+		<if test="orderDes != null">
+			order_des = #{orderDes},
+		</if>
+		<if test="remarks != null">
+			remarks = #{remarks},
+		</if>
+		<if test="settleStatus != null">
+			settle_status = #{settleStatus},
+		</if>
+		<if test="orderDes != null">
+			order_des = #{orderDes},
+		</if>
+		<if test="payCode != null">
+			ACTUAL_AMOUNT = CASE WHEN PAY_SOURCE = 226 THEN #{payCode}-#{payCode}*(TRA_RATE/100) ELSE ACTUAL_AMOUNT END,
+		</if>
+		<if test="payCode != null">
+        	pay_code = #{payCode},
+		</if>
+        update_date = sysdate(),
+        pay_date = sysdate() 
+		WHERE
+		order_no = #{orderNo} and status <![CDATA[ <> ]]> 4
+	</update>
+    
+    <!-- 保存订单 -->
+    <insert id="save">
+		INSERT INTO vc_online_order(
+			merch_id,
+			merch_no,
+			merch_name,
+			order_no,
+			tra_amount,
+			actual_amount,
+			pay_code,
+			bank_no,
+			tra_type,
+			pay_type,
+			pay_source,
+			pay_mode,
+			pay_key,
+			settle_poundage,
+			tra_rate,
+			settle_date,
+			settle_status,
+			status,
+			remark,
+			pay_date,
+			c_order,
+			c_product_des,
+			c_request_id,
+			c_notify_url,
+			c_sign,
+			p_order,
+			p_sign,
+			p_rescode,
+			order_des,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag,
+			CURRENCY,
+			smstrxid,
+			isAccounted,
+			channel_id,
+			WAIT_AMOUNT,
+			up_merch_no,
+			up_merch_key
+		) VALUES (
+			#{merchId},
+			#{merchNo},
+			#{merchName},
+			#{orderNo},
+			#{traAmount},
+			#{actualAmount},
+			#{payCode},
+			#{bankNo},
+			#{traType},
+			#{payType},
+			#{paySource},
+			#{payMode},
+			#{payKey},
+			#{settlePoundage},
+			#{traRate},
+			sysdate(),
+			#{settleStatus},
+			#{status},
+			#{remark},
+			sysdate(),
+			#{cOrder},
+			#{cProductDes},
+			#{cRequestId},
+			#{cNotifyUrl},
+			#{cSign},
+			'',
+			#{pSign},
+			#{pRescode},
+			#{orderDes},
+			'admin',
+			sysdate(),
+			'admin',
+			sysdate(),
+			#{remarks},
+			0,
+			#{currency},
+			#{smstrxid},
+			#{isAccounted},
+			#{channelId},
+			#{waitAmount},
+			#{upMerchNo},
+			#{upMerchKey}
+		)
+	</insert>
+	
+	<!--修改订单通知信息 -->
+    <update id="updateOrderNotify" parameterType="VcOnlineOrder">
+        UPDATE vc_online_order  SET
+	        <if test="cNotifyResult != null and cNotifyResult !='' ">
+	            C_NOTIFY_RESULT = #{cNotifyResult},
+	        </if>
+	        C_NOTIFY_NUM = IFNULL(C_NOTIFY_NUM,0) +1,update_date = sysdate()
+        WHERE  order_no = #{orderNo} 
+    </update>
+    
+     <!--修改订单结算状态-->
+	<update id="updateOrderSettleStatus" parameterType="VcOnlineOrder">
+		UPDATE vc_online_order SET 
+		<if test="settleStatus != null">
+			settle_status = #{settleStatus},
+		</if>
+		<if test="orderDes != null">
+			order_des = #{orderDes},
+		</if>
+		<if test="payCode != null">
+        pay_code = #{payCode},
+		</if>
+		<if test="smstrxid != null">
+			SMSTRXID = #{smstrxid},
+		</if>
+    update_date = sysdate()
+		WHERE
+		order_no = #{orderNo}
+	</update>
+
+	<!--修改订单结算分润状态-->
+	<update id="updateProfitStatus" parameterType="VcOnlineOrder">
+		UPDATE
+			vc_online_order SET
+			p_rescode = #{pRescode},
+		  <if test="payCode != null">
+			  pay_code = #{payCode},
+		  </if>
+			<if test="smstrxid != null">
+				SMSTRXID = #{smstrxid},
+			</if>
+			update_date = sysdate()
+		WHERE
+		order_no = #{orderNo}
+	</update>
+	
+	<!--修改订单描述-->
+	<update id="updateOrderDes" parameterType="VcOnlineOrder">
+		UPDATE vc_online_order SET
+		<if test="payType != null ">
+			pay_type = #{payType},
+		</if>
+		<if test="orderDes != null">
+			order_des = #{orderDes},
+		</if>
+		    update_date = sysdate()
+		WHERE
+		 order_no = #{orderNo}
+	</update>
+	
+    <!--修改订单状态-->
+	<update id="updateOrderStatus" parameterType="VcOnlineOrder">
+		UPDATE vc_online_order SET 
+		<if test="status != null">
+			status = #{status},
+		</if>
+		<if test="orderDes != null">
+			order_des = #{orderDes},
+		</if>
+		<if test="pOrder != null">
+			p_order = #{pOrder},
+		</if>
+		<if test="payCode != null">
+			ACTUAL_AMOUNT = 
+			CASE 
+			 WHEN PAY_SOURCE = 226 THEN
+			 #{payCode}-#{payCode}*(TRA_RATE/100)
+			 ELSE ACTUAL_AMOUNT
+			END,
+		</if>
+		<if test="payCode != null">
+			pay_code = #{payCode},
+		</if>
+        update_date = sysdate()
+		WHERE
+		order_no = #{orderNo}
+	</update>
+
+	<update id="updateOrderTraAmount" parameterType="VcOnlineOrder">
+		UPDATE vc_online_order SET
+			tra_amount = #{traAmount},
+			actual_amount = #{traAmount}*((100-tra_rate)/100),
+			update_date = sysdate()
+		WHERE
+			order_no = #{orderNo}
+	</update>
+    
+	<!--验证商户上送订单是否已经存在-->
+	<select id="verifyMerchOrderExist" resultType="VcOnlineOrder">
+		SELECT a.id FROM vc_online_order a WHERE a.c_order = #{cOrder}
+	</select>
+
+	<!--验证上游订单是否已经存在-->
+	<select id="verifyPOrderExist" resultType="VcOnlineOrder">
+		SELECT a.id
+		FROM  vc_online_order a
+		WHERE   a.p_order = #{pOrder}
+			AND a.up_merch_no = #{upMerchNo}
+			AND a.status = 4
+			AND a.tra_amount BETWEEN #{traAmount} - 1 and #{traAmount} + 1
+	</select>
+	
+	<!-- 查询今日总额 -->
+	<select id="totalTodayTrad" resultType="VcOnlineOrder">
+	SELECT 
+		SUM(IFNULL(sumTraAmount,0)) AS sumTraAmount,
+		SUM(IFNULL(sumTraNum,0)) AS sumTraNum,
+		SUM(IFNULL(sumCashAmount,0)) AS sumCashAmount,
+		SUM(IFNULL(sumCashNum,0)) AS sumCashNum,
+		SUM(IFNULL(sumProfitAmount,0)) AS sumProfitAmount
+	FROM (
+		SELECT SUM(tra_amount) AS sumTraAmount,SUM(tra_amount)-SUM(actual_amount) AS sumProfitAmount,COUNT(1) AS sumTraNum,0 AS sumCashAmount,0 AS sumCashNum FROM vc_online_order WHERE STATUS=4 AND pay_date>=CURRENT_DATE() 
+		UNION ALL
+		SELECT 0 AS sumTraAmount,0 AS sumTraNum,SUM(poundage_rate) AS sumProfitAmount,SUM(cash_amount),COUNT(1) AS sumCashAmount FROM vc_online_payment WHERE STATUS=1 AND create_date>=CURRENT_DATE() 
+	) a
+	</select>
+	<!-- 保存重复订单 -->
+	<insert id="saveCopyOrder" parameterType="VcOnlineOrder">
+		INSERT INTO VC_ONLINE_ORDER_REPAY(
+			merch_id,
+			merch_no,
+			order_no,
+			tra_amount,
+			pay_type,
+			pay_source,
+			remark,
+			type,
+			c_order,
+			p_order,
+			P_MERCH,
+			remarks
+		) VALUES (
+			#{merchId},
+			#{merchNo},
+			#{orderNo},
+			#{traAmount},
+			#{payType},
+			#{paySource},
+			#{remarks},
+			#{traType},
+			#{cOrder},
+			#{pOrder},
+			#{upMerchNo},
+			#{orderDes}
+		)
+	</insert>
+
+    <!--验证异常上游订单是否已经存在-->
+    <select id="verifyRePayPOrderExist" resultType="VcOnlineOrder">
+		SELECT a.id
+		FROM  VC_ONLINE_ORDER_REPAY a
+		WHERE   a.p_order = #{pOrder}
+	</select>
+
+</mapper>

@@ -1,0 +1,376 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vc.onlinepay.persistent.mapper.online.VcOnlineOrderAaMapper">
+
+
+  <sql id="vcOnlineOrderAaColumns">
+		a.id AS "id",
+		a.up_merch_no AS "upMerchNo",
+		a.tradeno AS "tradeno",
+		a.zh_order AS "zhOrder",
+		a.total_amount AS "totalAmount",
+		a.show_times_total AS "showTimesTotal",
+		a.amount AS "amount",
+		a.token AS "token",
+		a.order_no AS "orderNo",
+		a.userid AS "userid",
+		a.aa_order_no AS "aaOrderNo",
+		a.status AS "status",
+		a.remark AS "remark",
+		a.remarks AS "remarks",
+		a.type as "type",
+		a.del_flag AS "delFlag",
+		a.create_date AS "createDate",
+		a.update_date AS "updateDate"
+	</sql>
+
+  <!--根据金额查询所有正常使用的交易NO-->
+  <select id="findAllOkTradNos" resultType="String">
+ 	SELECT
+      a.tradeno  AS  "tradeno"
+    FROM
+      vc_online_order_aa a
+   INNER JOIN vc_a1_supplier_subno b ON a.`up_merch_no` = b.`UP_MERCH_NO` AND b.`STATUS`=1 AND b.`DEL_FLAG`=0
+    WHERE
+      a.TYPE=2 AND a.DEL_FLAG=0 AND a.STATUS IN (2,3) AND a.AMOUNT=#{amount} AND b.`TYPE`=3
+      GROUP BY tradeno
+      ORDER BY COUNT(1) DESC
+  </select>
+
+	<!--获取一条AA链接-->
+	<select id="findOneOkAATradNo"  resultType="VcOnlineOrderAa">
+ 	SELECT
+		<include refid="vcOnlineOrderAaColumns"/>
+    FROM
+      vc_online_order_aa a
+   INNER JOIN vc_a1_supplier_subno b ON a.token = b.`UP_MERCH_NO` AND b.`STATUS`=1 AND b.`DEL_FLAG`=0
+    WHERE
+      a.TYPE=2 AND a.DEL_FLAG=0 AND a.STATUS IN (2,3) AND a.AMOUNT=#{amount} AND b.`TYPE`=3
+	ORDER BY id ASC LIMIT 1
+  </select>
+
+  <!--根据tradNo查询账号信息-->
+  <select id="findAAByTradNo" resultType="VcOnlineOrderAa">
+    SELECT
+    <include refid="vcOnlineOrderAaColumns"/>
+    FROM vc_online_order_aa a
+    where
+    a.del_flag = 0 and type =2 AND a.status in (2,3)
+    <if test="tradeno!='' and tradeno != null">
+      AND a.tradeno = #{tradeno}
+    </if>
+    ORDER BY id ASC LIMIT 1
+  </select>
+
+	<select id="findAAByZhOrder" resultType="VcOnlineOrderAa">
+		SELECT
+		<include refid="vcOnlineOrderAaColumns"/>
+		FROM vc_online_order_aa a
+		where
+		a.del_flag = 0 and a.type =1 AND a.status = 4 and a.zh_order = #{zhOrder} and a.userid = #{userid}
+		ORDER BY id ASC LIMIT 1
+	</select>
+
+	<!--根据USERI获取账号信息-->
+	<select id="findByUserId" resultType="VcOnlineOrderAa">
+		SELECT
+		<include refid="vcOnlineOrderAaColumns"/>
+		FROM vc_online_order_aa a
+		where
+		a.del_flag = 0 and type =2
+		<if test="userid!='' and userid != null and userid!='0' and userid!=0">
+			AND a.userid = #{userid}
+		</if>
+		<if test="tradeno!='' and tradeno != null">
+			AND a.tradeno = #{tradeno}
+		</if>
+		<if test="upMerchNo!='' and upMerchNo != null">
+			AND a.up_merch_no = #{upMerchNo}
+		</if>
+		<if test="status!='' and status != null and status!=0">
+			AND a.status = #{status}
+		</if>
+		order by status desc,id asc LIMIT 5
+	</select>
+
+	<!--获取一个除当前userID之外的信息-->
+	<select id="findOtherUserId" resultType="VcOnlineOrderAa">
+		SELECT
+		<include refid="vcOnlineOrderAaColumns"/>
+		FROM vc_online_order_aa a
+		INNER JOIN vc_a1_supplier_subno b ON a.`up_merch_no` = b.`UP_MERCH_NO` AND b.`STATUS`=1 AND b.`DEL_FLAG`=0
+		where
+		a.del_flag = 0 AND a.type =2 AND a.status IN (2,3) AND a.amount = #{amount} AND b.`TYPE`=3
+		AND a.userid = #{userid} AND IFNULL(a.tradeno,'') != #{tradeno} order by a.status desc,a.id asc 	LIMIT 1
+	</select>
+
+	<!--根据USRID回调-->
+	<select id="findCallList" resultType="VcOnlineOrderAa">
+		SELECT
+		<include refid="vcOnlineOrderAaColumns"/>
+		FROM vc_online_order_aa a
+		where
+		a.del_flag = 0 and type =2 AND status IN (1,2,3)
+		<if test="upMerchNo!='' and upMerchNo != null">
+			AND a.up_merch_no = #{upMerchNo}
+		</if>
+		<if test="tradeno!='' and tradeno != null">
+			AND a.tradeno = #{tradeno}
+		</if>
+		<if test="userid!='' and userid != null and userid!='0' and userid!=0">
+			AND a.userid = #{userid}
+		</if>
+		<if test="status!='' and status != null and status!=0">
+			AND a.status = #{status}
+		</if>
+		 LIMIT 5
+	</select>
+
+	<!--根据USRID回调-->
+	<select id="findCallByUserIds" resultType="VcOnlineOrderAa">
+		SELECT
+		<include refid="vcOnlineOrderAaColumns"/>
+		FROM vc_online_order_aa a
+		where
+		a.del_flag = 0 and type =2 AND status=1 AND a.tradeno = #{tradeno} AND a.amount = #{amount}
+		<if test="userIds != null">
+			AND a.userid  IN
+			<foreach item="item" index="index" collection="userIds" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+	</select>
+
+	<select id="findAllList" resultType="VcOnlineOrderAa">
+		SELECT
+		<include refid="vcOnlineOrderAaColumns"/>
+		FROM vc_online_order_aa a
+		where
+		a.del_flag = 0 and type =2 and status in (2,3)
+		<if test="upMerchNo!='' and upMerchNo != null">
+			AND a.up_merch_no = #{upMerchNo}
+		</if>
+		<if test="userid!='' and userid != null and userid!='0' and userid!=0">
+			AND a.userid = #{userid}
+		</if>
+		<if test="amount!='' and amount != null">
+			AND a.amount = #{amount}
+		</if>
+		ORDER BY id ASC LIMIT 5
+	</select>
+
+	<insert id="insertOne">
+		INSERT IGNORE INTO vc_online_order_aa(
+		up_merch_no,
+		tradeno,
+		zh_order,
+		total_amount,
+		show_times_total,
+		amount,
+		token,
+		order_no,
+		userid,
+		aa_order_no,
+		status,
+		remark,
+		remarks,
+		del_flag,
+		create_date,
+		update_date,
+		type
+		)
+		VALUES (
+			#{upMerchNo},
+			#{tradeno},
+			#{zhOrder},
+			#{totalAmount},
+			#{showTimesTotal},
+			#{amount},
+			#{token},
+			#{orderNo},
+			#{userid},
+			#{aaOrderNo},
+			#{status},
+			#{remark},
+			#{remarks},
+			0,
+			sysdate(),
+			sysdate(),
+			#{type}
+			)
+	</insert>
+
+	<update id="updateToken">
+		UPDATE vc_online_order_aa SET
+		update_date = sysdate(),
+		token = #{upMerchNo}
+		WHERE zh_order = #{zhOrder}  and token=#{userid}
+	</update>
+
+  <insert id="insert">
+		INSERT INTO vc_online_order_aa(
+			up_merch_no,
+			tradeno,
+			zh_order,
+			total_amount,
+			show_times_total,
+			amount,
+			token,
+			order_no,
+			userid,
+			aa_order_no,
+			status,
+			remark,
+			remarks,
+			del_flag,
+			create_date,
+			update_date,
+			type
+		) VALUES (
+			#{upMerchNo},
+			#{tradeno},
+			#{zhOrder},
+			#{totalAmount},
+			#{showTimesTotal},
+			#{amount},
+			#{token},
+			#{orderNo},
+			#{userid},
+			#{aaOrderNo},
+			1,
+			#{remark},
+			#{remarks},
+			0,
+			sysdate(),
+			sysdate(),
+			#{type}
+		)
+	</insert>
+
+  <update id="updateStatus">
+    UPDATE vc_online_order_aa SET
+    update_date = sysdate(),
+    <if test="orderNo != null and orderNo !='' ">
+      order_no = #{orderNo},
+    </if>
+    <if test="userid != null and userid !='' ">
+      userid = #{userid},
+    </if>
+    status = 1
+    WHERE id = #{id}
+  </update>
+
+  <update id="updateUserId">
+		UPDATE vc_online_order_aa SET
+		  update_date = sysdate(),
+			userid = #{userid},
+			order_no = #{orderNo},
+			status = 1
+		WHERE  type=2 and status in (1,2,3) and DEL_FLAG=0 AND id = #{id}
+	</update>
+
+  <update id="updateOrderSuccess">
+    UPDATE vc_online_order_aa SET
+    update_date = sysdate(),
+    status = 4
+    WHERE aa_order_no = #{aaOrderNo}
+  </update>
+
+  <update id="update">
+		UPDATE vc_online_order_aa SET 	
+			up_merch_no = #{upMerchNo},
+			tradeno = #{tradeno},
+			zh_order = #{zhOrder},
+			total_amount = #{totalAmount},
+			show_times_total = #{showTimesTotal},
+			amount = #{amount},
+			token = #{token},
+			order_no = #{orderNo},
+			userid = #{userid},
+			aa_order_no = #{aaOrderNo},
+			status = #{status},
+			remark = #{remark},
+			remarks = #{remarks},
+			update_date = #{updateDate}
+		WHERE id = #{id}
+	</update>
+
+  	<update id="delete">
+		UPDATE vc_online_order_aa SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+
+	<!--根据修改信息-->
+	<update id="updateByZhOrder" parameterType="SupplierSubno">
+		UPDATE vc_online_order_aa a SET USER_ID = #{userId} WHERE zh_order=#{zhOrder} and type=1
+	</update>
+
+  <insert id="insertBatch">
+    <!--批量新增-->
+    INSERT INTO vc_online_order_aa(
+    up_merch_no,
+    tradeno,
+    zh_order,
+    total_amount,
+    show_times_total,
+    amount,
+    token,
+    order_no,
+    userid,
+    aa_order_no,
+    status,
+    remark,
+    remarks,
+    del_flag,
+    create_date,
+    update_date,
+    type
+    ) VALUES
+    <foreach collection="entityList" item="item" separator=",">
+      (
+      #{item.upMerchNo},
+      #{item.tradeno},
+      #{item.zhOrder},
+      #{item.totalAmount},
+      #{item.showTimesTotal},
+      #{item.amount},
+      #{item.token},
+      #{item.orderNo},
+      #{item.userid},
+      #{item.aaOrderNo},
+      #{item.status},
+      #{item.remark},
+      #{item.remarks},
+      0,
+      sysdate(),
+      sysdate(),
+      #{item.type}
+      )
+    </foreach>
+  </insert>
+
+	<!-- 查询重复订单 + 当日重复金额 -->
+	<select id="selectRepeat" parameterType="java.lang.Object" resultType="java.lang.Integer">
+		select sum(t.val) from
+		(
+		SELECT count(1) as val FROM vc_online_order_aa
+		WHERE  DATE_SUB(CURDATE(), INTERVAL 7 DAY) &lt;= Date(CREATE_DATE)
+		AND DEL_FLAG = 0
+		AND remark = #{reason}
+		) as t
+	</select>
+
+	<select id="selectOrderCount" parameterType="java.lang.Object" resultType="java.lang.Integer">
+		SELECT count(1) FROM
+		(
+		SELECT tradeNo FROM vc_online_order_aa
+		WHERE up_merch_no = #{upMerchNo}
+		AND DEL_FLAG = 0
+		AND DATE_FORMAT(CREATE_DATE,'%Y%m%d') = DATE_FORMAT(NOW(),'%Y%m%d')
+		GROUP BY tradeNo
+		) tt
+	</select>
+	
+
+</mapper>

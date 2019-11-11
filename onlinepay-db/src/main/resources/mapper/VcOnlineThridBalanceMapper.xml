@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vc.onlinepay.persistent.mapper.online.VcOnlineThirdBalanceMapper">
+    
+    <resultMap id="VcOnlineBalanceResultMap" type="com.vc.onlinepay.persistent.entity.online.VcOnlineThirdBalance">
+		<id column="id" jdbcType="BIGINT" property="id" />
+		<result column="merch_no" jdbcType="VARCHAR" property="merchNo"/>
+		<result column="MERCH_NAME" jdbcType="VARCHAR" property="merchName"/>
+		<result column="BALANCE_AMOUNT" jdbcType="BIGINT" property="balanceAmount"/>
+		<result column="P_ALL_RES" jdbcType="VARCHAR" property="pAllRes"/>
+		<result column="STATUS" jdbcType="BIGINT" property="status"/>
+		<result column="MERCH_KEY" jdbcType="VARCHAR" property="merchKey"/>
+		<result column="update_date" jdbcType="DATE" property="updateDate"/>
+		<result column="PAY_TOTAL" jdbcType="BIGINT" property="payTotal"/>
+		<result column="REDUCE_TOTAL" jdbcType="BIGINT" property="reduceTotal"/>
+		<result column="LAST_TIME" jdbcType="DATE" property="lastDate"/>
+		<result column="CASH_MODE" jdbcType="BIGINT" property="cashMode"/>
+		<result column="SEQ" jdbcType="BIGINT" property="seq"/>
+		<result column="BALANCE_LABEL" jdbcType="VARCHAR" property="balanceLabel"/>
+		<result column="isTransfer" jdbcType="BIGINT" property="isTransfer"/>
+		<result column="channel_source" jdbcType="BIGINT" property="channelSource"/>
+		<result column="channel_id" jdbcType="BIGINT" property="channelId"/>
+		<result column="EXTEND4" jdbcType="BIGINT" property="replacePoundage"/>
+	</resultMap>
+	
+	<!-- 保存订单 -->
+	<insert id="saveThirdBalance" parameterType="VcOnlineThirdBalance">
+		INSERT INTO vc_online_third_balance(
+			merch_no,
+			MERCH_NAME,
+			BALANCE_AMOUNT,
+			P_ALL_RES,
+			STATUS,
+            MERCH_KEY,
+            update_date,
+            PAY_TOTAL,
+            REDUCE_TOTAL,
+            LAST_TIME
+		) VALUES (
+			#{merchNo,jdbcType=VARCHAR},
+			#{merchName,jdbcType=VARCHAR},
+			#{balanceAmount,jdbcType=BIGINT},
+			#{pAllRes,jdbcType=VARCHAR},
+			#{status,jdbcType=BIGINT},
+			#{merchKey,jdbcType=VARCHAR},
+			sysdate(),
+			#{payTotal,jdbcType=BIGINT},
+			#{reduceTotal,jdbcType=BIGINT},
+			sysdate()
+		)
+	</insert>
+	
+	<!-- 查找所有代付通道（包括禁用和关闭） -->
+	<select id="findAllBalance" resultMap="VcOnlineBalanceResultMap">
+		SELECT 
+      		a.id,a.merch_no,a.MERCH_KEY,a.MERCH_NAME,a.BALANCE_AMOUNT,a.balance_label,a.istransfer,a.cash_mode,a.channel_source,a.channel_id,
+      		b.EXTEND4 
+		FROM 
+			Vc_Online_Third_Balance a 
+			left join vc_a1_channel b on a.channel_id = b.id and b.del_flag=0
+		WHERE 
+			a.type=1 and a.status=0 
+			<if test="cashMode != null and cashMode != '' and cashMode !=0 ">
+				and a.cash_mode = #{cashMode} 
+			</if>
+			<if test="balanceLabel != null and balanceLabel !='' ">
+				and a.BALANCE_LABEL = #{balanceLabel} 
+			</if>
+			<if test="merchNo != null and merchNo != '' ">
+				and a.merch_no = #{merchNo}
+			</if>
+		order by a.seq asc 
+	</select>
+	
+	<!-- 查找最优代付通道 -->
+	<select id="findLoadBalance" resultMap="VcOnlineBalanceResultMap">
+		SELECT 
+      		a.id,a.merch_no,a.MERCH_KEY,a.MERCH_NAME,a.BALANCE_AMOUNT,a.balance_label,a.istransfer,a.cash_mode,a.channel_source,a.channel_id,
+      		b.EXTEND4 
+		FROM 
+			Vc_Online_Third_Balance a 
+			left join vc_a1_channel b on a.channel_id = b.id and b.del_flag=0
+		WHERE 
+			a.STATUS=0 and a.type=1
+			<if test="isTransfer != null and isTransfer != '' and isTransfer !=0 ">
+				and a.istransfer = #{isTransfer}
+			</if>
+			<if test="cashMode != null and cashMode != '' and cashMode !=0 ">
+				and a.cash_mode = #{cashMode}
+			</if>
+			<if test="balanceLabel != null and balanceLabel !='' ">
+				and a.BALANCE_LABEL = #{balanceLabel} 
+			</if>
+			<if test="balanceAmount != null and balanceAmount !='' ">
+				and a.BALANCE_AMOUNT &gt;= #{balanceAmount} 
+			</if>
+		order by a.seq asc 
+	</select>
+	
+	<!-- 提现成功更新上游账户表 -->
+	<update id="cashSuccessUpdateBalance">
+		UPDATE Vc_Online_Third_Balance SET 
+			BALANCE_AMOUNT = BALANCE_AMOUNT-#{balanceAmount,jdbcType=BIGINT},
+			PAY_TOTAL = PAY_TOTAL + #{balanceAmount,jdbcType=BIGINT},
+			REDUCE_TOTAL = REDUCE_TOTAL + #{balanceAmount,jdbcType=BIGINT},
+			update_date = sysdate() 
+		WHERE STATUS=0 AND BALANCE_LABEL = #{balanceLabel}
+	</update>
+	
+	<!-- 更新表 -->
+	<update id="updateBalance">
+		UPDATE Vc_Online_Third_Balance SET 
+			<if test="balanceAmount != null">
+				BALANCE_AMOUNT =#{balanceAmount,jdbcType=BIGINT},
+			</if>
+			<if test="pAllRes != null">
+				P_ALL_RES = #{pAllRes,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				status = #{status,jdbcType=BIGINT},
+			</if>
+			<if test="seq != null and seq!='' ">
+				seq = #{seq,jdbcType=BIGINT},
+			</if>
+			update_date = sysdate()
+		WHERE  BALANCE_LABEL = #{balanceLabel} and id = #{id}
+	</update>
+	
+</mapper>

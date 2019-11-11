@@ -1,0 +1,235 @@
+﻿
+.BankLogoLi{
+    display: block;
+    width: 180px;
+    height: 40px;
+    background-image: url(../../images/BankLogo.jpg);
+    background-repeat: no-repeat;
+    cursor: pointer;
+    border: 1px solid #DCDCDC;
+    margin: 5px 0px 5px 40px;
+    float: left;
+    position: relative;
+}
+
+.span_check {
+    background-image: url(../../images/Icon_Check.png);
+    background-repeat: no-repeat;
+    display: block;
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    bottom: 0;
+    right: 0;
+}
+.pay_form_submit{
+    height: 45px;
+    background: lightgray;
+    border-style: hidden;
+    padding-left: 26px;
+    padding-right: 26px;
+    box-shadow: 0px 0px 8px 0px rgba(0,0,0,0.2);
+}
+.pre_submit{
+    height: 46px;
+    background: yellowgreen;
+    border-style: hidden;
+    padding-left: 27px;
+    padding-right: 27px;
+    box-shadow: 0px 0px 8px 0px rgba(0,0,0,0.2);
+}
+.pay_form{
+    text-align: center;
+}
+
+.BankLogo_150_40_ICBC {
+    background-position: 0px -0px;
+}
+
+.BankLogo_150_40_CCB {
+    background-position: 0px -40px;
+}
+
+.BankLogo_150_40_ABC {
+    background-position: 0px -80px;
+}
+
+.BankLogo_150_40_PSBC {
+    background-position: 0px -120px;
+}
+
+.BankLogo_150_40_BOC {
+    background-position: 0px -160px;
+}
+
+.BankLogo_150_40_COMM {
+    background-position: 0px -200px;
+}
+
+.BankLogo_150_40_CMB {
+    background-position: 0px -240px;
+}
+
+.BankLogo_150_40_CEB {
+    background-position: 0px -280px;
+}
+
+.BankLogo_150_40_SPDB {
+    background-position: 0px -320px;
+}
+
+.BankLogo_150_40_HXBANK {
+    background-position: 0px -360px;
+}
+
+.BankLogo_150_40_GDB {
+    background-position: 0px -400px;
+}
+
+.BankLogo_150_40_CITIC {
+    background-position: 0px -440px;
+}
+
+.BankLogo_150_40_CIB {
+    background-position: 0px -480px;
+}
+
+.BankLogo_150_40_CMBC {
+    background-position: 0px -520px;
+}
+
+.BankLogo_150_40_HZCB {
+    background-position: 0px -560px;
+}
+
+.BankLogo_150_40_SHBANK {
+    background-position: 0px -600px;
+}
+
+.BankLogo_150_40_NBBANK {
+    background-position: 0px -640px;
+}
+
+.BankLogo_150_40_SPABANK {
+    background-position: 0px -680px;
+}
+
+.BankLogo_150_40_BEA {
+    background-position: 0px -720px;
+}
+
+.BankLogo_150_40_SRCB {
+    background-position: 0px -760px;
+}
+
+.BankLogo_150_40_NJBANK {
+    background-position: 0px -800px;
+}
+
+.BankLogo_150_40_GZBANK {
+    background-position: 0px -840px;
+}
+
+.BankLogo_150_40_BHBANK {
+    background-position: 0px -880px;
+}
+
+.BankLogo_150_40_DLBANK {
+    background-position: 0px -920px;
+}
+
+.BankLogo_150_40_HSBANK {
+    background-position: 0px -960px;
+}
+
+.BankLogo_150_40_JSBANK {
+    background-position: 0px -1000px;
+}
+
+.BankLogo_150_40_QLBANK {
+    background-position: 0px -1040px;
+}
+
+.BankLogo_150_40_SCBC {
+    background-position: 0px -1080px;
+}
+
+.BankLogo_150_40_SZNCSYBANK {
+    background-position: 0px -1120px;
+}
+
+.BankLogo_150_40_WZBANK {
+    background-position: 0px -1160px;
+}
+
+.BankLogo_150_40_XMBANK {
+    background-position: 0px -1200px;
+}
+
+.BankLogo_150_40_ZSBANK {
+    background-position: 0px -1240px;
+}
+
+.BankLogo_150_40_BJBANK {
+    background-position: 0px -1280px;
+}
+
+.BankLogo_150_40_HRBANK {
+    background-position: 0px -1320px;
+}
+
+.BankLogo_150_40_HBBANK {
+    background-position: 0px -1360px;
+}
+
+.BankLogo_150_40_WFBANK {
+    background-position: 0px -1400px;
+}
+
+.BankLogo_150_40_GYBANK {
+    background-position: 0px -1440px;
+}
+
+.BankLogo_150_40_ZJTLBANK {
+    background-position: 0px -1480px;
+}
+
+.BankLogo_150_40_JNBANK {
+    background-position: 0px -1520px;
+}
+
+.BankLogo_150_40_TZBANK {
+    background-position: 0px -1560px;
+}
+
+.BankLogo_150_40_HKBANK {
+    background-position: 0px -1600px;
+}
+
+.BankLogo_150_40_AHRCUBank {
+    background-position: 0px -1640px;
+}
+
+.BankLogo_150_40_ZZBank {
+    background-position: 0px -1680px;
+}
+
+.BankLogo_150_40_ZYBank {
+    background-position: 0px -1720px;
+}
+
+.BankLogo_150_40_YBBank {
+    background-position: 0px -1760px;
+}
+
+.BankLogo_150_40_LSBank {
+    background-position: 0px -1800px;
+}
+
+.BankLogo_150_40_RZBank {
+    background-position: 0px -1840px;
+}
+
+.BankLogo_150_40_Unknow {
+    background-position: 0px -1880px;
+}
