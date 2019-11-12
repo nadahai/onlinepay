@@ -49,7 +49,6 @@ public class SaoMaScanServiceImpl {
 		         String service = reqData.containsKey ("service") ? reqData.getString ("service") : "";
 			     //payType 1:微信 2:支付宝
 		         String channelType = "yljuhema";
-		         
 		         if (type == 2 || type == 10 || type==22 || Constant.service_alipay.equals (service)) {
 		        	 channelType = "alipay";
 		         }
