@@ -39,6 +39,7 @@ public class WxSXBScanServiceImpl {
             String return_url = reqData.getString("projectDomainUrl")+"/success";
             String tranAmt = reqData.getString("amount");
 
+
             BigDecimal ba = new BigDecimal(tranAmt);
 			int amount = ba.intValue();
 
