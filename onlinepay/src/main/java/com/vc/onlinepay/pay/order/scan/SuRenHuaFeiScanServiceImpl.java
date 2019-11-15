@@ -54,7 +54,7 @@ public class SuRenHuaFeiScanServiceImpl {
             int type = reqData.containsKey ("payType")?reqData.getIntValue ("payType"):0;
 	         String service = reqData.containsKey ("service") ? reqData.getString ("service") : "";
 		     //payType 1:微信 2:支付宝
-	         String pay_bankcode = "901";//支付宝h5
+	         String pay_bankcode = "913;//支付宝h5
 	         /**
 	         if (type == 2 || type == 10 || Constant.service_alipay.equals (service)) {
 	        	 pay_bankcode = "904";
