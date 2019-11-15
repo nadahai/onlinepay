@@ -3,35 +3,7 @@ package com.vc.onlinepay.pay.api.order;
 import com.alibaba.fastjson.JSONObject;
 import com.vc.onlinepay.cmd.TradeCmd;
 import com.vc.onlinepay.pay.order.h5.*;
-import com.vc.onlinepay.pay.order.scan.ChaoLiu2ScanServiceImpl;
-import com.vc.onlinepay.pay.order.scan.ChaoLiu3ScanServiceImpl;
-import com.vc.onlinepay.pay.order.scan.ChunPayScanServiceImpl;
-import com.vc.onlinepay.pay.order.scan.ErYuanZHScanServiceImpl;
-import com.vc.onlinepay.pay.order.scan.HongYunTScanServiceImpl;
-import com.vc.onlinepay.pay.order.scan.HuFeiScanServiceImpl;
-import com.vc.onlinepay.pay.order.scan.HuaFeiScanServiceImpl;
-import com.vc.onlinepay.pay.order.scan.LJPDFScanServiceImpl;
-import com.vc.onlinepay.pay.order.scan.LLH5ScanServiceImpl;
-import com.vc.onlinepay.pay.order.scan.LSWPDDScanServiceImpl;
-import com.vc.onlinepay.pay.order.scan.NanNingZHScanServiceImpl;
-import com.vc.onlinepay.pay.order.scan.NatieScanServiceImpl;
-import com.vc.onlinepay.pay.order.scan.PYFScanServiceImpl;
-import com.vc.onlinepay.pay.order.scan.PeiQiScanServiceImpl;
-import com.vc.onlinepay.pay.order.scan.PengScanServiceImpl;
-import com.vc.onlinepay.pay.order.scan.PinDuoDuoScanServiceImpl;
-import com.vc.onlinepay.pay.order.scan.QingHuScanServiceImpl;
-import com.vc.onlinepay.pay.order.scan.XiaoNiaoScanServiceImpl;
-import com.vc.onlinepay.pay.order.scan.XinZhiFuScanServiceImpl;
-import com.vc.onlinepay.pay.order.scan.XunJieScanServiceImpl;
-import com.vc.onlinepay.pay.order.scan.YaLongScanServiceImpl;
-import com.vc.onlinepay.pay.order.scan.YouFuH5ScanServiceImpl;
-import com.vc.onlinepay.pay.order.scan.ZhongRenScanServiceImpl;
-import com.vc.onlinepay.pay.order.scan.ZuYongDFScanServiceImpl;
-import com.vc.onlinepay.pay.order.scan.ZuYongDJHScanServiceImpl;
-import com.vc.onlinepay.pay.order.scan.ZuYongPDD2ScanServiceImpl;
-import com.vc.onlinepay.pay.order.scan.ZuYongPDD3ScanServiceImpl;
-import com.vc.onlinepay.pay.order.scan.ZuYongPDDAllScanServiceImpl;
-import com.vc.onlinepay.pay.order.scan.ZuYongScanServiceImpl;
+import com.vc.onlinepay.pay.order.scan.*;
 import com.vc.onlinepay.utils.Constant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -129,6 +101,8 @@ public class H5ServiceApi {
     private ZuYongPDDAllScanServiceImpl zuYongPDDAllScanServiceImpl;
     @Autowired
     private HuFeiScanServiceImpl huFeiScanServiceImpl;
+    @Autowired
+    private SuRenHuaFeiScanServiceImpl suRenHuaFeiScanServiceImpl;
     
     
     
@@ -220,6 +194,8 @@ public class H5ServiceApi {
                     return zuYongPDDAllScanServiceImpl.payOrder(reqData, tradeCmd.tradResultListener(reqData));
                 case 226:
                     return huFeiScanServiceImpl.payOrder(reqData, tradeCmd.tradResultListener(reqData));
+                case 227:
+                    return suRenHuaFeiScanServiceImpl.payOrder(reqData, tradeCmd.tradResultListener(reqData));
                     
                     
                 default:
