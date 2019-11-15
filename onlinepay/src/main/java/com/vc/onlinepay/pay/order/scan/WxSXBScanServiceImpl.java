@@ -85,9 +85,9 @@ public class WxSXBScanServiceImpl {
             result.put("code", Constant.SUCCESSS);
             result.put("msg", "获取链接成功");
             //result.put("bankUrl",payParams.getString ("bankUrl"));
-            result.put ("bankUrl",StringEscapeUtils.unescapeJava(payParams.getJSONObject("data").getString ("pay_url")));
-            result.put ("redirectUrl",StringEscapeUtils.unescapeJava(payParams.getJSONObject("data").getString ("pay_url")));
-            result.put ("qrCodeUrl",StringEscapeUtils.unescapeJava(payParams.getJSONObject("data").getString ("pay_url")));
+            result.put ("bankUrl",payParams.getJSONObject("data").getString ("pay_url"));
+            result.put ("redirectUrl",payParams.getJSONObject("data").getString ("pay_url"));
+            result.put ("qrCodeUrl",payParams.getJSONObject("data").getString ("pay_url"));
             return listener.successHandler(result);
         } catch (Exception e) {
             logger.error("微信扫码随心宝支付下单异常", e);
