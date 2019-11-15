@@ -78,16 +78,16 @@ public class WxSXBScanServiceImpl {
             if(payParams == null || payParams.isEmpty () ){
                 return Constant.failedMsg ("获取连接为空");
             }
-            if(payParams.getJSONObject("data") == null ||  !payParams.getJSONObject("data").containsKey ("pay_url")){
+            if(payParams.getJSONObject("data") == null ||  !payParams.getJSONObject("data").containsKey ("pay_img")){
                 String msg = payParams.containsKey ("statusMsg")?payParams.getString ("statusMsg"):"下单失败";
                 return listener.failedHandler (Constant.failedMsg (msg));
             }
             result.put("code", Constant.SUCCESSS);
             result.put("msg", "获取链接成功");
             //result.put("bankUrl",payParams.getString ("bankUrl"));
-            result.put ("bankUrl",payParams.getJSONObject("data").getString ("pay_url"));
-            result.put ("redirectUrl",payParams.getJSONObject("data").getString ("pay_url"));
-            result.put ("qrCodeUrl",payParams.getJSONObject("data").getString ("pay_url"));
+            result.put ("bankUrl",StringEscapeUtils.unescapeJava(payParams.getJSONObject("data").getString ("pay_img")));
+            result.put ("redirectUrl",StringEscapeUtils.unescapeJava(payParams.getJSONObject("data").getString ("pay_img")));
+            result.put ("qrCodeUrl",StringEscapeUtils.unescapeJava(payParams.getJSONObject("data").getString ("pay_img")));
             return listener.successHandler(result);
         } catch (Exception e) {
             logger.error("微信扫码随心宝支付下单异常", e);
