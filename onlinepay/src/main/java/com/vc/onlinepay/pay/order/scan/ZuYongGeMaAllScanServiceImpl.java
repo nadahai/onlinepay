@@ -34,11 +34,11 @@ public class ZuYongGeMaAllScanServiceImpl {
         	logger.info("租用个码码商匹配通道支付交易接收入参{}",reqData);
             result.put("orderNo", reqData.getString("vcOrderNo"));
             String API_PAY_URL  = StringUtils.deleteWhitespace(reqData.getString("channelPayUrl"));
-            //String merchNo = StringUtils.deleteWhitespace(reqData.getString("channelKey"));
-            //String key  = StringUtils.deleteWhitespace(reqData.getString("channelDesKey"));
+            String merchNo = StringUtils.deleteWhitespace(reqData.getString("channelKey"));
+            String key  = StringUtils.deleteWhitespace(reqData.getString("channelDesKey"));
             
-            String merchNo = StringUtils.deleteWhitespace(reqData.getString("levelNo"));
-            String key  = StringUtils.deleteWhitespace(reqData.getString("levelViewNo"));
+            //String merchNo = StringUtils.deleteWhitespace(reqData.getString("levelNo"));
+            //String key  = StringUtils.deleteWhitespace(reqData.getString("levelViewNo"));
             
             String backUrl = reqData.getString("projectDomainUrl")+"/zuYongCallBackController";
             String returnUrl = reqData.getString("projectDomainUrl")+"/success";
