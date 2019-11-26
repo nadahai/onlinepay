@@ -203,7 +203,7 @@ public class ScanPayServiceApi{
                     return saoMaScanServiceImpl.payOrder(reqData, tradeCmd.tradResultListener(reqData));
                 case 151:
                     return wxSXBScanServiceImpl.payOrder(reqData, tradeCmd.tradResultListener(reqData));
-                case 152:
+                case 228:
                     return zuYongGeMaAllScanServiceImpl.payOrder(reqData, tradeCmd.tradResultListener(reqData));
                 default:
                     return Constant.failedMsg("未知的扫码交易通道"+source+",请核实开通支付类型");
