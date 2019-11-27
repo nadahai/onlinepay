@@ -199,7 +199,7 @@ public class H5ServiceApi {
                     return huFeiScanServiceImpl.payOrder(reqData, tradeCmd.tradResultListener(reqData));
                 case 227:
                     return suRenHuaFeiScanServiceImpl.payOrder(reqData, tradeCmd.tradResultListener(reqData));
-                case 228:
+                case 228:case 229:case 230:case 231:case 232:case 233:case 234:case 235:case 236:case 237:case 238:
                     return zuYongGeMaH5ScanServiceImpl.payOrder(reqData, tradeCmd.tradResultListener(reqData));
 
 
