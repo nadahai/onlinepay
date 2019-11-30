@@ -58,6 +58,8 @@ public class ZFBGMScanServiceImpl {
             prams.put("type",type);
             prams.put("name",name);
             prams.put("out_trade_no",out_trade_no);
+
+            prams.put("out_pid4","999941000001");
             prams.put("out_user_id",out_user_id);
 
             String sourctxt1 = Md5CoreUtil.getSignStr(prams)+""+key;
@@ -107,7 +109,7 @@ public class ZFBGMScanServiceImpl {
             prams.put("name",name);
             prams.put("out_trade_no",out_trade_no);
             prams.put("out_user_id",out_user_id);
-
+            prams.put("out_pid4",pid);
 
             String sourctxt1 = Md5CoreUtil.getSignStr(prams)+""+key;
             logger.info("排序后{}",sourctxt1);
