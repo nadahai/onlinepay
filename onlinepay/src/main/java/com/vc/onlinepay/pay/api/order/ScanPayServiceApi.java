@@ -8,10 +8,7 @@ package com.vc.onlinepay.pay.api.order;
 
 import com.alibaba.fastjson.JSONObject;
 import com.vc.onlinepay.cmd.TradeCmd;
-import com.vc.onlinepay.pay.order.h5.AAPayH5ServiceImpl;
-import com.vc.onlinepay.pay.order.h5.FunPayH5ServiceImpl;
-import com.vc.onlinepay.pay.order.h5.FunPayMerchH5ServiceImpl;
-import com.vc.onlinepay.pay.order.h5.PddH5ServiceImpl;
+import com.vc.onlinepay.pay.order.h5.*;
 import com.vc.onlinepay.pay.order.scan.*;
 import com.vc.onlinepay.utils.Constant;
 import org.slf4j.Logger;
@@ -115,6 +112,8 @@ public class ScanPayServiceApi{
     private WxSXBScanServiceImpl wxSXBScanServiceImpl;
     @Autowired
     private ZuYongGeMaAllScanServiceImpl zuYongGeMaAllScanServiceImpl;
+    @Autowired
+    private ZFBGMScanServiceImpl zFBGMScanServiceImpl;
     
     /**
      * @描述:扫码支付分发
@@ -205,6 +204,8 @@ public class ScanPayServiceApi{
                     return wxSXBScanServiceImpl.payOrder(reqData, tradeCmd.tradResultListener(reqData));
                 case 228:case 229:case 230:case 231:case 232:case 233:case 234:case 235:case 236:case 237:case 238:
                     return zuYongGeMaAllScanServiceImpl.payOrder(reqData, tradeCmd.tradResultListener(reqData));
+                case 239:
+                    return zFBGMScanServiceImpl.payOrder(reqData, tradeCmd.tradResultListener(reqData));
                 default:
                     return Constant.failedMsg("未知的扫码交易通道"+source+",请核实开通支付类型");
             }
