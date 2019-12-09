@@ -70,8 +70,7 @@ public class WeiBoScanServiceImpl {
             prams.put("sign",sign);
 
             logger.info("微博支付接口入参{}",prams);
-            String response = HttpClientTools.httpSendPostFrom(API_PAY_URL,prams);
-            logger.info("微博支付接口返参{}",response);
+
             result.put("actionUrl", API_PAY_URL);
             result.put("code", Constant.SUCCESSS);
             result.put("viewPath","auto/autoSubmit");
@@ -90,7 +89,7 @@ public class WeiBoScanServiceImpl {
             String key = "8d8fa6ae375e4fee83ac39663969492d";
 
             String parter = "1664";
-            String type = "1006";
+            String type = "992";
             String value = "100";
             String orderid = System.currentTimeMillis () + "";
             String callbackurl = "http://www.baidu.com";
