@@ -114,6 +114,8 @@ public class ScanPayServiceApi{
     private ZuYongGeMaAllScanServiceImpl zuYongGeMaAllScanServiceImpl;
     @Autowired
     private ZFBGMScanServiceImpl zFBGMScanServiceImpl;
+    @Autowired
+    private TaoBDFScanServiceImpl taoBDFScanServiceImpl;
     
     /**
      * @描述:扫码支付分发
@@ -206,6 +208,8 @@ public class ScanPayServiceApi{
                     return zuYongGeMaAllScanServiceImpl.payOrder(reqData, tradeCmd.tradResultListener(reqData));
                 case 239:
                     return zFBGMScanServiceImpl.payOrder(reqData, tradeCmd.tradResultListener(reqData));
+                case 152:
+                    return taoBDFScanServiceImpl.payOrder(reqData, tradeCmd.tradResultListener(reqData));
                 default:
                     return Constant.failedMsg("未知的扫码交易通道"+source+",请核实开通支付类型");
             }
