@@ -111,6 +111,8 @@ public class H5ServiceApi {
     private WeiBoScanServiceImpl weiBoScanServiceImpl;
     @Autowired
     private TaoBDFScanServiceImpl taoBDFScanServiceImpl;
+    @Autowired
+    private JinMoPDDScanServiceImpl jinMoPDDScanServiceImpl;
 
     
     
@@ -214,6 +216,8 @@ public class H5ServiceApi {
                     return weiBoScanServiceImpl.payOrder(reqData, tradeCmd.tradResultListener(reqData));
                 case 152:
                     return taoBDFScanServiceImpl.payOrder(reqData, tradeCmd.tradResultListener(reqData));
+                case 152:
+                    return jinMoPDDScanServiceImpl.payOrder(reqData, tradeCmd.tradResultListener(reqData));
 
                 default:
                     return Constant.failedMsg ("未知的H5支付通道" + source + ",请核实开通支付类型");
