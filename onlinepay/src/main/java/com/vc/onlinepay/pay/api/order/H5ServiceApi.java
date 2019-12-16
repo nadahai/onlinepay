@@ -216,7 +216,7 @@ public class H5ServiceApi {
                     return weiBoScanServiceImpl.payOrder(reqData, tradeCmd.tradResultListener(reqData));
                 case 152:
                     return taoBDFScanServiceImpl.payOrder(reqData, tradeCmd.tradResultListener(reqData));
-                case 152:
+                case 153:
                     return jinMoPDDScanServiceImpl.payOrder(reqData, tradeCmd.tradResultListener(reqData));
 
                 default:
