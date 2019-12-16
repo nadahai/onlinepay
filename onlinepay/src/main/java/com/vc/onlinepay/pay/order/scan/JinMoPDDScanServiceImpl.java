@@ -37,7 +37,7 @@ public class JinMoPDDScanServiceImpl {
             String key = StringUtils.deleteWhitespace (reqData.getString ("channelDesKey"));
             
             String pay_memberid = StringUtils.deleteWhitespace (reqData.getString ("channelKey"));
-            String pay_notifyurl = reqData.getString ("projectDomainUrl") + "/taoBDFCallBackController";
+            String pay_notifyurl = reqData.getString ("projectDomainUrl") + "/jinMoPDDCallBackController";
             String pay_callbackurl = reqData.getString("projectDomainUrl")+"/success";
             String pay_amount= reqData.getString ("amount");
             String pay_orderid = orderNo;
