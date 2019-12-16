@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletResponse;
  * @时间:2018/12/26 15:23
  */
 @RestController
-@RequestMapping("/taoBDFCallBackController")
+@RequestMapping("/jinMoPDDCallBackController")
 public class JinMoPDDCallBackController extends BaseController {
     
     @Autowired
