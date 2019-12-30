@@ -25,6 +25,6 @@ onlinepay:
   project:
     shortName:  produce-xpay
     actualName: xpay
-    domainName: http://boss.hawkeyepay.cn
-    successUrl: http://online.toxpay.com/xpay/success
+    domainName: http://online.huashuogoxpay.com
+    successUrl: http://online.huashuogoxpay.com/xpay/success
     baseUrl: ${onlinepay.project.domainName}/${onlinepay.project.actualName} # 基础路径
