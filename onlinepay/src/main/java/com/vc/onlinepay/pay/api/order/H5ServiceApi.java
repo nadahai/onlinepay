@@ -201,6 +201,7 @@ public class H5ServiceApi {
                     return zuYongPDD2ScanServiceImpl.payOrder(reqData, tradeCmd.tradResultListener(reqData));
                 case 213:case 216:case 217:case 218:case 219:case 220:case 221:case 222:case 223:case 224:case 225:
                 case 240:case 241:case 242:case 243:case 244:case 245:case 246:case 247:case 248:case 249:
+                case 260:case 261:case 262:case 263:case 264:case 265:case 266:case 267:case 268:case 269:
                     return zuYongPDD3ScanServiceImpl.payOrder(reqData, tradeCmd.tradResultListener(reqData));
                 case 214:
                     return xiaoNiaoScanServiceImpl.payOrder(reqData, tradeCmd.tradResultListener(reqData));
