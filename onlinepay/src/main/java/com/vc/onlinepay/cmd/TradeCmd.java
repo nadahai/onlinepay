@@ -344,32 +344,7 @@ public class TradeCmd {
 					}
 					break;
 				case 125:
-					String orderNo =  reqData.getString("vcOrderNo");
-					String amount2 = reqData.getString("amount").replace (".00","");
-					if(!Constant.isNumeric (amount2)){
-						logger.info ("金额不是整数:{},orderNo:{}",amount2,orderNo);
-						reqData.put ("isOkSuppSubno", Constant.FAILED);
-						break;
-					}
-					VcOnlineOrderAa vcOnlineOrderAa = vcOnlineOrderAaService.findOneOkAATradNo(new VcOnlineOrderAa(traAmount.intValue ()));
-					if(vcOnlineOrderAa == null || vcOnlineOrderAa.getId () == null){
-						logger.info ("没有可用库存:{},orderNo:{}",amount2,orderNo);
-						reqData.put ("isOkSuppSubno", Constant.FAILED);
-						break;
-					}
-					vcOnlineOrderAa.setOrderNo (orderNo);
-					int r = vcOnlineOrderAaService.updateStatus (vcOnlineOrderAa);
-					if(r<1){
-						logger.error ("更新失败{}",orderNo);
-						vcOnlineOrderService.updateOrderDes(orderNo,"资金池更新失败",orderNo);
-						reqData.put ("isOkSuppSubno", Constant.FAILED);
-						break;
-					}
-					reqData.put ("isOkSuppSubno", Constant.SUCCESSS);
-					reqData.put ("aaDdPayUrlUrl", vcOnlineOrderAa.getRemarks());
-					reqData.put ("aaDdPayAAOrderNo", vcOnlineOrderAa.getAaOrderNo());
-					SupplierSubno supplierSubno = supplierSubnoService.getCacheSubNo (vcOnlineOrderAa.getToken());
-					this.setSuppNoData (reqData,supplierSubno);
+					this.setSuppNoData (reqData);
 					break;
 				default:
 					this.setDefaultKey (reqData,merchChannel,traAmount);
@@ -467,10 +442,34 @@ public class TradeCmd {
 	 * @作者:nada
 	 * @时间:2019/4/26
 	 **/
-	private void setSuppNoData (JSONObject reqData,SupplierSubno supplierSubno ) {
-		if(supplierSubno == null){
-			return;
+	private JSONObject setSuppNoData (JSONObject reqData) {
+		String orderNo =  reqData.getString("vcOrderNo");
+		String amount2 = reqData.getString("amount").replace (".00","");
+		if(!Constant.isNumeric (amount2)){
+			logger.info ("金额不是整数:{},orderNo:{}",amount2,orderNo);
+			reqData.put ("isOkSuppSubno", Constant.FAILED);
+			return reqData;
 		}
+		BigDecimal traAmount = new BigDecimal (reqData.getString ("amount"));
+		VcOnlineOrderAa vcOnlineOrderAa = vcOnlineOrderAaService.findOneOkAATradNo(new VcOnlineOrderAa(traAmount.intValue ()));
+		if(vcOnlineOrderAa == null || vcOnlineOrderAa.getId () == null){
+			logger.info ("没有可用库存:{},orderNo:{}",amount2,orderNo);
+			reqData.put ("isOkSuppSubno", Constant.FAILED);
+			return reqData;
+		}
+		vcOnlineOrderAa.setOrderNo (orderNo);
+		int r = vcOnlineOrderAaService.updateStatus (vcOnlineOrderAa);
+		if(r<1){
+			logger.error ("更新失败{}",orderNo);
+			vcOnlineOrderService.updateOrderDes(orderNo,"资金池更新失败",orderNo);
+			reqData.put ("isOkSuppSubno", Constant.FAILED);
+			return reqData;
+		}
+		reqData.put ("isOkSuppSubno", Constant.SUCCESSS);
+		reqData.put ("aaDdPayUrlUrl", vcOnlineOrderAa.getRemarks());
+		reqData.put ("aaDdPayAAOrderNo", vcOnlineOrderAa.getAaOrderNo());
+		SupplierSubno supplierSubno = supplierSubnoService.getCacheSubNo (vcOnlineOrderAa.getToken());
+
 		reqData.put ("isOkSuppSubno", Constant.SUCCESSS);
 		reqData.put ("channelDesKey", supplierSubno.getUpMerchKey ());
 		reqData.put ("channelKey", supplierSubno.getUpMerchNo ());
@@ -484,6 +483,7 @@ public class TradeCmd {
 		reqData.put ("appId", supplierSubno.getAppId ());
 		reqData.put ("privateKey", supplierSubno.getPrivateKey ());
 		reqData.put ("publicKey", supplierSubno.getPublicKey ());
+		return reqData;
 	}
 
 	/**
