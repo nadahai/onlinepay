@@ -293,16 +293,6 @@ public class TradeCmd {
 			if (merchChannel.getStatus () != 1) {
 				return Constant.failedMsg ("商户通道状态禁用,请核实通道状态");
 			}
-			//交易时间控制
-			/*
-			 * if (!org.apache.commons.lang.StringUtils.isEmpty
-			 * (merchChannel.getTraStartTime ()) &&
-			 * !org.apache.commons.lang.StringUtils.isEmpty (merchChannel.getTraEndTime ()))
-			 * { String startTime = merchChannel.getTraStartTime (); String endTime =
-			 * merchChannel.getTraEndTime (); boolean isOK = Constant.checkRfTime
-			 * (startTime, endTime); if (!isOK) { return Constant.failedMsg ("温馨提示:此通道交易时间:"
-			 * + startTime + "-" + endTime); } }
-			 */
 			//通道限额
 			long channelSource = merchChannel.getChannelSource ();
 			BigDecimal traAmount = new BigDecimal (reqData.getString ("amount"));
@@ -353,9 +343,6 @@ public class TradeCmd {
 						return res;
 					}
 					break;
-				case 111:
-					pddAutoRoute(reqData,traAmount);
-					break;
 				case 125:
 					String orderNo =  reqData.getString("vcOrderNo");
 					String amount2 = reqData.getString("amount").replace (".00","");
@@ -392,78 +379,6 @@ public class TradeCmd {
 		} catch (Exception e) {
 			logger.error ("交易通道验证异常", e);
 			return Constant.failedMsg ("交易通道验证异常,请联系运维人员");
-		}
-	}
-
-	/**
-	 * @描述:PDD 获取一个商品和一个买家
-	 **/
-	private boolean pddAutoRoute(JSONObject reqData,BigDecimal traAmount) {
-		try {
-			/*// 检查渠道商账户状态,总限额
-			String channelNo=reqData.getString("channelNo");
-			if (StringUtils.isEmpty(channelNo)) {
-				return false;
-			}
-			// PDD指定码商下的账号进行交易
-			ChannelSubNo channelSubNo = new  ChannelSubNo();
-			channelSubNo.setUpMerchNo(channelNo);
-			channelSubNo.setActualAmount(traAmount);
-			List<ChannelSubNo> channelSubNoLists = channelSubNoMapper.getXgjChannelSubNoList(channelSubNo);
-			if(channelSubNoLists == null || channelSubNoLists.size()<1){
-				return false;
-			}
-			MerchInfo merchInfo = merchInfoMapper.getMerchInfoByNo (Long.valueOf(channelNo));
-			if(merchInfo == null){
-				logger.info("PDD渠道商未找到{}",channelNo);
-				return false;
-			}*/
-
-			//检查商家 账户状态,日限额(获取符合条件的码商列表)
-			XkPddMerch xkPddMerch= new XkPddMerch();
-			//xkPddMerch.setParentId(merchInfo.getId());
-			xkPddMerch.setDayTradeAmount(Double.valueOf(traAmount.toString()));
-			List<XkPddMerch> pddMerchList =  xkPddMerchMapper.getPddMerchList(xkPddMerch);
-			XkPddMerch tempPddMerch;
-			if(pddMerchList == null || pddMerchList.size()<1){
-				return false;
-			}else {
-				tempPddMerch = pddMerchList.get(0);
-			}
-
-			// 获取该商家下的一个pdd买家
-			XkPddBuyer xkPddBuyer = new XkPddBuyer();
-			xkPddBuyer.setParentId(tempPddMerch.getId());
-			List<XkPddBuyer> xkPddBuyerList = xkPddBuyerMapper.getPddBuyerList(xkPddBuyer);
-			XkPddBuyer tempPddBuyer;
-			if(xkPddBuyerList == null || xkPddBuyerList.size()<1){
-				return false;
-			}else {
-				// 取一个正常商家
-				tempPddBuyer = xkPddBuyerList.get(0);
-			}
-
-			// 获取该商家下的一个商品
-			XkPddGoods xkGoods;
-			XkPddGoods xkPddGoods = new XkPddGoods();
-			xkPddGoods.setParentId(tempPddMerch.getId());
-			List<XkPddGoods> pddGoodsList = xkPddGoodsMapper.getPddGoodsList(xkPddGoods);
-			if(pddGoodsList == null || pddGoodsList.size()<1){
-				return false;
-			}else {
-				xkGoods = pddGoodsList.get(0);
-				String goodsInfo = xkGoods.getExtendInfo().replace("ADDRESS_ID",tempPddBuyer.getAddressId());
-				reqData.put("pdd_info", tempPddMerch.getId()+";"+xkGoods.getId()+";"+tempPddBuyer.getId());
-				reqData.put("pdd_order_json", goodsInfo);
-				reqData.put("pdd_order_info", tempPddMerch.getMerchName()+"："+xkGoods.getGoodsUrl());
-				reqData.put("accessToken", tempPddBuyer.getAccessToken());
-				logger.info ("PDD订单信息pddAutoRoute:reqData{}", reqData);
-				logger.info ("PDD订单信息:{},支付金额{}", xkGoods.getExtendInfo (),traAmount);
-				return true;
-			}
-		} catch (Exception e) {
-			logger.error ("PDD获取订单信息异常", e);
-			return false;
 		}
 	}
 
@@ -640,18 +555,6 @@ public class TradeCmd {
 	 **/
 	private void alipayAutoRoute (JSONObject reqData, MerchChannel merchChannel, BigDecimal traAmount) {
 		long channelId = merchChannel.getChannelId ();
-		//个人码扫码和H5
-		if (channelId == 177L) {
-			channelId = 147L;
-			//口碑码扫码和H5
-		} else if (channelId == 203L) {
-			channelId = 200L;
-			//企业码扫码和H5
-		}else if (channelId == 213L) {
-			channelId = 167L;
-		}else if (channelId == 252){
-			channelId = 147L;
-		}
 		String orderNo = reqData.getString ("vcOrderNo");
 		String clientIp = reqData.getString ("ipaddress");
 		int loopRobin = coreEngineProviderService.getIntCacheCfgKey (CacheConstants.ONLINE_SUPPLIER_LOOP_ROBIN);
