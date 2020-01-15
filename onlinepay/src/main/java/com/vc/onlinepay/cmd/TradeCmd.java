@@ -410,7 +410,7 @@ public class TradeCmd {
 			reqData.put ("channelDesKey", channelSubNo.getUpMerchKey ());
 			logger.info ("默认轮询订单:{},商户号:{}",reqData.getString ("vcOrderNo"),reqData.getString("channelKey"));
 			return Constant.successMsg ("设置成功");
-		} catch (OnlineServiceException e) {
+		} catch (Exception e) {
 			logger.error ("设置收钱吧信息异常");
 			return Constant.failedMsg ("设置收钱吧信息异常");
 		}
