@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 
 /**
- * @author jauyang
+ * @author nada
  * @描述:微信扫码随心宝回调处理
  * @时间:2018/12/26 15:23
  */

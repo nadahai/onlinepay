@@ -26,7 +26,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * @author jauyang
+ * @author nada
  * @description  拼多多H5 支持微信H5、支付宝H5、支付宝扫码
  */
 @Service

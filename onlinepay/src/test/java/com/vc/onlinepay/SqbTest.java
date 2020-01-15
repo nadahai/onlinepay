@@ -12,7 +12,7 @@ import com.vc.onlinepay.utils.Md5CoreUtil;
 import java.util.Date;
 
 /**
- * @author jauyang
+ * @author nada
  * @description
  * @time 2019-04-13 22:18
  */

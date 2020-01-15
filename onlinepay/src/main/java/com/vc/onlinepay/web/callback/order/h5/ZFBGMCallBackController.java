@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * @author jauyang
+ * @author nada
  * @描述:个码通道回调处理
  * @时间:2018/12/26 15:23
  */

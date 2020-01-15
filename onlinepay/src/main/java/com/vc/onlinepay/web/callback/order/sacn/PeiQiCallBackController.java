@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * @author jauyang
+ * @author nada
  * @描述:佩奇支付宝支付回调处理
  * @时间:2018/12/26 15:23
  */

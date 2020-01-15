@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * @author jauyang
+ * @author nada
  * @描述:乐乐h5回调
  * @时间:2018/12/26 15:23
  */

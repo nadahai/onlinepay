@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
- * @author jauyang
+ * @author nada
  * @描述:收钱吧支付宝回调处理
  * @时间:2018/12/26 15:23
  */
