@@ -337,6 +337,9 @@ public class TradeCmd {
 				case 51: case 65: case 81: case 83:
 					this.alipayAutoRoute (reqData, merchChannel, traAmount);
 					break;
+				case 111:
+					this.setSqbKey (reqData, merchChannel, traAmount);
+					break;
 				case 93:
 					JSONObject res = this.setSqbKey (reqData, merchChannel, traAmount);
 					if(!res.getString ("code").equals (Constant.SUCCESSS)){
