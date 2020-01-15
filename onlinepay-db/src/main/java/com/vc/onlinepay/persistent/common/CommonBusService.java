@@ -90,7 +90,7 @@ public class CommonBusService {
 
     /**
      * @描述:根据订单号查询订单
-     * @作者:lihai
+     * @作者:nada
      * @时间:2017年6月5日 下午9:47:43
      */
     public VcOnlineOrder getVcOrderByorderNo (String orderNo) {
@@ -99,7 +99,7 @@ public class CommonBusService {
 
     /**
      * @描述:根据订单号查询订单
-     * @作者:lihai
+     * @作者:nada
      * @时间:2017年6月5日 下午9:47:43
      */
     public List<VcOnlineOrder> findOrderBySmstrxId (VcOnlineOrder order) {

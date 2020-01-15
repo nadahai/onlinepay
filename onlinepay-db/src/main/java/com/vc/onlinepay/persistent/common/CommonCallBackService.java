@@ -1,7 +1,7 @@
 /**
  * @类名称:CommonCallBackService.java
  * @时间:2018年1月9日下午3:04:58
- * @作者:lihai 
+ * @作者:nada
  * @版权:公司 Copyright (c) 2018 
  */
 package com.vc.onlinepay.persistent.common;
@@ -324,7 +324,7 @@ public class CommonCallBackService{
 
     /**
      * @描述:异步财富池子引擎提供者
-     * @作者:lihai
+     * @作者:nada
      * @时间:2018年3月9日 下午5:12:24
      */
     public boolean asynOrderWalletPoolEngineProvider(final Long merchId, final String orderNo) {
@@ -344,7 +344,7 @@ public class CommonCallBackService{
 
     /**
      * @描述:异步分润池子引擎提供者
-     * @作者:lihai
+     * @作者:nada
      * @时间:2018年3月9日 下午5:12:24
      */
     public boolean asynOrderProfitPoolEngineProvider(final VcOnlineOrder vcOnlineOrder, final String orderNo) {

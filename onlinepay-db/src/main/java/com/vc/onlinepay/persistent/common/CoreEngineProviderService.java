@@ -1,7 +1,7 @@
 /**
  * @类名称:CoreEngineProviderServiceImpl.java
  * @时间:2018年3月6日上午10:36:51
- * @作者:lihai
+ * @作者:nada
  * @版权:公司 Copyright (c) 2018
  */
 package com.vc.onlinepay.persistent.common;
@@ -47,7 +47,7 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * @author lihai
  * @描述:核心引擎服务提供者接口实现
- * @作者:lihai
+ * @作者:nada
  * @时间:2018年3月6日 上午10:36:51
  */
 @Service

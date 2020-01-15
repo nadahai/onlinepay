@@ -53,7 +53,7 @@ public class RemitH5CallBackController extends BaseController {
 
     /**
      * @描述:执行汇付宝h5回调接口
-     * @作者:lihai
+     * @作者:nada
      * @时间:2018年1月5日 上午10:08:05
      */
     public String invokeCallback(HttpServletRequest request) throws IOException {

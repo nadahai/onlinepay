@@ -1,14 +1,14 @@
 /**
  * @类名称:Basekey.java
  * @时间:2017年7月5日下午7:32:30
- * @作者:lihai 
+ * @作者:nada
  * @版权:公司 Copyright (c) 2017 
  */
 package com.vc.onlinepay.enums;
 
  /**
  * @描述:业务响应码枚举
- * @作者:lihai 
+ * @作者:nada
  * @时间:2017年7月5日 下午7:32:30 
  */
 public enum GateCodeEnum {

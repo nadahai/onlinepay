@@ -21,7 +21,7 @@ public class ChunPayScanServiceImpl {
     private static Logger logger = LoggerFactory.getLogger(ChunPayScanServiceImpl.class);
     /**
      * @描述:通付交易
-     * @作者:lihai
+     * @作者:nada
      * @时间:2017年12月1日 下午3:15:40
      */
     public JSONObject payOrder(JSONObject reqData, ResultListener listener) {

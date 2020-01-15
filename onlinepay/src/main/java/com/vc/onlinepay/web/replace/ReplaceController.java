@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
  * 对外统一代付提现接口
  * @类名称:AmalgamateTransfer.java
  * @时间:2017年12月14日下午3:33:27
- * @作者:lihai 
+ * @作者:nada
  * @版权:公司 Copyright (c) 2017
  */
 @Controller

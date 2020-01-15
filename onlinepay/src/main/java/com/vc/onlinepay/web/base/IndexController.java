@@ -1,7 +1,7 @@
 /**
  * @类名称:MainController.java
  * @时间:2017年10月27日下午5:55:40
- * @作者:lihai
+ * @作者:nada
  * @版权:版权所有 Copyright (c) 2017
  */
 package com.vc.onlinepay.web.base;
@@ -18,7 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 /**
  * @描述:TODO
- * @作者:lihai
+ * @作者:nada
  * @时间:2017年10月27日 下午5:55:40
  */
 @RestController

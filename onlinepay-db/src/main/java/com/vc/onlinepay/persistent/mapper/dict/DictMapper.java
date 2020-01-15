@@ -24,7 +24,7 @@ public interface DictMapper {
 	
 	/**
 	 * @描述:获取代付提现配置列表
-	 * @作者:lihai 
+	 * @作者:nada
 	 * @时间:2017年12月15日 下午5:30:22
 	 */
 	List<Dict> findCashConfig(Dict dict);

@@ -22,7 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
  * 
  * @类名称:BaseHttpServlet.java
  * @时间:2017年12月6日上午10:33:56
- * @作者:lihai
+ * @作者:nada
  * @版权:公司 Copyright (c) 2017
  */
 public abstract class BaseController {
@@ -85,7 +85,7 @@ public abstract class BaseController {
 	
 	/**
 	 * @描述:埋点日志
-	 * @作者:lihai
+	 * @作者:nada
 	 * @时间:2018年3月8日 上午11:11:04
 	 */
 	public void saveLog(String title, String... logDes) {
@@ -134,7 +134,7 @@ public abstract class BaseController {
     
     /**
 	 * @描述:post请求
-	 * @作者:lihai
+	 * @作者:nada
 	 * @时间:2018年2月28日 下午2:41:38
 	 */
 	public void doPost(HttpServletRequest request, HttpServletResponse response) {

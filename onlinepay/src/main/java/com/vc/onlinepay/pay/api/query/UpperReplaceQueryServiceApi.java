@@ -28,7 +28,7 @@ import org.springframework.stereotype.Service;
  * 上游代付订单查询业务处理
  * @类名称:UpperReplaceQueryServiceImpl.java
  * @时间:2018年1月11日下午3:57:31
- * @作者:lihai
+ * @作者:nada
  * @版权:公司 Copyright (c) 2018
  */
 @Service

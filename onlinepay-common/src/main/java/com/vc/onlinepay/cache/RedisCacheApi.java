@@ -1,7 +1,7 @@
 /**
  * @类名称:RedisCacheService.java
  * @时间:2017年8月31日上午11:13:03
- * @作者:lihai
+ * @作者:nada
  * @版权:公司 Copyright (c) 2017
  */
 package com.vc.onlinepay.cache;
@@ -28,7 +28,7 @@ redisTemplate.opsForHash();//操作hash
 redisTemplate.opsForList();//操作list
 redisTemplate.opsForSet();//操作set
 redisTemplate.opsForZSet();//操作有序set
- * @作者:lihai
+ * @作者:nada
  * @时间:2017年8月31日 上午11:13:03
  */
 @Service

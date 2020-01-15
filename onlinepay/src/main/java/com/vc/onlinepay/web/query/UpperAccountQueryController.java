@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
  * 上游余额查询接口
  * @类名称:UpperAccountQueryApi.java
  * @时间:2018年1月4日上午11:36:15
- * @作者:lihai 
+ * @作者:nada
  * @版权:公司 Copyright (c) 2018
  */
 @Controller

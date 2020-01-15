@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * @类名称:MagicUnionCallBackApi.java
  * @时间:2018年1月4日下午8:07:35
- * @作者:lihai
+ * @作者:nada
  * @版权:公司 Copyright (c) 2018
  */
 @Controller
@@ -33,7 +33,7 @@ public class RemitUnionCallBackController extends BaseController {
     
     /**
      * @描述:汇付宝银联扫码回调接口
-     * @作者:lihai
+     * @作者:nada
      * @时间:2018年1月4日 下午8:04:18
      */
     @Override
@@ -52,7 +52,7 @@ public class RemitUnionCallBackController extends BaseController {
 
     /**
      * @描述:执行汇付宝银联扫码回调接口
-     * @作者:lihai
+     * @作者:nada
      * @时间:2018年1月5日 上午10:08:05
      */
     public String invokeCallback(HttpServletRequest request) throws IOException {

@@ -274,7 +274,7 @@ public class HttpClientTools {
     /**
      * @描述:模拟from发送POST方法的请求
      * @描述:请求参数应该是 name1=value1&name2=value2 的形式
-     * @作者:lihai
+     * @作者:nada
      * @时间:2017年6月28日 下午5:07:32
      */
     public static String httpSendPostFrom(String url, JSONObject params,Map<String, String> header) throws IOException {
@@ -679,7 +679,7 @@ public class HttpClientTools {
 	
 	/**
 	 * @描述:请求&拼接字符串转为JSONObject格式（通常get请求参数转为json）
-	 * @作者:lihai 
+	 * @作者:nada
 	 * @时间:2018年3月5日 下午5:05:43
 	 */
 	public static JSONObject StringToJson(String str){
@@ -901,7 +901,7 @@ public class HttpClientTools {
     /**
      * @描述:模拟from发送HTTPS POST方法的请求
      * @描述:请求参数应该是 name1=value1&name2=value2 的形式
-     * @作者:lihai
+     * @作者:nada
      * @时间:2017年6月28日 下午5:07:32
      */
     public static String httpSendHTTPSPostFrom(String url, JSONObject params,Map<String, String> header) throws IOException {

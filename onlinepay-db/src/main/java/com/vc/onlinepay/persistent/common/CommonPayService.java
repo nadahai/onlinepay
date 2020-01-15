@@ -1,7 +1,7 @@
 /**
  * @类名称:CommonPayServiceImpl.java
  * @时间:2018年3月2日上午11:14:33
- * @作者:lihai 
+ * @作者:nada
  * @版权:公司 Copyright (c) 2018 
  */
 package com.vc.onlinepay.persistent.common;
@@ -28,7 +28,7 @@ import org.springframework.stereotype.Service;
 
 /**
  * @描述:通用支付业务接口实现
- * @作者:lihai 
+ * @作者:nada
  * @时间:2018年3月2日 上午11:14:33 
  */
 @Service
@@ -204,7 +204,7 @@ public class CommonPayService{
     
     /**
      * @描述:更新订单状态
-     * @作者:lihai
+     * @作者:nada
      * @时间:2018年3月8日 上午10:40:32
      */
     public boolean updateOrderDes(String orderNo, String orderDes) throws OnlineServiceException {
@@ -230,7 +230,7 @@ public class CommonPayService{
     
     /**
      * @描述:更新订单状态
-     * @作者:lihai
+     * @作者:nada
      * @时间:2018年3月8日 上午10:40:32
      */
     public boolean updateOrderStatus(String orderNo, int status, String orderDes) throws OnlineServiceException {

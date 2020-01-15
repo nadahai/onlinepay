@@ -30,7 +30,7 @@ import org.springframework.stereotype.Service;
 /**
  * @类名称:ReplaceServiceImpl.java
  * @时间:2017年12月19日下午5:31:01
- * @作者:lihai 
+ * @作者:nada
  * @版权:公司 Copyright (c) 2017
  */
 @Service
@@ -197,7 +197,7 @@ public class ReplaceServiceApi{
     
     /**
      * @描述:获取代付监听
-     * @作者:lihai 
+     * @作者:nada
      * @时间:2017年12月19日 下午3:42:31
      */
     private ResultListener getResultListener(JSONObject reqData){

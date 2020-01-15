@@ -79,7 +79,7 @@ public class MerchChannel{
 
     /**
      * @描述:获取支付方式
-     * @作者:lihai
+     * @作者:nada
      * @时间:2017年12月21日 下午7:03:25
      */
     public static MerchChannel  getMerchChannel(JSONObject reqData) {

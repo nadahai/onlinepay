@@ -64,7 +64,7 @@ public class VcOnlineOrderServiceImpl {
 
     /**
      * @描述:根据订单号查询订单信息
-     * @作者:lihai
+     * @作者:nada
      * @时间:2018年1月5日 下午5:00:53
      */
     public VcOnlineOrder findOrderByOrderNo (String orderNo) {
@@ -73,7 +73,7 @@ public class VcOnlineOrderServiceImpl {
 
     /**
      * @描述:根据订单号查询订单信息
-     * @作者:lihai
+     * @作者:nada
      * @时间:2018年1月5日 下午5:00:53
      */
     public List<VcOnlineOrder> findOrderBySmstrxId (VcOnlineOrder order) {
@@ -91,7 +91,7 @@ public class VcOnlineOrderServiceImpl {
 
     /**
      * @描述:修改订单通知信息
-     * @作者:lihai
+     * @作者:nada
      * @时间:2018年3月8日 上午10:44:34
      */
     @Transactional (readOnly = false,rollbackFor = Exception.class)
@@ -101,7 +101,7 @@ public class VcOnlineOrderServiceImpl {
 
     /**
      * @描述:验证商户上送订单是否已经存在
-     * @作者:lihai
+     * @作者:nada
      * @时间:2018年3月2日 上午11:35:07
      */
     public List<VcOnlineOrder> verifyMerchOrderExist (String cOrder) {
@@ -110,7 +110,7 @@ public class VcOnlineOrderServiceImpl {
 
     /**
      * @描述:修改订单状态
-     * @作者:lihai
+     * @作者:nada
      * @时间:2018年3月8日 上午11:02:47
      */
     @Transactional (readOnly = false,rollbackFor = Exception.class)
@@ -120,7 +120,7 @@ public class VcOnlineOrderServiceImpl {
     
     /**
      * @描述:修改订单描述
-     * @作者:lihai
+     * @作者:nada
      * @时间:2018年3月8日 上午11:02:47
      */
     @Transactional (readOnly = false,rollbackFor = Exception.class)
@@ -140,7 +140,7 @@ public class VcOnlineOrderServiceImpl {
 
     /**
      * @描述:修改订单状态
-     * @作者:lihai
+     * @作者:nada
      * @时间:2018年3月8日 上午11:02:47
      */
     @Transactional (readOnly = false,rollbackFor = Exception.class)
@@ -151,7 +151,7 @@ public class VcOnlineOrderServiceImpl {
 
     /**
      * @描述:修改订单结算状态
-     * @作者:lihai
+     * @作者:nada
      * @时间:2018年3月8日 上午11:02:47
      */
     @Transactional (readOnly = false,rollbackFor = Exception.class)

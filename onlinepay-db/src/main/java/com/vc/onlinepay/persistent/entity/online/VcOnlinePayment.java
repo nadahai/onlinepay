@@ -71,7 +71,7 @@ public class VcOnlinePayment {
 
     /**
      * @描述:代付订单明细
-     * @作者:lihai
+     * @作者:nada
      * @时间:2017年12月19日 下午4:20:04
      */
     public static VcOnlinePayment buildVcOnlinePayment (JSONObject params, VcOnlineWallet vcOnlineWallet) {

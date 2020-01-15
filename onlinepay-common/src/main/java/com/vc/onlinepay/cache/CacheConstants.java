@@ -1,14 +1,14 @@
 /**
  * @类名称:CacheConstants.java
  * @时间:2017年8月24日下午4:13:23
- * @作者:lihai 
+ * @作者:nada
  * @版权:公司 Copyright (c) 2017 
  */
 package com.vc.onlinepay.cache;
 
 /**
  * @描述:系统字典key
- * @作者:lihai 
+ * @作者:nada
  * @时间:2017年8月24日 下午4:13:23 
  */
 public class CacheConstants {

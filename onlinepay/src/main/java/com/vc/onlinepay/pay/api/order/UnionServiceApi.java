@@ -1,7 +1,7 @@
 /**
  * @类名称:银联快捷ServiceImpl.java
  * @时间:2017年12月28日上午10:23:55
- * @作者:lihai 
+ * @作者:nada
  * @版权:公司 Copyright (c) 2017 
  */
 package com.vc.onlinepay.pay.api.order;
@@ -24,7 +24,7 @@ import org.springframework.stereotype.Service;
 
 /**
  * @描述:银联快捷交易路由业务处理
- * @作者:lihai 
+ * @作者:nada
  * @时间:2017年12月28日 上午10:23:55 
  */
 @Service
@@ -51,7 +51,7 @@ public class UnionServiceApi {
 
     /**
      * @描述:银联快捷支付分发
-     * @作者:lihai 
+     * @作者:nada
      * @时间:2017年12月28日 上午11:19:37
      */
     public JSONObject doRestPay(JSONObject reqData) {

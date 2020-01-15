@@ -55,7 +55,7 @@ public class UpperOrderQueryServiceApi {
 
     /**
      * @描述:订单统一查询接口
-     * @作者:lihai
+     * @作者:nada
      * @时间:2018年1月18日 上午11:39:52
      */
     public JSONObject doRestOrderQuery(JSONObject params, VcOnlineOrder vcOnlineOrder) {
@@ -114,7 +114,7 @@ public class UpperOrderQueryServiceApi {
 
     /**
      * @描述:下游回调处理
-     * @作者:lihai
+     * @作者:nada
      * @时间:2018年1月18日 下午2:55:44
      */
     public JSONObject asynNotice(String notifyUrl, JSONObject reqData) {
@@ -143,7 +143,7 @@ public class UpperOrderQueryServiceApi {
 
     /**
      * @描述:通用查询监听处理
-     * @作者:lihai
+     * @作者:nada
      * @时间:2018年1月18日 下午12:34:06
      */
     private ResultListener getResultListener() {
@@ -186,7 +186,7 @@ public class UpperOrderQueryServiceApi {
 
     /**
      * @描述:查询上游订单参数验证
-     * @作者:lihai
+     * @作者:nada
      * @时间:2018年1月17日 下午4:11:53
      */
     public JSONObject checkReqPrms(JSONObject params) {
@@ -214,7 +214,7 @@ public class UpperOrderQueryServiceApi {
 
     /**
      * @描述:检查订单
-     * @作者:lihai
+     * @作者:nada
      * @时间:2018年1月17日 下午4:33:23
      */
     public JSONObject checkOrder(JSONObject params, VcOnlineOrder vcOnlineOrder) {

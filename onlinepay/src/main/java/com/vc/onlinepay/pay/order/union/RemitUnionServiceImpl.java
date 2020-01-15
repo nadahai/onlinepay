@@ -1,7 +1,7 @@
 /**
  * @类名称:RemitReplaceServiceImpl.java
  * @时间:2017年12月19日下午2:57:29
- * @作者:lihai 
+ * @作者:nada
  * @版权:公司 Copyright (c) 2017 
  */
 package com.vc.onlinepay.pay.order.union;
@@ -22,7 +22,7 @@ import org.springframework.stereotype.Service;
 
 /**
  * @描述:汇付宝银联快捷
- * @作者:lihai 
+ * @作者:nada
  * @时间:2017年12月19日 下午2:57:29 
  */
 @Service

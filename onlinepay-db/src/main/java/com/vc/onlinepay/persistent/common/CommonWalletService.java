@@ -1,7 +1,7 @@
 /**
  * @类名称:CommonWalletServiceImpl.java
  * @时间:2018年3月5日下午5:20:18
- * @作者:lihai
+ * @作者:nada
  * @版权:公司 Copyright (c) 2018 
  */
 package com.vc.onlinepay.persistent.common;
@@ -36,7 +36,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @描述:通用财富业务处理接口实现(禁止随意修改)
- * @作者:lihai
+ * @作者:nada
  * @时间:2018年3月5日 下午5:20:18
  */
 @Service

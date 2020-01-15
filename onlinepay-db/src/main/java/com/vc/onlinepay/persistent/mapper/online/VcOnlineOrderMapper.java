@@ -40,41 +40,41 @@ public interface VcOnlineOrderMapper {
 
     /**
      * @描述:修改订单
-     * @作者:lihai 
+     * @作者:nada
      * @时间:2018年1月31日 下午2:37:24
      */
     int updateByOrderNo(VcOnlineOrder vcOnlineOrder);
     
     /**
      * @描述:保存交易订单
-     * @作者:lihai 
+     * @作者:nada
      * @时间:2018年1月31日 下午2:32:08
      */
     int save(VcOnlineOrder vcOnlineOrder);
     
     /**
      * @描述:根据下游订单号查询交易订单信息
-     * @作者:lihai 
+     * @作者:nada
      * @时间:2018年1月31日 下午2:36:20
      */
     List<VcOnlineOrder> findOrderByCOrderNo(String cOrder);
 	
 	/**
 	 * @描述:验证商户上送订单是否已经存在
-	 * @作者:lihai 
+	 * @作者:nada
 	 * @时间:2018年1月31日 下午2:32:49
 	 */
   List<VcOnlineOrder> verifyMerchOrderExist(String cOrder);
 	
 	/**
      * @描述:修改订单状态
-     * @作者:lihai 
+     * @作者:nada
      * @时间:2018年3月8日 上午11:00:49
      */
   int updateOrderStatus(VcOnlineOrder vcOnlineOrder);
   /**
    * @描述:修改订单描述
-   * @作者:lihai 
+   * @作者:nada
    * @时间:2018年3月8日 上午11:00:49
    */
   int updateOrderDes(VcOnlineOrder vcOnlineOrder);
@@ -82,21 +82,21 @@ public interface VcOnlineOrderMapper {
 
     /**
      * @描述:修改分润状态
-     * @作者:lihai
+     * @作者:nada
      * @时间:2018年3月8日 上午11:00:49
      */
     int updateProfitStatus(VcOnlineOrder vcOnlineOrder);
 
 	/**
      * @描述:修改订单结算状态
-     * @作者:lihai 
+     * @作者:nada
      * @时间:2018年3月8日 上午11:00:49
      */
   int updateOrderSettleStatus(VcOnlineOrder vcOnlineOrder);
     
     /**
      * @描述:修改下游订单通知信息
-     * @作者:lihai 
+     * @作者:nada
      * @时间:2018年1月31日 下午2:37:24
      */
     int updateOrderNotify(VcOnlineOrder vcOnlineOrder);

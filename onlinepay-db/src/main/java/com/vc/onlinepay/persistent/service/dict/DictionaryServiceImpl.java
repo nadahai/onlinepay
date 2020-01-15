@@ -1,7 +1,7 @@
 /**
  * @类名称:OrderServiceImpl.java
  * @时间:2017年6月6日上午9:09:22
- * @作者:lihai
+ * @作者:nada
  * @版权:版权所有 Copyright (c) 2017
  */
 package com.vc.onlinepay.persistent.service.dict;
@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @描述:系統字典接口实现
- * @作者:lihai
+ * @作者:nada
  * @时间:2017年6月6日 上午9:09:22
  */
 @Service

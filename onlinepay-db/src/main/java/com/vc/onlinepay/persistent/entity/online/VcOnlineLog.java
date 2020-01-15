@@ -1,7 +1,7 @@
 /**
  * @类名称:VcOnlineLog.java
  * @时间:2018年3月5日下午3:23:50
- * @作者:lihai
+ * @作者:nada
  * @版权:公司 Copyright (c) 2018
  */
 package com.vc.onlinepay.persistent.entity.online;
@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 
 /**
  * @描述:日志管理
- * @作者:lihai
+ * @作者:nada
  * @时间:2018年3月5日 下午3:23:50
  */
 public class VcOnlineLog {

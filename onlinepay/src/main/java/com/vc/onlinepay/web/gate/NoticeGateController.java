@@ -31,7 +31,7 @@ public class NoticeGateController extends BaseController {
 	
 	/**
 	 * @描述:自动通知接口
-	 * @作者:lihai 
+	 * @作者:nada
 	 * @时间:2017年12月27日 下午4:38:26
 	 */
     @RequestMapping(value = "", produces = "text/html;charset=UTF-8")
@@ -48,7 +48,7 @@ public class NoticeGateController extends BaseController {
     
     /**
      * @描述:自动通知接口业务处理
-     * @作者:lihai 
+     * @作者:nada
      * @时间:2017年12月27日 下午4:25:18
      */
     public JSONObject invoke(HttpServletRequest request){

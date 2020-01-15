@@ -141,7 +141,7 @@ public class VcOnlineOrder {
 
     /**
      * @描述:构建大商户订单参数
-     * @作者:lihai
+     * @作者:nada
      * @时间:2017年12月21日 下午5:43:03
      */
     public static VcOnlineOrder buildVcOnlineOrder (JSONObject reqData, MerchChannel merchChannel) throws IllegalArgumentException {

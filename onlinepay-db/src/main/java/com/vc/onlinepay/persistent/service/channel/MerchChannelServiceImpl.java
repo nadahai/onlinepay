@@ -1,7 +1,7 @@
 /**
  * @类名称:MerchChannelServiceImpl.java
  * @时间:2017年6月5日下午10:43:53
- * @作者:lihai
+ * @作者:nada
  * @版权:版权所有 Copyright (c) 2017
  */
 package com.vc.onlinepay.persistent.service.channel;
@@ -26,7 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @描述:商户通道配置信息
- * @作者:lihai
+ * @作者:nada
  * @时间:2017年6月5日 下午10:43:53
  */
 @Service

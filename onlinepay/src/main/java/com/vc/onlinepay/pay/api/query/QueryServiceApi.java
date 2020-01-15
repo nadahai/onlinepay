@@ -1,7 +1,7 @@
 /**
  * @类名称:QuickServiceImpl.java
  * @时间:2017年12月21日下午12:29:46
- * @作者:lihai 
+ * @作者:nada
  * @版权:公司 Copyright (c) 2017 
  */
 package com.vc.onlinepay.pay.api.query;
@@ -22,7 +22,7 @@ import org.springframework.stereotype.Service;
 
 /**
  * @描述:统一快捷选择验签业务处理
- * @作者:lihai 
+ * @作者:nada
  * @时间:2017年12月21日 下午12:29:46 
  */
 @Service
@@ -37,7 +37,7 @@ public class QueryServiceApi{
    
     /**
      * @描述:验证入参
-     * @作者:lihai 
+     * @作者:nada
      * @时间:2017年12月19日 上午10:29:39
      */
     public JSONObject checkReqPrms(JSONObject params, HttpServletRequest request) {

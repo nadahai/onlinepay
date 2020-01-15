@@ -31,7 +31,7 @@ public class HttpRequestTools {
 
     /**
      * @描述: 兼容解析请求报文
-     * @作者:lihai
+     * @作者:nada
      * @时间:2017年11月15日 下午3:21:34
      */
     public static JSONObject getRequestJson (HttpServletRequest request) {
@@ -121,7 +121,7 @@ public class HttpRequestTools {
 
     /**
      * @描述:兼容性获取request请求参数Map
-     * @作者:lihai
+     * @作者:nada
      * @时间:2017年6月28日 下午5:07:39
      */
     public static Map<String, String> getRequest (HttpServletRequest request) {

@@ -160,7 +160,7 @@ public class Constant {
 
     /**
      * @描述:异常通用json
-     * @作者:lihai
+     * @作者:nada
      * @时间:2018年3月5日 下午4:37:12
      */
     public static JSONObject exception(String msg){

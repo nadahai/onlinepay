@@ -168,7 +168,7 @@ public class UpperAccountServiceApi{
 	
 	 /**
      * @描述:获取监听
-     * @作者:lihai 
+     * @作者:nada
      * @时间:2017年12月19日 下午3:42:31
      */
     public ResultListener getResultListener(){

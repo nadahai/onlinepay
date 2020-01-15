@@ -26,7 +26,7 @@ import org.springframework.web.servlet.ModelAndView;
  * 
  * @类名称:UpperAccountQueryApi.java
  * @时间:2018年1月4日上午11:36:15
- * @作者:lihai
+ * @作者:nada
  * @版权:公司 Copyright (c) 2018
  */
 @Controller
@@ -43,7 +43,7 @@ public class UpperReplaceQueryController extends BaseController {
 
     /**
      * @描述:上游代付订单查询接口入口
-     * @作者:lihai
+     * @作者:nada
      * @时间:2017年6月6日 下午10:24:20
      */
     @Override
@@ -113,7 +113,7 @@ public class UpperReplaceQueryController extends BaseController {
 
     /**
      * @描述:调用上游代付订单查询订单业务处理
-     * @作者:lihai
+     * @作者:nada
      * @时间:2017年6月16日 下午6:19:27
      */
     public JSONObject invokeRestOrder(JSONObject params) {

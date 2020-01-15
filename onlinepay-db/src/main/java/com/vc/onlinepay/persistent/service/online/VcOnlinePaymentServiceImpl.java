@@ -48,7 +48,7 @@ public class VcOnlinePaymentServiceImpl {
     
     /**
      * @描述:查询代付中的订单
-     * @作者:lihai 
+     * @作者:nada
      * @时间:2018年1月11日 下午4:55:38
      */
     public List<VcOnlinePayment> selectByChannelSource(@Param("channelSource") String channelSource){

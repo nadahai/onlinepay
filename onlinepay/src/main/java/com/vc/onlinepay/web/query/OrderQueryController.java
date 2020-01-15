@@ -22,7 +22,7 @@ import java.util.List;
  * 订单交易查询（开发给下游）
  * @类名称:AmalgamatePayQueryApi.java
  * @时间:2017年12月27日下午2:20:35
- * @作者:lihai 
+ * @作者:nada
  * @版权:公司 Copyright (c) 2017
  */
 @Controller
@@ -35,7 +35,7 @@ public class OrderQueryController extends BaseController {
 	
 	/**
 	 * @描述:统一交易查询接口入口
-	 * @作者:lihai 
+	 * @作者:nada
 	 * @时间:2017年12月27日 下午4:38:26
 	 */
     @Override
@@ -56,7 +56,7 @@ public class OrderQueryController extends BaseController {
     
     /**
      * @描述:统一交易查询接口业务处理
-     * @作者:lihai 
+     * @作者:nada
      * @时间:2017年12月27日 下午4:25:18
      */
     public JSONObject invoke(HttpServletRequest request) throws IOException {

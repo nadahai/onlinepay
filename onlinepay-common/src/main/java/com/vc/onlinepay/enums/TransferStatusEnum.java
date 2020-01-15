@@ -1,7 +1,7 @@
 /**
  * @类名称:BaseCode.java
  * @时间:2017年7月5日下午7:32:30
- * @作者:lihai 
+ * @作者:nada
  * @版权:公司 Copyright (c) 2017 
  */
 package com.vc.onlinepay.enums;
@@ -9,7 +9,7 @@ package com.vc.onlinepay.enums;
 
 /**
  * @描述:代付响应状态码枚举
- * @作者:lihai 
+ * @作者:nada
  * @时间:2017年7月5日 下午7:32:30 
  */
 public enum TransferStatusEnum {

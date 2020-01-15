@@ -21,7 +21,7 @@ import java.io.IOException;
  * 代付订单查询（开发给下游）
  * @类名称:AmalgamateTransferQueryApi.java
  * @时间:2017年12月27日下午2:20:54
- * @作者:lihai
+ * @作者:nada
  * @版权:公司 Copyright (c) 2017
  */
 @Controller
@@ -34,7 +34,7 @@ public class ReplaceQueryController extends BaseController {
 
     /**
      * @描述:统一代付查询接口入口
-     * @作者:lihai
+     * @作者:nada
      * @时间:2017年12月27日 下午4:38:47
      */
     @Override

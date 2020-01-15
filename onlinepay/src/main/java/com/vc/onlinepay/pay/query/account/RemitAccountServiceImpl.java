@@ -26,7 +26,7 @@ public class RemitAccountServiceImpl{
 
 	/**
 	 * @描述:汇付宝查询余额接口
-	 * @作者:lihai 
+	 * @作者:nada
 	 * @时间:2018年1月4日 上午11:45:55
 	 */
 	public JSONObject  walletQuery(JSONObject reqData, ResultListener listener) {

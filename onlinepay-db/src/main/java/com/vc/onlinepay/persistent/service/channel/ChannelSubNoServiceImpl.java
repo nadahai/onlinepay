@@ -142,7 +142,7 @@ public class ChannelSubNoServiceImpl {
 
     /**
      * @描述:获取指定时间范围内一批子商户号
-     * @作者:lihai
+     * @作者:nada
      * @时间:2017年6月5日 下午9:09:01
      */
     public List<ChannelSubNo> getChannelLimitTimeSubNoList (ChannelSubNo channelSubNo) {
@@ -152,7 +152,7 @@ public class ChannelSubNoServiceImpl {
 
     /**
      * @描述:自研支付宝获取指定时间范围内一批子商户号
-     * @作者:lihai
+     * @作者:nada
      * @时间:2017年6月5日 下午9:09:01
      */
     public List<ChannelSubNo> getLoopRobinSubNoList (ChannelSubNo channelSubNo) {
@@ -162,7 +162,7 @@ public class ChannelSubNoServiceImpl {
 
     /**
      * @描述:企业支付宝列表
-     * @作者:lihai
+     * @作者:nada
      * @时间:2017年6月5日 下午9:09:01
      */
     public List<ChannelSubNo> getAllSupplierList (ChannelSubNo channelSubNo) {

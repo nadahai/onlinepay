@@ -39,7 +39,7 @@ public class VcOnlineThirdBalanceServiceImpl {
 
     /**
      * @描述:查找最优代付通道
-     * @作者:lihai
+     * @作者:nada
      * @时间:2017年12月20日 上午11:28:55
      */
     public VcOnlineThirdBalance findLoadBalance (VcOnlineThirdBalance thirdBalance) {
@@ -53,7 +53,7 @@ public class VcOnlineThirdBalanceServiceImpl {
 
     /**
      * @描述:查找所有代付通道（包括禁用和关闭）
-     * @作者:lihai
+     * @作者:nada
      * @时间:2017年12月20日 上午11:28:55
      */
     public List<VcOnlineThirdBalance> findAllBalance (VcOnlineThirdBalance thirdBalance) {
@@ -66,7 +66,7 @@ public class VcOnlineThirdBalanceServiceImpl {
 
     /**
      * @描述:查找所有代付通道（包括禁用和关闭）
-     * @作者:lihai
+     * @作者:nada
      * @时间:2017年12月20日 上午11:28:55
      */
     public List<VcOnlineThirdBalance> findAllBalanceList (VcOnlineThirdBalance thirdBalance) {

@@ -1,7 +1,7 @@
 /**
  * @类名称:CacheManagerApi.java
  * @时间:2018年3月2日下午5:18:36
- * @作者:lihai
+ * @作者:nada
  * @版权:公司 Copyright (c) 2018
  */
 package com.vc.onlinepay.web.gate;
@@ -22,7 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 /**
  * @描述:缓存管理api,redis缓存管理统一暴露api
- * @作者:lihai
+ * @作者:nada
  * @时间:2018年3月2日 下午5:18:36
  */
 @Controller

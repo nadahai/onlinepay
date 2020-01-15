@@ -1,7 +1,7 @@
 /**
  * @类名称:VcOnlineLogServiceImpl.java
  * @时间:2018年3月5日下午3:44:40
- * @作者:lihai
+ * @作者:nada
  * @版权:公司 Copyright (c) 2018
  */
 package com.vc.onlinepay.persistent.service.online;
@@ -31,7 +31,7 @@ public class VcOnlineLogServiceImpl {
 
     /**
      * @描述:保存日志
-     * @作者:lihai
+     * @作者:nada
      * @时间:2018年3月5日 下午3:46:05
      */
     @Transactional (readOnly = false, rollbackFor = Exception.class)

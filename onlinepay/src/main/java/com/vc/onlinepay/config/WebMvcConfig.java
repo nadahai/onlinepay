@@ -40,7 +40,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 /**
  * @类名称:WebMvcConfig.java
  * @时间:2017年11月14日下午3:43:54
- * @作者:lihai
+ * @作者:nada
  * @版权:版权所有 Copyright (c) 2017
  */
 @SuppressWarnings("deprecation")

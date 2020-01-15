@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * @类名称:MagicUnionCallBackApi.java
  * @时间:2018年1月4日下午8:07:35
- * @作者:lihai
+ * @作者:nada
  * @版权:公司 Copyright (c) 2018
  */
 @Controller
@@ -32,7 +32,7 @@ public class PengCallBackController extends BaseController {
     
     /**
      * @描述:老彭回调接口
-     * @作者:lihai
+     * @作者:nada
      * @时间:2018年1月4日 下午8:04:18
      */
     @Override
@@ -51,7 +51,7 @@ public class PengCallBackController extends BaseController {
 
     /**
      * @描述:执行老彭回调接口
-     * @作者:lihai
+     * @作者:nada
      * @时间:2018年1月5日 上午10:08:05
      */
     public String invokeCallback(HttpServletRequest request) throws IOException {

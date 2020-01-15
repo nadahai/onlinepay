@@ -21,7 +21,7 @@ public class RemitOrderQueryImpl {
 
     /**
      * @描述:上游订单查询接口
-     * @作者:lihai
+     * @作者:nada
      * @时间:2018年1月18日 下午3:14:22
      */
     public JSONObject orderQuery(JSONObject reqData, ResultListener listener) {

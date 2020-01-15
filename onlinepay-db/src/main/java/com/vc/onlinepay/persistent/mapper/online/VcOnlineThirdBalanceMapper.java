@@ -24,7 +24,7 @@ public interface VcOnlineThirdBalanceMapper{
 
 	/**
 	 * @描述:查找最优代付通道
-	 * @作者:lihai 
+	 * @作者:nada
 	 * @时间:2017年12月20日 上午11:27:20
 	 */
 	public List<VcOnlineThirdBalance> findLoadBalance(VcOnlineThirdBalance thirdBalance);
@@ -37,7 +37,7 @@ public interface VcOnlineThirdBalanceMapper{
 	
 	/**
 	 * @描述:提现成功后更新账户表
-	 * @作者:lihai 
+	 * @作者:nada
 	 * @时间:2017年12月21日 上午10:25:32
 	 */
 	public int cashSuccessUpdateBalance(VcOnlineThirdBalance vcOnlineThirdBalance);

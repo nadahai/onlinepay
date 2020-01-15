@@ -197,7 +197,7 @@ public class ReplaceServiceImpl {
 
     /**
      * @描述:代付前数据持久化
-     * @作者:lihai
+     * @作者:nada
      * @时间:2017年12月20日 下午4:10:00
      */
     public JSONObject persistentReplaceBefore (JSONObject reqData, VcOnlineWallet vcOnlineWallet) {
@@ -577,7 +577,7 @@ public class ReplaceServiceImpl {
 
     /**
      * @描述:通用查询监听处理
-     * @作者:lihai
+     * @作者:nada
      * @时间:2018年1月18日 下午12:34:06
      */
     public ResultListener getResultListener (JSONObject reqData) {

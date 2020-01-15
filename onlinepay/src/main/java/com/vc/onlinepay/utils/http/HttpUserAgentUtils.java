@@ -92,7 +92,7 @@ public class HttpUserAgentUtils {
 
     /**
      * @描述:获取浏览器支付类型
-     * @作者:lihai
+     * @作者:nada
      * @时间:2017年6月8日 下午10:02:31
      */
     public static BrowserType getBrowserType (HttpServletRequest request) {

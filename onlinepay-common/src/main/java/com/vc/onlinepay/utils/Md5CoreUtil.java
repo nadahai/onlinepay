@@ -14,7 +14,7 @@ public class Md5CoreUtil {
 	
 	/**
      * @描述：按照ascii码排序根据MD5加密
-     * @作者:lihai 
+     * @作者:nada
      * @时间:2018年3月8日 下午5:11:18
      */
     public static String md5ascii(JSONObject sourceObj,String md5Key) {

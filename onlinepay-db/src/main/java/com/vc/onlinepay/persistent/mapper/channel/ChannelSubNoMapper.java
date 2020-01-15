@@ -12,7 +12,7 @@ import com.vc.onlinepay.persistent.entity.channel.ChannelSubNo;
 /**
  * @类名称:MerchInfoMapper.java
  * @时间:2017年6月5日下午10:39:04
- * @作者:lihai 
+ * @作者:nada
  * @版权:版权所有 Copyright (c) 2017
  */
 @Repository
@@ -26,7 +26,7 @@ public interface ChannelSubNoMapper {
 	
     /**
      * @描述:获取一批子商户号
-     * @作者:lihai 
+     * @作者:nada
      * @时间:2017年6月5日 下午9:09:01
      */
     List<ChannelSubNo> getChannelSubNoList (ChannelSubNo channelSubNo);
@@ -34,7 +34,7 @@ public interface ChannelSubNoMapper {
     
     /**
      * @描述:获取指定时间范围内一批子商户号
-     * @作者:lihai 
+     * @作者:nada
      * @时间:2017年6月5日 下午9:09:01
      */
     List<ChannelSubNo> getChannelLimitTimeSubNoList (ChannelSubNo channelSubNo);
@@ -42,7 +42,7 @@ public interface ChannelSubNoMapper {
     
     /**
      * @描述:自研支付宝获取指定时间范围内一批子商户号
-     * @作者:lihai 
+     * @作者:nada
      * @时间:2017年6月5日 下午9:09:01
      */
     List<ChannelSubNo> getLoopRobinSubNoList (ChannelSubNo channelSubNo);
@@ -50,7 +50,7 @@ public interface ChannelSubNoMapper {
     
     /**
      * @描述:企业支付宝列表
-     * @作者:lihai 
+     * @作者:nada
      * @时间:2017年6月5日 下午9:09:01
      */
     List<ChannelSubNo> getAllSupplierList (ChannelSubNo channelSubNo);

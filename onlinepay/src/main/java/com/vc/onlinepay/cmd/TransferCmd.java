@@ -131,7 +131,7 @@ public class TransferCmd {
 
     /**
      * @描述:路由代付通道 并设置通道
-     * @作者:lihai
+     * @作者:nada
      * @时间:2017年12月18日 下午6:46:19
      */
     public JSONObject replaceRoute (JSONObject reqData) throws ServerException {
@@ -598,7 +598,7 @@ public class TransferCmd {
 
     /**
      * @描述:代付前数据持久化
-     * @作者:lihai
+     * @作者:nada
      * @时间:2017年12月20日 下午4:10:00
      */
     public JSONObject persistentReplaceBefore (JSONObject reqData, VcOnlineWallet vcOnlineWallet) {

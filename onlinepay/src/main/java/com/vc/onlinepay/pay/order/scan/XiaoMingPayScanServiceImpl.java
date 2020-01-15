@@ -22,7 +22,7 @@ public class XiaoMingPayScanServiceImpl {
 
     /**
      * @描述:小明交易
-     * @作者:lihai
+     * @作者:nada
      * @时间:2017年12月1日 下午3:15:40
      */
     public JSONObject payOrder (JSONObject reqData, ResultListener listener) {

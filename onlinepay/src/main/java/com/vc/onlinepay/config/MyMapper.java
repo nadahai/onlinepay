@@ -30,7 +30,7 @@ import tk.mybatis.mapper.common.MySqlMapper;
 /**
  * @类名称:MyMapper.java
  * @时间:2017年11月14日下午3:43:42
- * @作者:lihai 
+ * @作者:nada
  * @版权:版权所有 Copyright (c) 2017
  * 继承自己的MyMapper 特别注意，该接口不能被扫描到，否则会出错
  */

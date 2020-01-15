@@ -15,7 +15,7 @@ import com.vc.onlinepay.persistent.entity.channel.MerchChannel;
 /**
  * @类名称:MerchChannelMapper.java
  * @时间:2017年6月5日下午10:38:56
- * @作者:lihai 
+ * @作者:nada
  * @版权:版权所有 Copyright (c) 2017
  */
 @Repository

@@ -17,7 +17,7 @@ public interface VcOnlineOrderDetailMapper {
 
     /**
      * @描述:保存交易订单
-     * @作者:lihai 
+     * @作者:nada
      * @时间:2018年1月31日 下午2:32:08
      */
     int save(VcOnlineOrderDetail vcOnlineOrder);
