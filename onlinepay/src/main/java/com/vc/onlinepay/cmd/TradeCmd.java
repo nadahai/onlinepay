@@ -338,7 +338,7 @@ public class TradeCmd {
 					this.alipayAutoRoute (reqData, merchChannel, traAmount);
 					break;
 				case 111:
-					this.setSqbKey (reqData, merchChannel, traAmount);
+					this.autoPddSubnoRout(reqData,merchChannel,traAmount);
 					break;
 				case 93:
 					JSONObject res = this.setSqbKey (reqData, merchChannel, traAmount);
@@ -357,6 +357,62 @@ public class TradeCmd {
 		} catch (Exception e) {
 			logger.error ("交易通道验证异常", e);
 			return Constant.failedMsg ("交易通道验证异常,请联系运维人员");
+		}
+	}
+
+	/**
+	 * @描述:路由pdd 子商户号
+	 * @时间:2019/5/2
+	 **/
+	private JSONObject autoPddSubnoRout(JSONObject reqData, MerchChannel merchChannel, BigDecimal traAmount){
+		try {
+			Long channelId = merchChannel.getChannelId ();
+			Integer type = reqData.containsKey ("payType") ? reqData.getIntValue ("payType") : 0;
+			String service = reqData.containsKey ("service") ? reqData.getString ("service") : "";
+			if (type == 2 || type == 10 || Constant.service_alipay.equals (service)) {
+				type = 2;
+			}else if(type == 1 || type == 12 || Constant.service_weixin.equals (service)){
+				type = 1;
+			}else{
+				type = 0;
+			}
+			ChannelSubNo channelSubNo = new ChannelSubNo (channelId,traAmount);
+			channelSubNo.setPayType (type);
+			List<ChannelSubNo> lists = merchChannelService.getChannelSubNoList(channelSubNo);
+			if (lists == null || lists.size () < 1) {
+				return Constant.failedMsg ("当前请求频繁，请稍后再试");
+			}
+			if (lists.size () == 1) {
+				channelSubNo = lists.get (0);
+			}else{
+				for (ChannelSubNo no : lists) {
+					boolean isOk = coreEngineProviderService.checkSqb (no.getUpMerchNo (),type);
+					if(no.getPayType ()<1 && !isOk){
+						continue;
+					}
+					if (no.getMinPrice () > 0 && no.getMaxPrice () > 0 && no.getMinPrice () <= traAmount.doubleValue () && no.getMaxPrice () > traAmount.doubleValue ()) {
+						channelSubNo = lists.get (0);
+						break;
+					}
+				}
+			}
+			if(channelSubNo == null || StringUtil.isEmpty (channelSubNo.getUpMerchNo ()) || channelSubNo.getLastOrderTime () == null){
+				return Constant.failedMsg ("当前请求频繁，请稍后再试");
+			}
+			long diffTime = coreEngineProviderService.getIntCacheCfgKey ("online.sqb.order.diff.time");
+			long diff = (System.currentTimeMillis ()-channelSubNo.getLastOrderTime ().getTime ())/1000;
+			if(diff<diffTime){
+				return Constant.failedMsg ("当前请求频繁，请稍后"+(diffTime-diff)+"秒后再试");
+			}
+			String upMerchNo = channelSubNo.getUpMerchNo ();
+			coreEngineProviderService.setSqbNum (upMerchNo,type);
+			reqData.put ("channelKey",upMerchNo);
+			reqData.put ("channelDesKey", channelSubNo.getUpMerchKey ());
+			logger.info ("默认轮询订单:{},商户号:{}",reqData.getString ("vcOrderNo"),reqData.getString("channelKey"));
+			return Constant.successMsg ("设置成功");
+		} catch (OnlineServiceException e) {
+			logger.error ("设置收钱吧信息异常");
+			return Constant.failedMsg ("设置收钱吧信息异常");
 		}
 	}
 
