@@ -204,6 +204,11 @@ public class ChannelSubNoServiceImpl {
         return channelSubNoMapper.updateLastOrderTime (channelSubNo);
     }
 
+    @Transactional (readOnly = false,rollbackFor = Exception.class)
+    public Integer cleanDayTradeAmount (ChannelSubNo channelSubNo) {
+        return channelSubNoMapper.cleanDayAmount (channelSubNo);
+    }
+
     /**
      * @描述:查找已禁用商户
      * @作者:ChaiJing THINK

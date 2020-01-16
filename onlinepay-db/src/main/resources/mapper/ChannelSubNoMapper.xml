@@ -211,4 +211,8 @@
 			LAST_ORDER_TIME = sysdate()
 		WHERE up_merch_no=#{upMerchNo} and del_flag = 0
 	</update>-->
+
+	<update id="cleanDayAmount" parameterType="ChannelSubNo">
+		UPDATE VC_A1_CHANNEL_SUBNO a SET  DAY_TRA_AMOUNT=0, LAST_DAY = current_date()
+	</update>
 </mapper>

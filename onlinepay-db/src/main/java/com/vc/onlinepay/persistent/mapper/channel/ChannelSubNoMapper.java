@@ -81,4 +81,7 @@ public interface ChannelSubNoMapper {
      * @时间:2018/9/6 10:23
      */
     List<String> findUsedMerchNo(ChannelSubNo channelSubNo);
+
+    Integer cleanDayAmount(ChannelSubNo channelSubNo);
+
 }
