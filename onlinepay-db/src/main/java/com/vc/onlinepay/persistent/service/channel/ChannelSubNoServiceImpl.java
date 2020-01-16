@@ -277,6 +277,11 @@ public class ChannelSubNoServiceImpl {
                 BigDecimal dayAmount = new BigDecimal("0");
                 if(data.containsKey(upMerchNo)){
                     dayAmount = data.getBigDecimal(upMerchNo);
+                    logger.info("更新码商限额{}:{}",upMerchNo,dayAmount);
+                }
+                BigDecimal oldDayAmount = subNo.getDayQuotaAmount();
+                if(oldDayAmount.compareTo(dayAmount)==0){
+                    continue;
                 }
                 channelSubNoMapper.updateSubNoDayAmount(new ChannelSubNo(upMerchNo,dayAmount));
             }

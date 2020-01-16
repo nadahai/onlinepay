@@ -138,7 +138,7 @@
 			a.channel_id AS channelId,
 			a.UP_MERCH_NO AS upMerchNo,
 			a.STATUS AS STATUS,
-			a.DAY_QUOTA_AMOUNT AS dayQuotaAmount,
+			IFNULL(a.DAY_QUOTA_AMOUNT,0) AS dayQuotaAmount,
 			b.`PAY_URL` AS payUrl
 		FROM
 			VC_A1_CHANNEL_SUBNO a LEFT JOIN vc_a1_channel b  ON a.`channel_id`=b.id
