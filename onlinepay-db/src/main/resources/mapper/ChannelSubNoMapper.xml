@@ -49,8 +49,9 @@
 			<if test="payType != null and payType !=0 ">
 				and (IFNULL(a.PAY_TYPE,0) = #{payType} or IFNULL(PAY_TYPE,0) = 0)
 			</if>
-			ORDER BY LAST_ORDER_TIME asc ,DAY_TRA_AMOUNT asc
-			LIMIT 10
+			/*ORDER BY LAST_ORDER_TIME asc ,DAY_TRA_AMOUNT asc*/
+			ORDER BY RAND()
+			LIMIT 5
 	</select>
 	
 	<!-- 个人支付宝账号列表 -->
