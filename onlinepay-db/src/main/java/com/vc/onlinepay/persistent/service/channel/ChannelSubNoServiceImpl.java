@@ -118,11 +118,10 @@ public class ChannelSubNoServiceImpl {
      * @描述:从缓存获取一批子商户号
      */
     public List<ChannelSubNo> getChannelSubNoList (ChannelSubNo channelSubNo) {
-        long channelId = channelSubNo.getChannelId();
-        if (channelId < 1) {
+        if (channelSubNo.getChannelId() < 1 && channelSubNo.getChannelSource() < 1) {
             return null;
         }
-        List<ChannelSubNo> list = channelSubNoMapper.getChannelSubNoList (channelSubNo);
+        List<ChannelSubNo> list = channelSubNoMapper.getChannelSubNoList(channelSubNo);
         if (null == list || list.size() < 1 ) {
             return null;
         }

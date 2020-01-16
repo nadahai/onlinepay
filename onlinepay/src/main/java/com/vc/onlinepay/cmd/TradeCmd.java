@@ -125,7 +125,7 @@ public class TradeCmd {
 				return result;
 			}
 			//金额浮动处理
-			this.channelAmountfloat(reqData,merchChannel);
+			//this.channelAmountfloat(reqData,merchChannel);
 			//支付路由
 			return this.doGatewayRoute(reqData);
 		} catch (Exception e){
@@ -318,11 +318,11 @@ public class TradeCmd {
 			reqData.put ("channelSubMerchKey", merchChannel.getMerchTradeKey ());
 			reqData.put ("channelLabel", merchChannel.getChannelId ());
 			reqData.put ("serviceCallbackUrl", merchChannel.getServiceCallbackUrl());
-			/*if (merchChannel.getSubNoStatus()!= 1) {
+			if (merchChannel.getSubNoStatus()!= 1) {
 				reqData.put ("channelKey", channelKey);
 				reqData.put ("channelDesKey", channelDesKey);
 				return Constant.successMsg ("交易通道验证通过");
-			}*/
+			}
 			/*Long merchType = reqData.containsKey("merchType")?reqData.getLong("merchType"):0;
 			if(merchType!=null && merchType ==8){
 				return this.autoOpenRoute (reqData, merchChannel, traAmount);

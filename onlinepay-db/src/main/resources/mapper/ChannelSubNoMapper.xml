@@ -4,45 +4,50 @@
     
     <!-- 获取符合条件子商户号 -->
 	<select id="getChannelSubNoList" resultType="ChannelSubNo">
-		SELECT 
-			id,
-			channel_id as channelId,
-		    merch_id as merchId,
-			UP_MERCH_NO as upMerchNo,
-			UP_MERCH_KEY as upMerchKey,
-			MIN_PRICE as minPrice,
-			MAX_PRICE as maxPrice,
-		    PAY_TYPE as payType,
-		    REMARK as remark,
-		    REMARKS as remarks,
-			USER_ID as userId,
-			name as name,
-			BANK_NO as bankNo,
-			cardIdx as cardIdx,
-			BANK_MARK as bankMark,
-			TYPE as type,
-			LAST_ORDER_TIME as lastOrderTime
-		FROM 
-			VC_A1_CHANNEL_SUBNO
-		WHERE 
-			del_flag = 0 and status =1
-			and IFNULL(DAY_TRA_AMOUNT,0) &lt;= IFNULL(DAY_QUOTA_AMOUNT,0)
-			and IFNULL(TRA_AMOUNT,0) &lt;= IFNULL(QUOTA_AMOUNT,0)
+		SELECT
+			a.id,
+			a.channel_id AS channelId,
+			a.merch_id AS merchId,
+			a.UP_MERCH_NO AS upMerchNo,
+			a.UP_MERCH_KEY AS upMerchKey,
+			a.MIN_PRICE AS minPrice,
+			a.MAX_PRICE AS maxPrice,
+			a.PAY_TYPE AS payType,
+			a.REMARK AS remark,
+			a.REMARKS AS remarks,
+			a.USER_ID AS userId,
+			a.NAME AS NAME,
+			a.BANK_NO AS bankNo,
+			a.cardIdx AS cardIdx,
+			a.BANK_MARK AS bankMark,
+			a.TYPE AS TYPE,
+			a.LAST_ORDER_TIME AS lastOrderTime
+		FROM
+			VC_A1_CHANNEL_SUBNO a
+			LEFT JOIN vc_a1_channel b ON a.`channel_id`=b.id
+		WHERE
+			a.del_flag = 0 and  a.status =1
+			and b.`STATUS`=1 AND b.`DEL_FLAG`=0 AND b.`SUBNO_STATUS`=1
+			and IFNULL(a.DAY_TRA_AMOUNT,0) &lt;= IFNULL(a.DAY_QUOTA_AMOUNT,0)
+			and IFNULL(a.TRA_AMOUNT,0) &lt;= IFNULL(a.QUOTA_AMOUNT,0)
+			<if test="channelSource != null and channelSource !=0 ">
+				and b.CHANNEL_SOURCE = #{channelSource}
+			</if>
 			<if test="traAmount != null and traAmount !=0 ">
-				and IFNULL(MIN_PRICE,0) &lt;= #{traAmount}
-				and IFNULL(MAX_PRICE,0) >= #{traAmount}
+				and IFNULL(a.MIN_PRICE,0) &lt;= #{traAmount}
+				and IFNULL(a.MAX_PRICE,0) >= #{traAmount}
 			</if>
 			<if test="upMerchNo != null and upMerchNo !='' ">
-				and  UP_MERCH_NO = #{upMerchNo}
+				and  a.UP_MERCH_NO = #{upMerchNo}
 			</if>
 			<if test="channelId != null and channelId !=0 ">
-				and channel_id = #{channelId}
+				and a.channel_id = #{channelId}
 			</if>
 			<if test="merchId != null and merchId !=0 ">
-				and merch_id = #{merchId}
+				and a.merch_id = #{merchId}
 			</if>
 			<if test="payType != null and payType !=0 ">
-				and (IFNULL(PAY_TYPE,0) = #{payType} or IFNULL(PAY_TYPE,0) = 0)
+				and (IFNULL(a.PAY_TYPE,0) = #{payType} or IFNULL(PAY_TYPE,0) = 0)
 			</if>
 			ORDER BY LAST_ORDER_TIME asc ,DAY_TRA_AMOUNT asc
 			LIMIT 10
