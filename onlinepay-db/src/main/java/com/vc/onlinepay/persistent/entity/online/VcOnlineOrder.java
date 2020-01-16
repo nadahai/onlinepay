@@ -236,6 +236,65 @@ public class VcOnlineOrder {
         return vcOnlineOrder;
     }
 
+
+    /**
+     * @描述:构建大商户订单参数
+     * @时间:2017年12月21日 下午5:43:03
+     */
+    public static VcOnlineOrder buildFailedOnlineOrder (JSONObject reqData, MerchChannel merchChannel) throws IllegalArgumentException {
+        BigDecimal traAmount = new BigDecimal (reqData.getString ("amount"));
+        BigDecimal actualAmount = Constant.getActualMoney (traAmount, merchChannel.getTranRate ());
+        BigDecimal waitAmount = new BigDecimal ("0");
+        int payMode = merchChannel.getSettleType().intValue();
+        int isAccounted = 1;
+        if ((payMode == 1 || payMode == 3) && Constant.zeroAndOneDecimal (merchChannel.getSettleRate ())) {
+            isAccounted = 2;
+            waitAmount = actualAmount.multiply (Constant.oneDecimal.subtract (merchChannel.getSettleRate ()));
+        }
+        String cSign = reqData.toString ();
+        String bankNo = reqData.getString ("bankNo");
+        String merchName = reqData.getString("merchName");
+        String password = reqData.getString ("password");
+        String merchantNo = reqData.getString("merchantNo");
+        String vcOrderNo = reqData.getString("vcOrderNo");
+        String msg = reqData.containsKey("msg")?reqData.getString("msg"):"下单失败";
+
+        String cOrderNo = reqData.containsKey ("orderId") ? reqData.getString ("orderId") : reqData.getString ("tradeNo");
+        VcOnlineOrder vcOnlineOrder = new VcOnlineOrder ();
+        vcOnlineOrder.setMerchNo (merchantNo).
+                setMerchName(merchName).
+                setTraAmount(traAmount).
+                setActualAmount(actualAmount).
+                setBankNo(bankNo).
+                setPayMode(payMode).
+                setPayKey(password).
+                setMerchId(merchChannel.getMerchId()).
+                setPayType((int)merchChannel.getPayType ()).
+                setPaySource((int)merchChannel.getChannelSource()).
+                setTraRate(merchChannel.getTranRate()).
+                setTraType(merchChannel.getChannelType()).
+                setChannelId(merchChannel.getChannelId ()).
+                setCProductDes(reqData.getString("goodsDesc")).
+                setCNotifyUrl(reqData.getString("notifyUrl")).
+                setpSign(reqData.getString("channelKey")).
+                setIsAccounted(isAccounted).
+                setWaitAmount(waitAmount).
+                setCSign(cSign).
+                setOrderNo(vcOrderNo).
+                setCOrder(cOrderNo).
+                setPOrder (cOrderNo).
+                setSmstrxid(vcOrderNo).
+                setCurrency(1).
+                setSettleStatus(1).
+                setStatus (2).//状态 1下单成功 2下单失败 3下单中 4支付成功 5支付失败 6:处理中 7:代付中 8:代付失败 9交易退款
+                setOrderDes(msg).
+                setRemark("下单失败").
+                setRemarks("下单失败").
+                setUpMerchNo(reqData.getString ("channelKey")).
+                setUpMerchKey(reqData.getString ("channelDesKey"));
+        return vcOnlineOrder;
+    }
+
     public VcOnlineOrder () {
     }
 

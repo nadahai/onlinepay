@@ -103,7 +103,8 @@ public class H5PayController extends BaseController {
             //第二步：通道配置验证业务处理
             MerchChannel merchChannel = orderServiceImpl.autoRouteChannel(preMerchChannel,reqData.getString("amount"),reqData.getString("merchantId"));
             result = tradeCmd.checkChannel(reqData, merchChannel);
-            if (!Constant.isOkResult(result)) {
+            if (!Constant.isOkResult(result)){
+                tradeCmd.doRestFailedOrder(reqData, merchChannel);
                 logger.error("H5下单单号:{},通道验证失败:{}",orderId,result);
                 return result;
             }

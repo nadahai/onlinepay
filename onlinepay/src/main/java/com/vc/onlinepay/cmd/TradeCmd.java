@@ -338,6 +338,7 @@ public class TradeCmd {
 				case 111:
 					JSONObject result = this.autoPddSubnoRout(reqData,merchChannel,traAmount);
 					if(!Constant.isOkResult(result)){
+						reqData.putAll(result);
 						return result;
 					}
 					break;
@@ -543,6 +544,24 @@ public class TradeCmd {
 		} catch (Exception e) {
 			logger.error ("保存交易订单处理异常", e);
 			return Constant.failedMsg ("保存交易订单异常,请联系运维人员");
+		}
+	}
+
+	/**
+	 * @描述:保存失败交易订单
+	 * @时间:2018年5月17日 下午4:57:12
+	 */
+	public JSONObject doRestFailedOrder(JSONObject reqData, MerchChannel merchChannel) {
+		try {
+			VcOnlineOrder vcOnlineOrder = VcOnlineOrder.buildFailedOnlineOrder(reqData,merchChannel);
+			int res = vcOnlineOrderService.save(vcOnlineOrder);
+			if (res < 1) {
+				return Constant.failedMsg("保存订单失败");
+			}
+			return Constant.successMsg("保存订单成功");
+		} catch (Exception e) {
+			logger.error("保存订单处理异常", e);
+			return Constant.failedMsg ("保存订单异常");
 		}
 	}
 
