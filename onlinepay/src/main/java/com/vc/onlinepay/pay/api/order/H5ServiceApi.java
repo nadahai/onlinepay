@@ -2,6 +2,7 @@ package com.vc.onlinepay.pay.api.order;
 
 import com.alibaba.fastjson.JSONObject;
 import com.vc.onlinepay.cmd.TradeCmd;
+import com.vc.onlinepay.pay.order.bakup.*;
 import com.vc.onlinepay.pay.order.h5.*;
 import com.vc.onlinepay.pay.order.scan.*;
 import com.vc.onlinepay.utils.Constant;
@@ -149,8 +150,6 @@ public class H5ServiceApi {
                     return youFuH5ScanServiceImpl.payOrder (reqData, tradeCmd.tradResultListener(reqData));
                 case 103:
                     return xinZhiFuScanServiceImpl.payOrder (reqData, tradeCmd.tradResultListener(reqData));
-                case 111:
-                    return  pddH5Service.payOrder(reqData, tradeCmd.tradResultListener (reqData));
                 case 125:
                     return aAPayH5Service.payOrder(reqData, tradeCmd.tradResultListener(reqData));
                 case 126:
@@ -179,12 +178,6 @@ public class H5ServiceApi {
                     return nanNingScanServiceImpl.payOrder(reqData, tradeCmd.tradResultListener(reqData));
                 case 205:
                     return nanNingZHScanServiceImpl.payOrder(reqData, tradeCmd.tradResultListener(reqData));
-                case 140 :
-                    return zuYongScanServiceImpl.payOrder(reqData, tradeCmd.tradResultListener(reqData));
-                case 141:
-                	return zuYongDJHScanServiceImpl.payOrder(reqData, tradeCmd.tradResultListener(reqData));
-                case 142:
-                	return zuYongDFScanServiceImpl.payOrder(reqData, tradeCmd.tradResultListener(reqData));
                 case 143:
                 	return zhongRenScanServiceImpl.payOrder(reqData, tradeCmd.tradResultListener(reqData));
                 case 206:
@@ -199,22 +192,32 @@ public class H5ServiceApi {
                     return lJPDFScanServiceImpl.payOrder(reqData, tradeCmd.tradResultListener(reqData));
                 case 211:
                     return lSWPDDScanServiceImpl.payOrder(reqData, tradeCmd.tradResultListener(reqData));
-                case 212:
-                    return zuYongPDD2ScanServiceImpl.payOrder(reqData, tradeCmd.tradResultListener(reqData));
                 case 213:case 216:case 217:case 218:case 219:case 220:case 221:case 222:case 223:case 224:case 225:
                 case 240:case 241:case 242:case 243:case 244:case 245:case 246:case 247:case 248:case 249:
                 case 260:case 261:case 262:case 263:case 264:case 265:case 266:case 267:case 268:case 269:
+                case 215:case 140:case 142:case 111:case 212:case 141:
+                case 228:case 229:case 230:case 231:case 232:case 233:case 234:case 235:case 236:case 237:case 238:
                     return zuYongPDD3ScanServiceImpl.payOrder(reqData, tradeCmd.tradResultListener(reqData));
-                case 214:
-                    return xiaoNiaoScanServiceImpl.payOrder(reqData, tradeCmd.tradResultListener(reqData));
+                /*case 212:
+                    return zuYongPDD2ScanServiceImpl.payOrder(reqData, tradeCmd.tradResultListener(reqData));
                 case 215:
                     return zuYongPDDAllScanServiceImpl.payOrder(reqData, tradeCmd.tradResultListener(reqData));
+                case 228:case 229:case 230:case 231:case 232:case 233:case 234:case 235:case 236:case 237:case 238:
+                    return zuYongGeMaH5ScanServiceImpl.payOrder(reqData, tradeCmd.tradResultListener(reqData));
+                 case 111:
+                    return  pddH5Service.payOrder(reqData, tradeCmd.tradResultListener(reqData))
+                 case 140 :
+                    return zuYongScanServiceImpl.payOrder(reqData, tradeCmd.tradResultListener(reqData));
+                 case 141:
+                	return zuYongDJHScanServiceImpl.payOrder(reqData, tradeCmd.tradResultListener(reqData));
+                  case 142:
+                	return zuYongDFScanServiceImpl.payOrder(reqData, tradeCmd.tradResultListener(reqData));*/
+                case 214:
+                    return xiaoNiaoScanServiceImpl.payOrder(reqData, tradeCmd.tradResultListener(reqData));
                 case 226:
                     return huFeiScanServiceImpl.payOrder(reqData, tradeCmd.tradResultListener(reqData));
                 case 227:
                     return suRenHuaFeiScanServiceImpl.payOrder(reqData, tradeCmd.tradResultListener(reqData));
-                case 228:case 229:case 230:case 231:case 232:case 233:case 234:case 235:case 236:case 237:case 238:
-                    return zuYongGeMaH5ScanServiceImpl.payOrder(reqData, tradeCmd.tradResultListener(reqData));
                 case 239:
                     return zFBGMScanServiceImpl.payOrder(reqData, tradeCmd.tradResultListener(reqData));
                 case 250:

@@ -1,4 +1,4 @@
-package com.vc.onlinepay.pay.order.scan;
+package com.vc.onlinepay.pay.order.bakup;
 
 import com.alibaba.fastjson.JSONObject;
 import com.vc.onlinepay.cache.CacheConstants;
@@ -12,9 +12,6 @@ import com.vc.onlinepay.utils.ninepie.HiDesUtils;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -25,30 +22,29 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Component
-public class ZuYongPDDWXScanServiceImpl {
+public class ZuYongDFScanServiceImpl {
 
-    private static Logger logger = LoggerFactory.getLogger(ZuYongPDDWXScanServiceImpl.class);
-    private static Map<Integer,Integer> wxScanAmount  = new HashMap<Integer,Integer> ();
-    
+    /*private static Logger logger = LoggerFactory.getLogger(ZuYongDFScanServiceImpl.class);
     @Autowired
     private VcOnlineOrderMadeService vcOnlineOrderMadeService;
     
-    /**
-     * @描述:租用PDDWX通道支付交易
+    *//**
+     * @描述:租用淘宝代付通道支付交易
      * @时间:2017年12月1日 下午3:15:40
-     */
+     *//*
     public JSONObject payOrder(JSONObject reqData, ResultListener listener) {
         JSONObject result = new JSONObject();
         try {
-        	logger.info("租用PDDWX通道支付交易接收入参{}",reqData);
+        	logger.info("租用淘宝代付通道支付交易接收入参{}",reqData);
             result.put("orderNo", reqData.getString("vcOrderNo"));
             String API_PAY_URL  = StringUtils.deleteWhitespace(reqData.getString("channelPayUrl"));
-            String merchNo = StringUtils.deleteWhitespace(reqData.getString("channelKey"));
-            String key  = StringUtils.deleteWhitespace(reqData.getString("channelDesKey"));
+            //String merchNo = StringUtils.deleteWhitespace(reqData.getString("channelKey"));
+            //String key  = StringUtils.deleteWhitespace(reqData.getString("channelDesKey"));
+            String merchNo = StringUtils.deleteWhitespace(reqData.getString("levelNo"));
+            String key  = StringUtils.deleteWhitespace(reqData.getString("levelViewNo"));
             String backUrl = reqData.getString("projectDomainUrl")+"/zuYongCallBackController";
             String returnUrl = reqData.getString("projectDomainUrl")+"/success";
             String amount = reqData.getString("amount");
-            
             String serviceCallbackUrl =  reqData.getString("serviceCallbackUrl");
             
             BigDecimal ba = new BigDecimal(amount);
@@ -84,9 +80,9 @@ public class ZuYongPDDWXScanServiceImpl {
             String sign = Md5CoreUtil.md5ascii(prams, key);
             prams.put("sign",sign);
 
-            logger.info("租用PDDWX通道支付接口入参{}",prams);
+            logger.info("租用淘宝代付通道支付接口入参{}",prams);
             String response = HttpClientTools.httpSendPostFrom(API_PAY_URL,prams);
-            logger.info("租用PDDWX通道支付接口返参{}",response);
+            logger.info("租用淘宝代付通道支付接口返参{}",response);
             if(StringUtils.isBlank(response)){
                 result.put("code", Constant.FAILED);
                 result.put("msg", "下单失败");
@@ -105,10 +101,10 @@ public class ZuYongPDDWXScanServiceImpl {
             VcOnlineOrderMade made = new VcOnlineOrderMade();
 	        made.setChannelId(reqData.getIntValue("channelLabel"));
             made.setExpiredTime(CacheConstants.EXPIRED_TIME_5);
-	        made.setMerchNo(reqData.getString("merchantNo"));
+	        made.setMerchNo(merchNo);
 	        made.setOrderNo(reqData.getString("vcOrderNo"));
-            made.setOpenType (149);
-            made.setRemarks (reqData.getString("channelKey"));
+            made.setOpenType (142);
+            made.setRemarks (key);
 	        made.setPaySource(reqData.getIntValue("channelSource"));
 	        made.setTraAmount(new BigDecimal (amount));
 	        made.setUpMerchKey(key);
@@ -117,21 +113,24 @@ public class ZuYongPDDWXScanServiceImpl {
 	        made.setQrcodeUrl(payParams.getString ("bankUrl"));
 	        JSONObject response2 = vcOnlineOrderMadeService.getOrderMadePayUrl(made);
 	        logger.info("扫码支付响应{}",response2);
-			if(response2 == null || response.isEmpty()){
+			if(response2 == null || response2.isEmpty()){
                 return listener.failedHandler(Constant.failedMsg ("扫码支付超时"));
             }
-            
+	            result.put ("code", Constant.SUCCESSS);
+	            result.put ("msg", "获取链接成功");
+	            result.put ("bankUrl",StringEscapeUtils.unescapeJava(response2.getString("openUrl")));
+	            result.put ("redirectUrl",StringEscapeUtils.unescapeJava(response2.getString("openUrl")));
+	            result.put ("qrCodeUrl",StringEscapeUtils.unescapeJava(response2.getString("openUrl")));
+            *//**
             result.put("code", Constant.SUCCESSS);
             result.put("msg", "获取链接成功");
-            //result.put("bankUrl",payParams.getString ("bankUrl"));
-            result.put ("realAmount", reqData.getString ("amount"));
-            //result.put ("bankUrl",StringEscapeUtils.unescapeJava(payParams.getString ("bankUrl")));
-            //result.put ("redirectUrl",StringEscapeUtils.unescapeJava(payParams.getString ("bankUrl")));
-            result.put ("bankUrl",StringEscapeUtils.unescapeJava(response2.getString("openUrl")));
-            result.put ("redirectUrl",StringEscapeUtils.unescapeJava(response2.getString("openUrl")));
+            result.put ("bankUrl",StringEscapeUtils.unescapeJava(payParams.getString ("bankUrl")));
+            result.put ("redirectUrl",StringEscapeUtils.unescapeJava(payParams.getString ("bankUrl")));
+            result.put ("qrCodeUrl",StringEscapeUtils.unescapeJava(payParams.getString ("bankUrl")));
+            **//*
             return listener.successHandler(result);
         } catch (Exception e) {
-            logger.error("租用PDDWX通道支付下单异常", e);
+            logger.error("租用淘宝代付通道支付下单异常", e);
             return listener.failedHandler (Constant.failedMsg ("下单异常"));
         }
     }
@@ -141,14 +140,14 @@ public class ZuYongPDDWXScanServiceImpl {
             String API_PAY_URL = "http://boss.hawkeyepay.cn/hipay/openapi";
             JSONObject prams = new JSONObject();
             prams.put("reqCmd","req.trade.order");
-            prams.put("merchNo","444441000021");
+            prams.put("merchNo","444441000032");
             prams.put("charset","UTF-8");
             prams.put("signType","MD5");
             prams.put("reqIp","47.25.125.14");
             prams.put("payType","10");
             prams.put("tradeNo",System.currentTimeMillis ());
             prams.put("currency","CNY");
-            prams.put("amount","199");
+            prams.put("amount","500");
             prams.put("userId",System.currentTimeMillis ());
             prams.put("notifyUrl","http://www.baidu.com");
             prams.put("returnUrl","http://www.baidu.com");
@@ -156,14 +155,14 @@ public class ZuYongPDDWXScanServiceImpl {
             prams.put("goodsDesc","深圳盛源网络科技有限公司");
             
             
-            String sign = Md5CoreUtil.md5ascii(prams, "3F55197E97DBA8E298935AFDFEA60013");
+            String sign = Md5CoreUtil.md5ascii(prams, "0BB71B27C9DF8F1518814344AF07A848");
             prams.put("sign",sign);
-            logger.info("租用PDDWX通道支付接口入参{}",prams);
+            logger.info("租用淘宝代付通道支付接口入参{}",prams);
             //"charset":"utf-8","amount":18.66,"sign":"9a2be0a8eb571bfbbe2c6afde4d856cf","reqTime":"20190409173045","version":"2.0","command":"cmd101","serverCode":"ser2001","reqIp":"47.25.125.14","payType":"8","merchNo":"999941001031","cOrderNo":"8_040917304522222","signType":"MD5","notifyUrl":"http://online.toxpay.com/xpay/gaoYangPayCallBackApi","currency":"CNY","goodsName":"深圳盛源网络科技有限公司","goodsNum":1,"goodsDesc":"深圳盛源网络科技有限公司"}
             String response = HttpClientTools.httpSendPostFrom(API_PAY_URL,prams);
-            logger.info("租用PDDWX支付接口返参{}",response);
+            logger.info("租用淘宝代付支付接口返参{}",response);
         } catch (IOException e) {
             e.printStackTrace ();
         }
-    }
+    }*/
 }

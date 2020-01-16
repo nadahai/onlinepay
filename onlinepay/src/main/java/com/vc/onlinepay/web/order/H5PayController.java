@@ -80,14 +80,13 @@ public class H5PayController extends BaseController {
      * @时间:2017年12月28日 上午10:03:53
      */
     public JSONObject invokePay(HttpServletRequest request) {
-        JSONObject result = new JSONObject();
         JSONObject reqData = null;
         String orderId = "";
         try {
             reqData = HttpRequestTools.getRequestJson(request);
             orderId = (null!=reqData && reqData.containsKey("orderId")) ?reqData.getString("orderId"):"";
             // 第一步：参数验证业务处理
-            result = orderServiceImpl.checkReqPrms(reqData,PayChannelEnum.H5,request);
+            JSONObject result = orderServiceImpl.checkReqPrms(reqData,PayChannelEnum.H5,request);
             if (!result.getString("code").equals(Constant.SUCCESSS)) {
                 logger.error("H5下单单号:{},参数验证失败:{}", orderId,result);
                 return result;

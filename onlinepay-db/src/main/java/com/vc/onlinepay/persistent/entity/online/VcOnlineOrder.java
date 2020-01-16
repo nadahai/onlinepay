@@ -208,10 +208,6 @@ public class VcOnlineOrder {
             setRemark ("下单中").setOrderDes ("下单中").
             setUpMerchNo (reqData.getString ("channelKey")).
             setUpMerchKey (reqData.getString ("channelDesKey"));
-        if (merchChannel.getChannelSource () == 78L) {
-            vcOnlineOrder.setpSign (reqData.getString ("channelDesKey"));
-        }
-        //支付宝个人保存
         if (merchChannel.getChannelSource () == 51L) {
             if (reqData.containsKey ("oldOrderNo")) {
                 vcOnlineOrder.setSmstrxid (reqData.getString ("oldOrderNo"));
@@ -224,14 +220,6 @@ public class VcOnlineOrder {
             } else {
                 vcOnlineOrder.setSmstrxid ("0");
             }
-        }
-        if(merchChannel.getChannelSource() == 111L){
-            vcOnlineOrder.setUpMerchNo(reqData.getString("pdd_buyer_login_name"));
-            vcOnlineOrder.setUpMerchKey(reqData.getString("accessToken"));
-            vcOnlineOrder.setSmstrxid(reqData.getString("pdd_order_json"));
-            vcOnlineOrder.setpRescode(reqData.getString("pdd_info"));
-            vcOnlineOrder.setpAllRes(reqData.getString("pdd_order_info"));
-            vcOnlineOrder.setpSign(reqData.getString("pdd_chanel_name"));
         }
         return vcOnlineOrder;
     }

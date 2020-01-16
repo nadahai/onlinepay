@@ -1,4 +1,4 @@
-package com.vc.onlinepay.pay.order.scan;
+package com.vc.onlinepay.pay.order.bakup;
 
 import com.alibaba.fastjson.JSONObject;
 import com.vc.onlinepay.http.HttpClientTools;
@@ -19,15 +19,15 @@ import java.util.Map;
 
 @Service
 @Component
-public class ZuYongGeMaAllScanServiceImpl {
+public class ZuYongGeMaH5ScanServiceImpl {
 
-    private static Logger logger = LoggerFactory.getLogger(ZuYongGeMaAllScanServiceImpl.class);
+    /*private static Logger logger = LoggerFactory.getLogger(ZuYongGeMaH5ScanServiceImpl.class);
     private static Map<Integer,Integer> wxScanAmount  = new HashMap<Integer,Integer> ();
     
-    /**
+    *//**
      * @描述:租用个码码商匹配通道支付交易
      * @时间:2017年12月1日 下午3:15:40
-     */
+     *//*
     public JSONObject payOrder(JSONObject reqData, ResultListener listener) {
         JSONObject result = new JSONObject();
         try {
@@ -65,7 +65,7 @@ public class ZuYongGeMaAllScanServiceImpl {
 	         String payType = "1";
 	         
 	         if (type == 2 || type == 10 || type==22 || Constant.service_alipay.equals (service)) {
-	        	 payType = "2";
+	        	 payType = "10";
 	         }
             prams.put("payType",payType);
             prams.put("tradeNo",reqData.getString("vcOrderNo"));
@@ -143,7 +143,7 @@ public class ZuYongGeMaAllScanServiceImpl {
             e.printStackTrace ();
         }
         
-    	/**
+    	*//**
     	String accessToken = "JKAB4H7G2T5ERWZL2SSJM6OQXVWVABPB7TUQ6LVCUPCM5Z44VJSQ112b349";
     	
     	String url = "https://apiv2.pinduoduo.net/api/galilei/refresh/token";
@@ -151,6 +151,6 @@ public class ZuYongGeMaAllScanServiceImpl {
         String result = HttpRequest.post(url).header("accesstoken",accessToken).execute().body();
         JSONObject jsonObject = JSON.parseObject(result);
         logger.info("PDD校验登录信息：{}",jsonObject);
-        **/
-    }
+        **//*
+    }*/
 }

@@ -80,9 +80,6 @@ public class UpperOrderQueryServiceApi {
                 case 19:
                     apiResult = remitOrderQuery.orderQuery(params, this.getResultListener());
                     break;
-                case 111:
-                    apiResult = pddH5Service.orderQuery(params, this.getResultListener());
-                    break;
                 default:
                     result.put("code", Constant.FAILED);
                     result.put("msg", "不存在的上游交易订单查询通道:" + vcOnlineOrder.getPaySource());
