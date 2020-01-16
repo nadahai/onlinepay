@@ -3,6 +3,8 @@ package com.vc.onlinepay.pay.order.bakup;
 import com.alibaba.fastjson.JSONObject;
 import com.vc.onlinepay.http.HttpClientTools;
 import com.vc.onlinepay.pay.common.ResultListener;
+import com.vc.onlinepay.persistent.entity.channel.ChannelSubNo;
+import com.vc.onlinepay.persistent.service.channel.ChannelSubNoServiceImpl;
 import com.vc.onlinepay.utils.Constant;
 import com.vc.onlinepay.utils.Md5CoreUtil;
 
@@ -12,6 +14,7 @@ import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +23,8 @@ import org.springframework.stereotype.Service;
 public class ZuYongPDD3ScanServiceImpl {
 
     private static Logger logger = LoggerFactory.getLogger(ZuYongPDD3ScanServiceImpl.class);
+    @Autowired
+    private ChannelSubNoServiceImpl channelSubNoServiceImpl;
     /**
      * @描述:自研拼多多租用系统
      * @时间:2017年12月1日 下午3:15:40
@@ -79,6 +84,7 @@ public class ZuYongPDD3ScanServiceImpl {
                 return listener.failedHandler (Constant.failedMsg (msg));
             }
             String bankUrl = StringEscapeUtils.unescapeJava(payParams.getString ("bankUrl"));
+            channelSubNoServiceImpl.updateLastOrderTime(new ChannelSubNo(merchNo));
             result.put("code", Constant.SUCCESSS);
             result.put("msg", "获取链接成功");
             result.put ("bankUrl",bankUrl);

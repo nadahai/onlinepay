@@ -259,17 +259,9 @@ public class CommonWalletService {
                 logger.info ("更新支付宝渠道大商户子账号信息{},{}",orderNo,r);
                 return true;
             }else if(vcOnlineOrder.getPaySource()==111L){
-                // 处理PDD的金额记录
-                String pddOrderInfo = vcOnlineOrder.getpRescode();
-                // 商家 id
-                String pddMerchId= pddOrderInfo.split(";")[0];
-                xkPddMerchMapper.updateTradeAmount(new XkPddMerch(Long.valueOf(pddMerchId),vcOnlineOrder.getTraAmount().doubleValue()));
-                // 商品 id
-                String pddGoodsId= pddOrderInfo.split(";")[1];
-                xkPddGoodsMapper.updateTradeAmount(new XkPddGoods(Long.valueOf(pddGoodsId),vcOnlineOrder.getTraAmount().doubleValue()));
-                // 买家 id
-                String pddBuyerId= pddOrderInfo.split(";")[2];
-                xkPddBuyerMapper.updateTradeAmount(new XkPddBuyer(Long.valueOf(pddBuyerId),vcOnlineOrder.getTraAmount().doubleValue()));
+                int r = merchChannelServiceImpl.updateSubNoAmount(new ChannelSubNo(channelId,merchId,vcOnlineOrder.getUpMerchNo(),vcOnlineOrder.getTraAmount()));
+                logger.info ("更新大商户子账号信息{},{}",orderNo,r);
+                return true;
             }else{
                 if(channelId == 232){
                     channelId = 231L;
@@ -277,7 +269,6 @@ public class CommonWalletService {
                 int r = merchChannelServiceImpl.updateSubNoAmount(new ChannelSubNo(channelId,vcOnlineOrder.getUpMerchNo(),vcOnlineOrder.getTraAmount()));
                 logger.info ("更新大商户子账号信息{},{}",orderNo,r);
             }
-            //账号监控
             boolean r = asynMonitor.orderMonitor(vcOnlineOrder.getUpMerchNo(),vcOnlineOrder.getStatus());
             logger.info ("账号监控结果{},{}",orderNo,r);
             return true;

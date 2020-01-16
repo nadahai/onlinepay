@@ -63,13 +63,6 @@ public interface ChannelSubNoMapper {
     Integer updateSubNoAmount (ChannelSubNo channelSubNo);
 
     /**
-     * @描述:商户限额更新
-     * @作者:ChaiJing THINK
-     * @时间:2018/8/13 14:36
-     */
-    Integer updateLimitAmount(ChannelSubNo channelSubNo);
-    
-    /**
      * @描述:商户更新下单时间
      * @作者:ChaiJing THINK
      * @时间:2018/8/13 14:36

@@ -195,16 +195,6 @@ public class ChannelSubNoServiceImpl {
     }
 
     /**
-     * @描述:商户限额更新
-     * @作者:ChaiJing THINK
-     * @时间:2018/8/13 14:36
-     */
-    @Transactional (readOnly = false,rollbackFor = Exception.class)
-    Integer updateLimitAmount (ChannelSubNo channelSubNo) {
-        return channelSubNoMapper.updateLimitAmount (channelSubNo);
-    }
-
-    /**
      * @描述:商户更新下单时间
      * @作者:ChaiJing THINK
      * @时间:2018/8/13 14:36

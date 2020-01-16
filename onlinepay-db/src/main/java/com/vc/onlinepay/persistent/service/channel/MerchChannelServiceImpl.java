@@ -50,7 +50,7 @@ public class MerchChannelServiceImpl {
     @Transactional (readOnly = false)
     public Integer updateLastOrderTime (ChannelSubNo channelSubNo) throws OnlineServiceException {
         try {
-            if (StringUtils.isEmpty (channelSubNo.getUpMerchNo ()) || "0".equals (channelSubNo.getUpMerchNo ())) {
+            if (StringUtils.isEmpty(channelSubNo.getUpMerchNo()) || "0".equals (channelSubNo.getUpMerchNo())){
                 return 0;
             }
             return channelSubNoService.updateLastOrderTime (channelSubNo);

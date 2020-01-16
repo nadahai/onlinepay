@@ -576,7 +576,7 @@ public class TradeCmd {
 	 * @作者:nada
 	 * @时间:2018/12/14
 	 **/
-	private JSONObject autoOpenRoute (JSONObject reqData, MerchChannel merchChannel, BigDecimal traAmount) {
+	/*private JSONObject autoOpenRoute (JSONObject reqData, MerchChannel merchChannel, BigDecimal traAmount) {
 		String accountNo = reqData.containsKey("accountNo")?reqData.getString("accountNo"):"";
 		String orderNo = reqData.getString("vcOrderNo");
 		ChannelSubNo channelSubNo = new ChannelSubNo(traAmount,merchChannel.getMerchId());
@@ -602,7 +602,7 @@ public class TradeCmd {
 		merchChannelService.updateLastOrderTime(channelSubNo);
 		logger.info("轮询算法获取到订单:{},渠道号:{},支付宝账号{}",orderNo,channelSubNo.getUpMerchKey (),channelSubNo.getUpMerchNo ());
 		return Constant.successMsg("路由成功");
-	}
+	}*/
 
 	/**
 	 * @描述:自研支付宝的路由规则
