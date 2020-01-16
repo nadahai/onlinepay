@@ -70,11 +70,11 @@ public interface ChannelSubNoMapper {
     Integer updateLastOrderTime(ChannelSubNo channelSubNo);
     
     /**
-     * @描述:查找已禁用商户
+     * @描述:查找已拼多多商户
      * @作者:ChaiJing THINK
      * @时间:2018/8/13 14:44
      */
-    List<ChannelSubNo> findLimited(ChannelSubNo channelSubNo);
+    List<ChannelSubNo> findLimitedList(ChannelSubNo channelSubNo);
     /**
      * @描述:十分钟内下过单的商户
      * @作者:ChaiJing THINK
@@ -83,5 +83,7 @@ public interface ChannelSubNoMapper {
     List<String> findUsedMerchNo(ChannelSubNo channelSubNo);
 
     Integer cleanDayAmount(ChannelSubNo channelSubNo);
+
+    Integer updateSubNoDayAmount(ChannelSubNo channelSubNo);
 
 }

@@ -8,6 +8,7 @@
 			SELECT
 				a.id,
 				a.channel_id AS channelId,
+				a.DAY_QUOTA_AMOUNT as dayQuotaAmount,
 				a.merch_id AS merchId,
 				a.UP_MERCH_NO AS upMerchNo,
 				a.UP_MERCH_KEY AS upMerchKey,
@@ -132,13 +133,20 @@
 	</select>
 	
 	<!--查找已禁用商户  -->
-	<select id="findLimited" resultType="ChannelSubNo">
-		SELECT  channel_id AS channelId, UP_MERCH_NO AS upMerchNo,STATUS AS STATUS
-		FROM VC_A1_CHANNEL_SUBNO
-		WHERE del_flag = 0 AND status = 2
-			<if test="upMerchNo != null">
-				AND UP_MERCH_NO = #{upMerchNo}
-			</if>
+	<select id="findLimitedList" resultType="ChannelSubNo">
+		SELECT
+			a.channel_id AS channelId,
+			a.UP_MERCH_NO AS upMerchNo,
+			a.STATUS AS STATUS,
+			a.DAY_QUOTA_AMOUNT AS dayQuotaAmount,
+			b.`PAY_URL` AS payUrl
+		FROM
+			VC_A1_CHANNEL_SUBNO a LEFT JOIN vc_a1_channel b  ON a.`channel_id`=b.id
+		WHERE
+		a.del_flag = 0
+		<if test="upMerchNo != null">
+			AND UP_MERCH_NO = #{upMerchNo}
+		</if>
 	</select>
 	
 	<!-- 根据商户号查找 -->
@@ -214,5 +222,9 @@
 
 	<update id="cleanDayAmount" parameterType="ChannelSubNo">
 		UPDATE VC_A1_CHANNEL_SUBNO a SET  DAY_TRA_AMOUNT=0, LAST_DAY = current_date()
+	</update>
+
+	<update id="updateSubNoDayAmount" parameterType="ChannelSubNo">
+		UPDATE VC_A1_CHANNEL_SUBNO a SET DAY_QUOTA_AMOUNT=#{dayQuotaAmount},update_date = sysdate() WHERE up_merch_no=#{upMerchNo}
 	</update>
 </mapper>

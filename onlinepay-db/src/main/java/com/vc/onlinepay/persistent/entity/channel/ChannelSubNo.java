@@ -29,6 +29,8 @@ public class ChannelSubNo implements Serializable {
     private BigDecimal actualAmount;
     private double minPrice;
     private double maxPrice;
+    private BigDecimal dayQuotaAmount;
+    private BigDecimal quotaAmount;
     //自研支付宝供应商轮询算法
     private int loopRobin;
     //支付宝订单有效间期
@@ -52,6 +54,7 @@ public class ChannelSubNo implements Serializable {
     private String bankNo;
     private String bankMark;
     private String cardIdx;
+    private String payUrl;
 
     public ChannelSubNo () {
     }
@@ -64,6 +67,11 @@ public class ChannelSubNo implements Serializable {
         this.channelId = channelId;
         this.traAmount = traAmount;
         this.loopRobin = loopRobin;
+    }
+
+    public ChannelSubNo(String upMerchNo,BigDecimal dayQuotaAmount) {
+        this.upMerchNo = upMerchNo;
+        this.dayQuotaAmount = dayQuotaAmount;
     }
 
     public ChannelSubNo (String orderNo, long channelId, long channelSource, BigDecimal traAmount, int loopRobin, String clientIp) {
@@ -339,6 +347,30 @@ public class ChannelSubNo implements Serializable {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public BigDecimal getDayQuotaAmount() {
+        return dayQuotaAmount;
+    }
+
+    public void setDayQuotaAmount(BigDecimal dayQuotaAmount) {
+        this.dayQuotaAmount = dayQuotaAmount;
+    }
+
+    public BigDecimal getQuotaAmount() {
+        return quotaAmount;
+    }
+
+    public void setQuotaAmount(BigDecimal quotaAmount) {
+        this.quotaAmount = quotaAmount;
+    }
+
+    public String getPayUrl() {
+        return payUrl;
+    }
+
+    public void setPayUrl(String payUrl) {
+        this.payUrl = payUrl;
     }
 }
 

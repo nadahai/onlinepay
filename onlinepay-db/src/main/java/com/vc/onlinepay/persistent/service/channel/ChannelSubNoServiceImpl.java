@@ -3,17 +3,28 @@
  */
 package com.vc.onlinepay.persistent.service.channel;
 
+import cn.hutool.http.HttpException;
+import cn.hutool.http.HttpRequest;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.vc.onlinepay.cache.CacheConstants;
 import com.vc.onlinepay.cache.RedisCacheApi;
 import com.vc.onlinepay.exception.OnlineDbException;
 import com.vc.onlinepay.persistent.common.CoreEngineProviderService;
 import com.vc.onlinepay.persistent.entity.channel.ChannelSubNo;
 import com.vc.onlinepay.persistent.mapper.channel.ChannelSubNoMapper;
+import com.vc.onlinepay.utils.Constant;
 import com.vc.onlinepay.utils.LoopRobinUtil;
 import com.vc.onlinepay.utils.StringUtil;
+
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,6 +39,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional (readOnly = true,rollbackFor = Exception.class)
 public class ChannelSubNoServiceImpl {
 
+    public static final Logger logger = LoggerFactory.getLogger(ChannelSubNoServiceImpl.class);
     @Autowired
     private ChannelSubNoMapper channelSubNoMapper;
 
@@ -214,8 +226,8 @@ public class ChannelSubNoServiceImpl {
      * @作者:ChaiJing THINK
      * @时间:2018/8/13 14:44
      */
-    List<ChannelSubNo> findLimited (ChannelSubNo channelSubNo) {
-        return channelSubNoMapper.findLimited (channelSubNo);
+    List<ChannelSubNo> findLimitedList (ChannelSubNo channelSubNo) {
+        return channelSubNoMapper.findLimitedList (channelSubNo);
     }
 
     /**
@@ -225,5 +237,55 @@ public class ChannelSubNoServiceImpl {
      */
     List<String> findUsedMerchNo (ChannelSubNo channelSubNo) {
         return channelSubNoMapper.findUsedMerchNo (channelSubNo);
+    }
+
+    /**
+     * @描述:更新码商限额金额
+     * @时间:2018年5月17日 下午7:19:07
+     */
+    @Transactional (readOnly = false,rollbackFor = Exception.class)
+    public Integer updateSubNoDayAmount (ChannelSubNo channelSubNo) {
+        try {
+            List<ChannelSubNo> lists = channelSubNoMapper.findLimitedList(null);
+            if(lists == null || lists.size()<0){
+                logger.info("更新码商限额为空");
+                return 0;
+            }
+            ChannelSubNo channelSubNo1 = lists.get(0);
+            if(channelSubNo1 == null || StringUtil.isEmpty(channelSubNo1.getPayUrl())){
+                logger.info("更新码商限额payUrl为空");
+                return 0;
+            }
+            String payUrl = channelSubNo1.getPayUrl();
+            JSONObject reqData = new JSONObject();
+            reqData.put("reqCmd","req.pdd.merch.dayQuota");
+            String result = HttpRequest.post(payUrl).header("Content-Type","application/json").body(reqData.toJSONString()).execute().body();
+            logger.info("更新码商限额响应:{}",result);
+            if(StringUtil.isEmpty(result)){
+                return 0;
+            }
+            JSONObject resultData = Constant.stringToJson(result);
+            if(!Constant.isOkResult(resultData) || !resultData.containsKey("data")){
+                return 0;
+            }
+            JSONObject data = resultData.getJSONObject("data");
+            if(data == null || data.isEmpty()){
+                return 0;
+            }
+            for(ChannelSubNo subNo : lists) {
+                String upMerchNo =  subNo.getUpMerchNo();
+                BigDecimal dayAmount = new BigDecimal("0");
+                if(data.containsKey(upMerchNo)){
+                    dayAmount = data.getBigDecimal(upMerchNo);
+                }
+                channelSubNoMapper.updateSubNoDayAmount(new ChannelSubNo(upMerchNo,dayAmount));
+            }
+            logger.info("更新码商限额金额响应:{}",result);
+            return 1;
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error("更新码商限额金额异常",e);
+            return 0;
+        }
     }
 }
