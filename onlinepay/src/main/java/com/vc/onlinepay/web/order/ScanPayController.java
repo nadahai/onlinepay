@@ -99,22 +99,21 @@ public class ScanPayController extends BaseController {
             }
             //第二步：通道配置验证业务处理
             MerchChannel merchChannel = orderServiceImpl.autoRouteChannel(preMerchChannel,reqData.getString("amount"),reqData.getString("merchantId"));
-
-            //通道秘钥等参数填充
             result = tradeCmd.checkChannel(reqData, merchChannel);
-            if(!result.getString("code").equals(Constant.SUCCESSS)){
+            if (!Constant.isOkResult(result)){
+                tradeCmd.doRestFailedOrder(reqData, merchChannel);
                 logger.error("扫码下单单号:{},通道验证失败:{}",orderId,result);
                 return result;
             }
 
             //第三步：订单业务处理
             result = tradeCmd.doRestOrder(reqData, merchChannel);
-            if(!result.getString("code").equals(Constant.SUCCESSS)){
+            if (!Constant.isOkResult(result)){
                 logger.error("扫码下单单号:{},下单系统异常（下单保存失败）", orderId);
                 return Constant.failedMsg("扫码下单保存失败,请重新发起订单");
             }
             //金额浮动处理
-            tradeCmd.channelAmountfloat(reqData,merchChannel);
+            //tradeCmd.channelAmountfloat(reqData,merchChannel);
 
            //第四步：下单业务处理
             return scanPayService.doRestPay(reqData);

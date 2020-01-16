@@ -116,7 +116,7 @@ public class H5PayController extends BaseController {
             }
 
             //金额浮动处理
-            tradeCmd.channelAmountfloat(reqData,merchChannel);
+            //tradeCmd.channelAmountfloat(reqData,merchChannel);
 
             // 第四步：支付业务处理
             return h5Service.doRestPay(reqData);
