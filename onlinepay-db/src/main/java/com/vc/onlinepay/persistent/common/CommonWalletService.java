@@ -242,35 +242,24 @@ public class CommonWalletService {
     @Transactional(readOnly=false,rollbackFor=Exception.class)
     public boolean updateSubInfo(VcOnlineOrder vcOnlineOrder,String orderNo){
         try {
-            long channelId = vcOnlineOrder.getChannelId();
             long merchId = vcOnlineOrder.getMerchId();
-            if(vcOnlineOrder.getPaySource() == 51 || vcOnlineOrder.getPaySource() == 65 || vcOnlineOrder.getPaySource() == 81 || vcOnlineOrder.getPaySource() == 83){
-                if(channelId == 177L){
-                    channelId = 147L;
-                }else if(channelId == 203L){
-                    channelId = 200L;
-                }else if(channelId == 213L){
-                    channelId = 167L;
-                }
+            long channelId = vcOnlineOrder.getChannelId();
+            long channelSource = vcOnlineOrder.getPaySource();
+            if(channelSource == 51 || channelSource == 65 || channelSource == 81 || channelSource == 83){
                 SupplierSubno supplierSubno = new SupplierSubno(vcOnlineOrder.getUpMerchNo(),vcOnlineOrder.getUpMerchKey(),vcOnlineOrder.getTraAmount());
                 int r = merchChannelServiceImpl.updateAlipaySubNoAmount(supplierSubno);
-                logger.info ("更新支付宝子账号信息{},{}",orderNo,r);
+                logger.info("更新支付宝子账号信息{},{}",orderNo,r);
                 r = merchChannelServiceImpl.updateSubNoAmount(new ChannelSubNo(channelId,merchId,vcOnlineOrder.getUpMerchNo(),vcOnlineOrder.getTraAmount()));
-                logger.info ("更新支付宝渠道大商户子账号信息{},{}",orderNo,r);
+                logger.info("更新支付宝渠道大商户子账号信息{},{}",orderNo,r);
                 return true;
-            }else if(vcOnlineOrder.getPaySource()==111L){
+            }else if(channelSource==111L){
                 int r = merchChannelServiceImpl.updateSubNoAmount(new ChannelSubNo(channelId,merchId,vcOnlineOrder.getUpMerchNo(),vcOnlineOrder.getTraAmount()));
-                logger.info ("更新大商户子账号信息{},{}",orderNo,r);
+                logger.info("更新大商户子账号信息{},{}",orderNo,r);
                 return true;
-            }else{
-                if(channelId == 232){
-                    channelId = 231L;
-                }
+            }else if(channelSource==93L){
                 int r = merchChannelServiceImpl.updateSubNoAmount(new ChannelSubNo(channelId,vcOnlineOrder.getUpMerchNo(),vcOnlineOrder.getTraAmount()));
-                logger.info ("更新大商户子账号信息{},{}",orderNo,r);
+                logger.info("更新大商户子账号信息{},{}",orderNo,r);
             }
-            boolean r = asynMonitor.orderMonitor(vcOnlineOrder.getUpMerchNo(),vcOnlineOrder.getStatus());
-            logger.info ("账号监控结果{},{}",orderNo,r);
             return true;
         } catch (Exception e) {
             logger.error("更新订单子账号信息订单号{},异常{}",orderNo,e);
