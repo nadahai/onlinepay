@@ -21,82 +21,73 @@ public class ZuYongPDD3ScanServiceImpl {
 
     private static Logger logger = LoggerFactory.getLogger(ZuYongPDD3ScanServiceImpl.class);
     /**
-     * @描述:租用PDD3通道支付交易
+     * @描述:自研拼多多租用系统
      * @时间:2017年12月1日 下午3:15:40
      */
     public JSONObject payOrder(JSONObject reqData, ResultListener listener) {
         JSONObject result = new JSONObject();
         try {
-        	logger.info("租用PDD3通道支付交易接收入参{}",reqData);
-            result.put("orderNo", reqData.getString("vcOrderNo"));
-            String API_PAY_URL  = StringUtils.deleteWhitespace(reqData.getString("channelPayUrl"));
-            String merchNo = StringUtils.deleteWhitespace(reqData.getString("channelKey"));
-            String key  = StringUtils.deleteWhitespace(reqData.getString("channelDesKey"));
-            String backUrl = reqData.getString("projectDomainUrl")+"/zuYongCallBackController";
-            String returnUrl = reqData.getString("projectDomainUrl")+"/success";
+        	logger.info("自研拼多多租用系统入参{}",reqData);
+        	String orderNo = reqData.getString("vcOrderNo");
             String amount = reqData.getString("amount");
-            
-            String serviceCallbackUrl =  reqData.getString("serviceCallbackUrl");
-            
-            BigDecimal ba = new BigDecimal(amount);
-			 int amountInt = ba.intValue();
-			  if(!serviceCallbackUrl.isEmpty() &&!serviceCallbackUrl.contains(","+amountInt+",")){ 
-				  return listener.failedHandler (Constant.failedMsg("金额与通道不符合")); 
-			  }
-            
+            String serviceCallbackUrl = reqData.getString("serviceCallbackUrl");
+            String merchNo = StringUtils.deleteWhitespace(reqData.getString("channelKey"));
+            String merchkey = StringUtils.deleteWhitespace(reqData.getString("channelDesKey"));
+            String returnUrl = reqData.getString("projectDomainUrl").concat("/success");
+            String payUrl  = StringUtils.deleteWhitespace(reqData.getString("channelPayUrl"));
+            String backUrl = reqData.getString("projectDomainUrl").concat("/zuYongCallBackController");
+            result.put("orderNo",orderNo);
+            int tradAmount = new BigDecimal(amount).intValue();
+            if(!serviceCallbackUrl.isEmpty() && !serviceCallbackUrl.contains(","+tradAmount+",")){
+				  return listener.failedHandler(Constant.failedMsg("金额与通道不符合"));
+            }
             JSONObject prams = new JSONObject();
             prams.put("reqCmd","req.trade.order");
             prams.put("merchNo",merchNo);
             prams.put("charset","UTF-8");
             prams.put("signType","MD5");
-            prams.put("reqIp","47.25.125.14");
-            
+            prams.put("reqIp","127.0.0.2");
             int type = reqData.containsKey ("payType")?reqData.getIntValue ("payType"):0;
-	         String service = reqData.containsKey ("service") ? reqData.getString ("service") : "";
-		     //payType 1:微信 2:支付宝
-	         String payType = "12";
-	         
-	         if (type == 2 || type == 10 || type==22 || Constant.service_alipay.equals (service)) {
+            String service = reqData.containsKey ("service") ? reqData.getString ("service") : "";
+            String payType = "12";
+            if (type == 2 || type == 10 || type==22 || Constant.service_alipay.equals(service)) {
 	        	 payType = "10";
-	         }
+            }
             prams.put("payType",payType);
-            prams.put("tradeNo",reqData.getString("vcOrderNo"));
+            prams.put("tradeNo",orderNo);
             prams.put("currency","CNY");
             prams.put("amount",amount);
-            prams.put("userId",reqData.getString("vcOrderNo"));
+            prams.put("userId",orderNo);
             prams.put("notifyUrl",backUrl);
             prams.put("returnUrl",returnUrl);
             prams.put("goodsName","好东西一起分享");
             prams.put("goodsDesc","好东西一起分享");
-            String sign = Md5CoreUtil.md5ascii(prams, key);
+            String sign = Md5CoreUtil.md5ascii(prams,merchkey);
             prams.put("sign",sign);
-
-            logger.info("租用PDD3通道支付接口入参{}",prams);
-            String response = HttpClientTools.httpSendPostFrom(API_PAY_URL,prams);
-            logger.info("租用PDD3通道支付接口返参{}",response);
+            logger.info("自研拼多多租用系统下单:{},入参:{}",orderNo,prams);
+            String response = HttpClientTools.httpSendPostFrom(payUrl,prams);
+            logger.info("自研拼多多租用系统下单:{},返参:{}",orderNo,response);
             if(StringUtils.isBlank(response)){
-                result.put("code", Constant.FAILED);
-                result.put("msg", "下单失败");
-                return listener.failedHandler(result);
+                return listener.failedHandler(Constant.failedMsg("下单响应为空"));
             }
             JSONObject payParams = Constant.stringToJson (response);
-            if(payParams == null || payParams.isEmpty () ){
-                return Constant.failedMsg ("获取连接为空");
+            if(payParams == null || payParams.isEmpty()){
+                return Constant.failedMsg ("下单解析为空");
             }
-            if(!payParams.containsKey ("bankUrl")){
-                String msg = payParams.containsKey ("msg")?payParams.getString ("msg"):"下单失败";
+            if(!payParams.containsKey("bankUrl")){
+                String msg = payParams.containsKey("msg")?payParams.getString("msg"):"下单失败";
                 return listener.failedHandler (Constant.failedMsg (msg));
             }
+            String bankUrl = StringEscapeUtils.unescapeJava(payParams.getString ("bankUrl"));
             result.put("code", Constant.SUCCESSS);
             result.put("msg", "获取链接成功");
-            //result.put("bankUrl",payParams.getString ("bankUrl"));
-            result.put ("bankUrl",StringEscapeUtils.unescapeJava(payParams.getString ("bankUrl")));
-            result.put ("redirectUrl",StringEscapeUtils.unescapeJava(payParams.getString ("bankUrl")));
-            result.put ("qrCodeUrl",StringEscapeUtils.unescapeJava(payParams.getString ("bankUrl")));
+            result.put ("bankUrl",bankUrl);
+            result.put ("redirectUrl",bankUrl);
+            result.put ("qrCodeUrl",bankUrl);
             return listener.successHandler(result);
         } catch (Exception e) {
-            logger.error("租用PDD3通道支付下单异常", e);
-            return listener.failedHandler (Constant.failedMsg ("下单异常"));
+            logger.error("自研拼多多租用系统下单异常", e);
+            return listener.failedHandler (Constant.failedMsg("下单异常"));
         }
     }
 

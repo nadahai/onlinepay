@@ -453,8 +453,6 @@ public class HttpClientTools {
 
     public static String httpSendPostFrom(String url,JSONObject params) throws IOException {
         Map<String, String> header = new HashMap<>();
-//        header.put("Content-Type","application/x-www-form-urlencoded");
-//        header.put("Content-Type","application/json;charset=utf-8");
         return httpSendPostFrom(url,params,header);
     }
 
