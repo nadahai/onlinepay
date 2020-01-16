@@ -51,7 +51,7 @@
 				<if test="payType != null and payType !=0 ">
 					and (IFNULL(a.PAY_TYPE,0) = #{payType} or IFNULL(PAY_TYPE,0) = 0)
 				</if>
-				ORDER BY LAST_ORDER_TIME asc ,DAY_TRA_AMOUNT asc
+				ORDER BY SEQ ASC,LAST_ORDER_TIME asc,DAY_TRA_AMOUNT asc
 				LIMIT 10
 		) c
 		ORDER BY RAND()

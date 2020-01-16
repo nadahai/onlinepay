@@ -25,13 +25,13 @@ public class Test {
     private static String QR_CORD_URL="https://smzf.yjpal.com/payQRCode/qrcodeCardPage.htm?mobileNo=MOBILE_NO";
 
     public static void main(String[] args){
-        String mobile="17162086606";
-        String pwd="q123456";
-        String amount="0.01";
-        String payType="1";
+//        String mobile="17162086606";
+//        String pwd="q123456";
+//        String amount="0.01";
+//        String payType="1";
         // 1登录
-        JSONObject loginJson = login(mobile,pwd);
-        System.out.println(loginJson);
+       /* JSONObject loginJson = login(mobile,pwd);
+        System.out.println(loginJson);*/
        /* // 2获取交易二维码：
         JSONObject qrCodeJson = getQrCodeId(mobile,loginJson.getString("token"));
         String qrCodeUrl = qrCodeJson.getJSONObject("pqm").getString("ylxwQrcodeurl");
@@ -46,8 +46,15 @@ public class Test {
             System.out.printf("\n下单成功：%s\n",orderJson.getString("url"));
         }*/
         // 5.查询
-        JSONObject queryJson = orderQuery(mobile,loginJson.getString("token"));
-        System.out.println(queryJson);
+        /*JSONObject queryJson = orderQuery(mobile,loginJson.getString("token"));
+        System.out.println(queryJson);*/
+        String data = "{\"444455000038\":1.0,\"444455000057\":1.0,\"444455000079\":91801.0,\"444455000078\":5000.0,\"444455000033\":40000.0,\"444455000055\":1.0,\"444455000077\":200.0,\"444450000001\":2000000.0,\"444455000043\":62222.0,\"444455000087\":69000.0,\"444455000020\":150000.0,\"444455000086\":5000.0,\"444455000041\":157000.0,\"444455000040\":15000.0,\"444455000084\":80000.0,\"444455000083\":1340000.0,\"444455000082\":54000.0,\"444455000081\":825000.0,\"444455000029\":0.0,\"444455000004\":200000.0,\"444455000026\":30000.0,\"444455000003\":143000.0,\"444455000047\":10000.0,\"444455000024\":100000.0,\"444455000068\":5000000.0,\"444455000067\":20000.0,\"444455000044\":5500.0,\"444455000088\":0.0,\"444455000009\":216000.0,\"444455000008\":10000.0,\"444455000051\":200000.0,\"444455000073\":1.0144E7,\"444455000072\":80001.0,\"444455000071\":902000.0}";
+        JSONObject result =  JSON.parseObject(data);
+        String upmerchNo = "444455000073";
+        if(result.containsKey(upmerchNo)){
+            System.out.println(result.getBigDecimal(upmerchNo).toPlainString());
+        }
+        System.out.println(result);
     }
 
     private static JSONObject login(String mobile,String pwd){
