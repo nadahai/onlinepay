@@ -45,8 +45,6 @@ public class H5ServiceApi {
     @Autowired
     private HuaFeiScanServiceImpl huaFeiScanServiceImpl;
     @Autowired
-    private PddH5ServiceImpl pddH5Service;
-    @Autowired
     private HongYunTScanServiceImpl hongYunTScanServiceImpl;
     @Autowired
     private XunJieScanServiceImpl xunJieScanService;
@@ -71,15 +69,9 @@ public class H5ServiceApi {
     @Autowired
     private QingHuScanServiceImpl qingHuScanServiceImpl;
     @Autowired
-    private ZuYongScanServiceImpl zuYongScanServiceImpl;
-    @Autowired
-    private ZuYongDJHScanServiceImpl zuYongDJHScanServiceImpl;
-    @Autowired
     private NanNingZHScanServiceImpl nanNingZHScanServiceImpl;
     @Autowired
     private PYFScanServiceImpl pYFScanServiceImpl;
-    @Autowired
-    private ZuYongDFScanServiceImpl zuYongDFScanServiceImpl;
     @Autowired
     private ZhongRenScanServiceImpl zhongRenScanServiceImpl;
     @Autowired
@@ -93,19 +85,13 @@ public class H5ServiceApi {
     @Autowired
     private LSWPDDScanServiceImpl lSWPDDScanServiceImpl;
     @Autowired
-    private ZuYongPDD2ScanServiceImpl zuYongPDD2ScanServiceImpl;
-    @Autowired
     private ZuYongPDD3ScanServiceImpl zuYongPDD3ScanServiceImpl;
     @Autowired
     private XiaoNiaoScanServiceImpl xiaoNiaoScanServiceImpl;
     @Autowired
-    private ZuYongPDDAllScanServiceImpl zuYongPDDAllScanServiceImpl;
-    @Autowired
     private HuFeiScanServiceImpl huFeiScanServiceImpl;
     @Autowired
     private SuRenHuaFeiScanServiceImpl suRenHuaFeiScanServiceImpl;
-    @Autowired
-    private ZuYongGeMaH5ScanServiceImpl zuYongGeMaH5ScanServiceImpl;
     @Autowired
     private ZFBGMScanServiceImpl zFBGMScanServiceImpl;
     @Autowired
@@ -119,10 +105,20 @@ public class H5ServiceApi {
     @Autowired
     private HangKongScanServiceImpl hangKongScanServiceImpl;
 
-    
-    
-    
-
+//    @Autowired
+//    private PddH5ServiceImpl pddH5Service;
+//    @Autowired
+//    private ZuYongScanServiceImpl zuYongScanServiceImpl;
+//    @Autowired
+//    private ZuYongDJHScanServiceImpl zuYongDJHScanServiceImpl;
+//    @Autowired
+//    private ZuYongDFScanServiceImpl zuYongDFScanServiceImpl;
+//    @Autowired
+//    private ZuYongGeMaH5ScanServiceImpl zuYongGeMaH5ScanServiceImpl;
+//    @Autowired
+//    private ZuYongPDDAllScanServiceImpl zuYongPDDAllScanServiceImpl;
+//    @Autowired
+//    private ZuYongPDD2ScanServiceImpl zuYongPDD2ScanServiceImpl;
 
     /**
      * @描述:H5支付分发

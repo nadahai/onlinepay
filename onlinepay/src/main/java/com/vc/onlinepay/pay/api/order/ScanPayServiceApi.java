@@ -63,8 +63,6 @@ public class ScanPayServiceApi{
     @Autowired
     private PingAn2ScanServiceImpl pingAn2ScanServiceImpl;
     @Autowired
-    private ZongHengWSDDaScanServiceImpl zongHengWSDDaScanServiceImpl;
-    @Autowired
     private XunJie2ScanServiceImpl xunJie2ScanServiceImpl;
     @Autowired
     private FLMScanServiceImpl flmScanService;
@@ -76,8 +74,6 @@ public class ScanPayServiceApi{
     private ShanFuTongScanServiceImpl shanFuTongScanServiceImpl;
     @Autowired
     private HuaFeiScanServiceImpl huaFeiScanServiceImpl;
-    @Autowired
-    private PddH5ServiceImpl pddH5Service;
     @Autowired
     private HongYunTScanServiceImpl hongYunTScanServiceImpl;
     @Autowired
@@ -95,8 +91,6 @@ public class ScanPayServiceApi{
     @Autowired
     private PeiQiScanServiceImpl peiQiScanServiceImpl;
     @Autowired
-    private ZuYongScanServiceImpl zuYongScanServiceImpl;
-    @Autowired
     private WXSaoScanServiceImpl wXSaoScanServiceImpl;
     @Autowired
     private SZGMScanServiceImpl sZGMScanServiceImpl;
@@ -109,13 +103,9 @@ public class ScanPayServiceApi{
     @Autowired
     private EYuGeMaScanServiceImpl eYuGeMaScanServiceImpl;
     @Autowired
-    private ZuYongPDDWXScanServiceImpl zuYongPDDWXScanServiceImpl;
-    @Autowired
     private SaoMaScanServiceImpl saoMaScanServiceImpl;
     @Autowired
     private WxSXBScanServiceImpl wxSXBScanServiceImpl;
-    @Autowired
-    private ZuYongGeMaAllScanServiceImpl zuYongGeMaAllScanServiceImpl;
     @Autowired
     private ZFBGMScanServiceImpl zFBGMScanServiceImpl;
     @Autowired
@@ -123,6 +113,16 @@ public class ScanPayServiceApi{
     @Autowired
     private ZuYongPDD3ScanServiceImpl zuYongPDD3ScanService;
 
+    /*@Autowired
+    private PddH5ServiceImpl pddH5Service;
+    @Autowired
+    private ZuYongScanServiceImpl zuYongScanServiceImpl;
+    @Autowired
+    private ZongHengWSDDaScanServiceImpl zongHengWSDDaScanServiceImpl;
+    @Autowired
+    private ZuYongGeMaAllScanServiceImpl zuYongGeMaAllScanServiceImpl;
+    @Autowired
+    private ZuYongPDDWXScanServiceImpl zuYongPDDWXScanServiceImpl;*/
     
     /**
      * @描述:扫码支付分发
