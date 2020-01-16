@@ -116,6 +116,7 @@ public class TradeCmd {
 			MerchChannel merchChannel = this.autoRouteChannel(MerchChannel.getMerchChannel(reqData));
 			result = this.checkChannel(reqData, merchChannel);
 			if (!Constant.isOkResult (result)) {
+				this.doRestFailedOrder(reqData, merchChannel);
 				return result;
 			}
 			//保存订单
@@ -317,11 +318,11 @@ public class TradeCmd {
 			reqData.put ("channelSubMerchKey", merchChannel.getMerchTradeKey ());
 			reqData.put ("channelLabel", merchChannel.getChannelId ());
 			reqData.put ("serviceCallbackUrl", merchChannel.getServiceCallbackUrl());
-			if (merchChannel.getSubNoStatus()!= 1) {
+			/*if (merchChannel.getSubNoStatus()!= 1) {
 				reqData.put ("channelKey", channelKey);
 				reqData.put ("channelDesKey", channelDesKey);
 				return Constant.successMsg ("交易通道验证通过");
-			}
+			}*/
 			/*Long merchType = reqData.containsKey("merchType")?reqData.getLong("merchType"):0;
 			if(merchType!=null && merchType ==8){
 				return this.autoOpenRoute (reqData, merchChannel, traAmount);
@@ -352,7 +353,11 @@ public class TradeCmd {
 					this.setSuppNoData (reqData);
 					break;
 				default:
-					this.setDefaultKey (reqData,merchChannel,traAmount);
+					result = this.setDefaultKey (reqData,merchChannel,traAmount);
+					if(!Constant.isOkResult(result)){
+						reqData.putAll(result);
+						return result;
+					}
 					break;
 			}
 			return Constant.successMsg ("交易通道验证通过");
@@ -460,7 +465,7 @@ public class TradeCmd {
 	 * @作者:nada
 	 * @时间:2018/12/25
 	 **/
-	private void setDefaultKey(JSONObject reqData, MerchChannel merchChannel, BigDecimal traAmount){
+	private JSONObject setDefaultKey(JSONObject reqData, MerchChannel merchChannel, BigDecimal traAmount){
 		Long channelId = merchChannel.getChannelId ();
 		if(channelId == 232){
 			channelId = 231L;
@@ -470,9 +475,10 @@ public class TradeCmd {
 			reqData.put ("channelKey", channelSubNo.getUpMerchNo ());
 			reqData.put ("channelDesKey", channelSubNo.getUpMerchKey ());
 		}else{
-			throw new IllegalArgumentException("默认轮询无可用商户号");
+			return Constant.failedMsg ("无默认子商户号");
 		}
 		logger.info ("默认轮询订单:{},商户号:{}",reqData.getString ("vcOrderNo"),reqData.getString("channelKey"));
+		return Constant.successMsg ("设置成功");
 	}
 
 	/**
