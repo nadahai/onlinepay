@@ -293,10 +293,8 @@ public class TradeCmd {
 			if (merchChannel.getStatus () != 1) {
 				return Constant.failedMsg ("商户通道状态禁用,请核实通道状态");
 			}
-			//通道限额
-			long channelSource = merchChannel.getChannelSource ();
 			BigDecimal traAmount = new BigDecimal (reqData.getString ("amount"));
-			BigDecimal actualAmount = Constant.getActualMoney (traAmount, merchChannel.getTranRate ());
+			BigDecimal actualAmount = Constant.getActualMoney (traAmount,merchChannel.getTranRate ());
 			int r0 = actualAmount.compareTo (new BigDecimal ("0"));
 			if (r0 < 1) {
 				return Constant.failedMsg ("温馨提示:交易金额过小");
@@ -309,22 +307,22 @@ public class TradeCmd {
 			if (r2 > 0) {
 				return Constant.failedMsg ("温馨提示:此通道交易限额" + merchChannel.getMaxTraPrice ());
 			}
-			String channelKey = StringUtils.deleteWhitespace (merchChannel.getChannelKey ());
-			String channelDesKey = StringUtils.deleteWhitespace (merchChannel.getChannelDesKey ());
+			long channelSource = merchChannel.getChannelSource ();
+			String channelKey = StringUtils.deleteWhitespace(merchChannel.getChannelKey());
+			String channelDesKey = StringUtils.deleteWhitespace(merchChannel.getChannelDesKey());
 			reqData.put ("tradeRate", merchChannel.getTranRate ());
 			reqData.put ("channelSource", channelSource);
-			reqData.put ("channelPayUrl", merchChannel.getPayUrl ());//api地址
-			reqData.put ("channelSubMerchNo", merchChannel.getMerchTradeNo ());//子商户号
+			reqData.put ("channelPayUrl", merchChannel.getPayUrl ());
+			reqData.put ("channelSubMerchNo", merchChannel.getMerchTradeNo ());
 			reqData.put ("channelSubMerchKey", merchChannel.getMerchTradeKey ());
 			reqData.put ("channelLabel", merchChannel.getChannelId ());
 			reqData.put ("serviceCallbackUrl", merchChannel.getServiceCallbackUrl());
-
-			if (merchChannel.getSubNoStatus () != 1) {
+			if (merchChannel.getSubNoStatus()!= 1) {
 				reqData.put ("channelKey", channelKey);
 				reqData.put ("channelDesKey", channelDesKey);
 				return Constant.successMsg ("交易通道验证通过");
 			}
-			Long merchType = reqData.containsKey("merchType")?reqData.getLong("merchType"):0;
+			/*Long merchType = reqData.containsKey("merchType")?reqData.getLong("merchType"):0;
 			if(merchType!=null && merchType ==8){
 				return this.autoOpenRoute (reqData, merchChannel, traAmount);
 			}
@@ -332,13 +330,16 @@ public class TradeCmd {
 				if (merchChannel.getTranRate () == null || merchChannel.getChannelCost () == null || merchChannel.getTranRate ().compareTo (merchChannel.getChannelCost ()) < 1) {
 					return Constant.failedMsg ("交易费率配置有误,请联系运维人员");
 				}
-			}
+			}*/
 			switch ((int) channelSource) {
 				case 51: case 65: case 81: case 83:
 					this.alipayAutoRoute (reqData, merchChannel, traAmount);
 					break;
 				case 111:
-					this.autoPddSubnoRout(reqData,merchChannel,traAmount);
+					JSONObject result = this.autoPddSubnoRout(reqData,merchChannel,traAmount);
+					if(!Constant.isOkResult(result)){
+						return result;
+					}
 					break;
 				case 93:
 					JSONObject res = this.setSqbKey (reqData, merchChannel, traAmount);
@@ -361,58 +362,35 @@ public class TradeCmd {
 	}
 
 	/**
-	 * @描述:路由pdd 子商户号
+	 * @描述:路由pdd子商户号
 	 * @时间:2019/5/2
 	 **/
 	private JSONObject autoPddSubnoRout(JSONObject reqData, MerchChannel merchChannel, BigDecimal traAmount){
 		try {
-			Long channelId = merchChannel.getChannelId ();
+			String orderNo = reqData.getString ("vcOrderNo");
+			Long channelSource = merchChannel.getChannelSource();
 			Integer type = reqData.containsKey ("payType") ? reqData.getIntValue ("payType") : 0;
 			String service = reqData.containsKey ("service") ? reqData.getString ("service") : "";
-			if (type == 2 || type == 10 || Constant.service_alipay.equals (service)) {
-				type = 2;
-			}else if(type == 1 || type == 12 || Constant.service_weixin.equals (service)){
-				type = 1;
-			}else{
-				type = 0;
-			}
-			ChannelSubNo channelSubNo = new ChannelSubNo (channelId,traAmount);
-			channelSubNo.setPayType (type);
+			Integer payType = Constant.getPddPayType(type,service);
+			ChannelSubNo channelSubNo = new ChannelSubNo (channelSource,payType,traAmount);
 			List<ChannelSubNo> lists = merchChannelService.getChannelSubNoList(channelSubNo);
 			if (lists == null || lists.size () < 1) {
-				return Constant.failedMsg ("当前请求频繁，请稍后再试");
+				return Constant.failedMsg ("全部码商满额");
 			}
-			if (lists.size () == 1) {
-				channelSubNo = lists.get (0);
-			}else{
-				for (ChannelSubNo no : lists) {
-					boolean isOk = coreEngineProviderService.checkSqb (no.getUpMerchNo (),type);
-					if(no.getPayType ()<1 && !isOk){
-						continue;
-					}
-					if (no.getMinPrice () > 0 && no.getMaxPrice () > 0 && no.getMinPrice () <= traAmount.doubleValue () && no.getMaxPrice () > traAmount.doubleValue ()) {
-						channelSubNo = lists.get (0);
-						break;
-					}
-				}
-			}
-			if(channelSubNo == null || StringUtil.isEmpty (channelSubNo.getUpMerchNo ()) || channelSubNo.getLastOrderTime () == null){
-				return Constant.failedMsg ("当前请求频繁，请稍后再试");
-			}
-			long diffTime = coreEngineProviderService.getIntCacheCfgKey ("online.sqb.order.diff.time");
-			long diff = (System.currentTimeMillis ()-channelSubNo.getLastOrderTime ().getTime ())/1000;
-			if(diff<diffTime){
-				return Constant.failedMsg ("当前请求频繁，请稍后"+(diffTime-diff)+"秒后再试");
+			int index = (int) (Math.random()* lists.size());
+			channelSubNo = lists.get (index);
+			if(channelSubNo == null || StringUtil.isEmpty (channelSubNo.getUpMerchNo ())){
+				return Constant.failedMsg ("码商配置错误");
 			}
 			String upMerchNo = channelSubNo.getUpMerchNo ();
-			coreEngineProviderService.setSqbNum (upMerchNo,type);
+			String upMerchKey = channelSubNo.getUpMerchKey();
 			reqData.put ("channelKey",upMerchNo);
-			reqData.put ("channelDesKey", channelSubNo.getUpMerchKey ());
-			logger.info ("默认轮询订单:{},商户号:{}",reqData.getString ("vcOrderNo"),reqData.getString("channelKey"));
-			return Constant.successMsg ("设置成功");
+			reqData.put ("channelDesKey",upMerchKey);
+			logger.info ("PDD路由订单:{},商户号:{},子账号:{}",orderNo,upMerchNo,upMerchKey);
+			return Constant.successMsg("路由pdd子商户号成功");
 		} catch (Exception e) {
-			logger.error ("设置收钱吧信息异常");
-			return Constant.failedMsg ("设置收钱吧信息异常");
+			logger.error ("路由pdd子商户号异常");
+			return Constant.failedMsg ("路由pdd子商户号异常");
 		}
 	}
 
@@ -549,23 +527,17 @@ public class TradeCmd {
 	 * @描述:保存交易订单
 	 * @时间:2018年5月17日 下午4:57:12
 	 */
-	public JSONObject doRestOrder (JSONObject reqData, MerchChannel merchChannel) {
+	public JSONObject doRestOrder(JSONObject reqData, MerchChannel merchChannel) {
 		try {
 			VcOnlineOrder vcOnlineOrder = VcOnlineOrder.buildVcOnlineOrder (reqData, merchChannel);
-			int res = vcOnlineOrderService.save (vcOnlineOrder);
+			int res = vcOnlineOrderService.save(vcOnlineOrder);
 			if (res < 1) {
-				return Constant.failedMsg ("保存交易订单失败");
+				return Constant.failedMsg("保存交易订单失败");
 			}
-			res = vcOnlineOrderService.saveDetail (VcOnlineOrderDetail.buildOrder (vcOnlineOrder, reqData, merchChannel));
+			res = vcOnlineOrderService.saveDetail(VcOnlineOrderDetail.buildOrder (vcOnlineOrder, reqData, merchChannel));
 			if (res < 1) {
 				return Constant.failedMsg ("保存交易订单明细失败");
 			}
-			final String upmerchNo = vcOnlineOrder.getUpMerchNo ();
-			final String upmerchKey = vcOnlineOrder.getUpMerchKey ();
-			final int status = vcOnlineOrder.getStatus ();
-			final int source = vcOnlineOrder.getPaySource ();
-			ThreadUtil.execute (() -> asynMonitor.orderMonitor (upmerchNo, status));
-			//解密秘钥
 			decodeChannelKey (reqData);
 			return Constant.successMsg ("保存交易订单成功");
 		} catch (Exception e) {

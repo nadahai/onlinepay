@@ -44,9 +44,9 @@ public class ChannelSubNo implements Serializable {
     private String remarks;
     private String remark;
     private long channelSource;
-    private int payType;
+    private int payType; //支持类型 0:全部 3:微信 1:支付宝
 
-    private long type;//支持类型 0:全部 3:微信 1:支付宝
+    private long type;//0 : 全部,1 : 个人转账,2 : 协议转账,3 : AA收款,4 : 转卡浮动,5 : 企业红包,6 : 转卡不浮动,7 : 好友转账 ,8 : 个人红包,10 : 主动收款,100 :当面付,200 :转账,400 :口碑 /
     private String name;
     private String userId;
     private String bankNo;
@@ -66,12 +66,6 @@ public class ChannelSubNo implements Serializable {
         this.loopRobin = loopRobin;
     }
 
-    public ChannelSubNo(long channelId,long lastOrderExpiredTime,BigDecimal traAmount){
-        this.channelId = channelId;
-        this.lastOrderExpiredTime = lastOrderExpiredTime;
-        this.traAmount = traAmount;
-    }
-
     public ChannelSubNo (String orderNo, long channelId, long channelSource, BigDecimal traAmount, int loopRobin, String clientIp) {
         this.channelId = channelId;
         this.channelSource = channelSource;
@@ -85,6 +79,13 @@ public class ChannelSubNo implements Serializable {
         this.channelId = channelId;
         this.traAmount = traAmount;
     }
+
+    public ChannelSubNo (long channelSource,Integer payType,BigDecimal traAmount) {
+        this.channelSource = channelSource;
+        this.traAmount = traAmount;
+        this.payType = payType;
+    }
+
 
     public ChannelSubNo (BigDecimal traAmount,long merchId) {
         this.merchId = merchId;

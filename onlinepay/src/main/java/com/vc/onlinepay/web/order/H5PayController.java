@@ -99,21 +99,22 @@ public class H5PayController extends BaseController {
                 logger.error("H5下单单号:{},payType参数错误", orderId);
                 return Constant.failedMsg("payType参数错误!");
             }
-            // 第二步：通道配置验证业务处理
-            MerchChannel merchChannel = orderServiceImpl.autoRouteChannel(preMerchChannel,reqData.getString("amount"),reqData.getString("merchantId"));
 
+            //第二步：通道配置验证业务处理
+            MerchChannel merchChannel = orderServiceImpl.autoRouteChannel(preMerchChannel,reqData.getString("amount"),reqData.getString("merchantId"));
             result = tradeCmd.checkChannel(reqData, merchChannel);
-            if (!result.getString("code").equals(Constant.SUCCESSS)) {
-                logger.error("H5下单单号:{},通道验证失败:{}", orderId,result);
+            if (!Constant.isOkResult(result)) {
+                logger.error("H5下单单号:{},通道验证失败:{}",orderId,result);
                 return result;
             }
 
-            // 第三步：订单业务处理
+            //第三步：订单业务处理
             result = tradeCmd.doRestOrder(reqData, merchChannel);
-            if (!result.getString("code").equals(Constant.SUCCESSS)) {
+            if (!Constant.isOkResult(result)) {
                 logger.error("H5下单单号:{},下单系统异常（下单保存失败）", orderId);
                 return Constant.failedMsg("H5下单保存失败,请重新发起订单");
             }
+
             //金额浮动处理
             tradeCmd.channelAmountfloat(reqData,merchChannel);
 

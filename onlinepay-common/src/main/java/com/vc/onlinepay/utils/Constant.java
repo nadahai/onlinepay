@@ -174,10 +174,20 @@ public class Constant {
         return resJson;
     }
 
-
     public static  JSONObject stringToJson(String str) throws Exception{
         JSONObject jsonObject = new JSONObject();
         return JSONObject.parseObject(str);
+    }
+
+    public static  int getPddPayType(Integer type,String service) throws Exception{
+        if (type == 2 || type == 10 || Constant.service_alipay.equals (service)) {
+            type = 2;
+        }else if(type == 1 || type == 12 || Constant.service_weixin.equals (service)){
+            type = 1;
+        }else{
+            type = 0;
+        }
+        return type;
     }
 
     public static String getAutoOrderNo() {
