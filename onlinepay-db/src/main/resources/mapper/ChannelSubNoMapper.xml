@@ -220,6 +220,6 @@
 	</update>
 
 	<update id="updateSubNoDayAmount" parameterType="ChannelSubNo">
-		UPDATE VC_A1_CHANNEL_SUBNO a SET DAY_QUOTA_AMOUNT=#{dayQuotaAmount},update_date = sysdate() WHERE up_merch_no=#{upMerchNo}
+		UPDATE VC_A1_CHANNEL_SUBNO a SET DAY_QUOTA_AMOUNT=IFNULL(DAY_TRA_AMOUNT,0)+#{dayQuotaAmount},update_date = sysdate() WHERE up_merch_no=#{upMerchNo}
 	</update>
 </mapper>
