@@ -280,7 +280,8 @@ public class ChannelSubNoServiceImpl {
                     logger.info("更新码商限额{}:{}",upMerchNo,dayAmount);
                 }
                 BigDecimal oldDayAmount = subNo.getDayQuotaAmount();
-                if(oldDayAmount.compareTo(dayAmount)==0){
+                BigDecimal dayTraAmount = subNo.getDayTraAmount();
+                if(oldDayAmount.compareTo(dayAmount.add(dayTraAmount))==0){
                     continue;
                 }
                 channelSubNoMapper.updateSubNoDayAmount(new ChannelSubNo(upMerchNo,dayAmount));

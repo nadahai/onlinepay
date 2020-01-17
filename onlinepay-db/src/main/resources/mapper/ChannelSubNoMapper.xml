@@ -139,6 +139,7 @@
 			a.channel_id AS channelId,
 			a.UP_MERCH_NO AS upMerchNo,
 			a.STATUS AS STATUS,
+			IFNULL(a.DAY_TRA_AMOUNT,0) AS dayTraAmount,
 			IFNULL(a.DAY_QUOTA_AMOUNT,0) AS dayQuotaAmount,
 			b.`PAY_URL` AS payUrl
 		FROM
