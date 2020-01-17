@@ -23,6 +23,7 @@
 				a.cardIdx AS cardIdx,
 				a.BANK_MARK AS bankMark,
 				a.TYPE AS TYPE,
+				a.seq AS seq,
 				a.LAST_ORDER_TIME AS lastOrderTime
 			FROM
 				VC_A1_CHANNEL_SUBNO a
