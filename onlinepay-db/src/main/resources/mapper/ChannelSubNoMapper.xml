@@ -191,13 +191,7 @@
 		update_date = sysdate() ,
 		LAST_ORDER_TIME = sysdate()
 		WHERE
-		up_merch_no=#{upMerchNo} and del_flag = 0
-		<if test="channelId != null and channelId !=''">
-			and channel_id = #{channelId}
-		</if>
-		<if test="merchId != null and merchId !=''">
-			and merch_id = #{merchId}
-		</if>
+		up_merch_no=#{upMerchNo}
 	</update>
 
 	<!--更新最后一次下单时间  -->
