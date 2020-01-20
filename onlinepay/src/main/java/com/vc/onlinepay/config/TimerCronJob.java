@@ -42,7 +42,7 @@ public class TimerCronJob {
      * @描述:定时更新的pdd码商限额
      * @时间:2019年4月26日21:54:00
      */
-    @Scheduled(cron = "0 */10 * * * ?")
+    //@Scheduled(cron = "0 */10 * * * ?")
     public void taobaocleanOrderTrade(){
         try {
             Integer result = channelSubNoService.updateSubNoDayAmount(null);
