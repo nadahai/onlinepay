@@ -32,7 +32,6 @@
 				a.del_flag = 0 and  a.status =1
 				and b.`STATUS`=1 AND b.`DEL_FLAG`=0 AND b.`SUBNO_STATUS`=1
 				and IFNULL(a.DAY_TRA_AMOUNT,0) &lt;= IFNULL(a.DAY_QUOTA_AMOUNT,0)
-				and IFNULL(a.TRA_AMOUNT,0) &lt;= IFNULL(a.QUOTA_AMOUNT,0)
 				<if test="channelSource != null and channelSource !=0 ">
 					and b.CHANNEL_SOURCE = #{channelSource}
 				</if>
