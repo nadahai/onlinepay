@@ -377,7 +377,7 @@ public class CommonCallBackService{
             }
             if(oldOnlineOrder.getOrderDes().contains("云监控")){
                 logger.error("检测异常补单情况");
-                vcOnlineOrder.setStatus(1);
+                vcOnlineOrder.setStatus(5);
                 vcOnlineOrder.setOrderDes("异常报警");
                 vcOnlineOrderService.updateOrderError(vcOnlineOrder);
                 return false;
