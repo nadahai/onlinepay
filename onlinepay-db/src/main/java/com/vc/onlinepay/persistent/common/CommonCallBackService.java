@@ -278,6 +278,9 @@ public class CommonCallBackService{
                 vcOnlineOrder.setStatus(3);
             }else if (status == 4) {
                 vcOnlineOrder.setOrderDes("回调支付成功");
+                if("手工补单成功".equals(orderDes)){
+                    vcOnlineOrder.setOrderDes(orderDes);
+                }
                 vcOnlineOrder.setStatus(4);
             } else if (status == 5 ) {
                 vcOnlineOrder.setOrderDes(StringUtil.isEmpty(orderDes)?"回调支付失败":orderDes);
