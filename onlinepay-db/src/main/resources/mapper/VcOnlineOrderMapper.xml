@@ -461,6 +461,20 @@
 		WHERE
 		 order_no = #{orderNo}
 	</update>
+
+	<!--修改订单描述-->
+	<update id="updateOrderError" parameterType="VcOnlineOrder">
+		UPDATE vc_online_order SET
+		<if test="orderDes != null">
+			order_des = #{orderDes},
+		</if>
+		<if test="status != null">
+			status = #{status},
+		</if>
+		update_date = sysdate()
+		WHERE
+		order_no = #{orderNo}
+	</update>
 	
     <!--修改订单状态-->
 	<update id="updateOrderStatus" parameterType="VcOnlineOrder">

@@ -383,6 +383,13 @@ public class CommonCallBackService{
                 logger.error("订单失败，异步回调无需通知下游{}",reqData);
                 return true;
             }
+            if(oldOnlineOrder.getOrderDes().contains("云监控")){
+                logger.error("检测异常补单情况");
+                vcOnlineOrder.setStatus(1);
+                vcOnlineOrder.setOrderDes("异常报警补单");
+                vcOnlineOrderService.updateOrderError(vcOnlineOrder);
+                return false;
+            }
             noticePrms.put ("code", Constant.SUCCESSS);
             noticePrms.put ("msg", oldOnlineOrder.getOrderDes ());
             noticePrms.put ("merchNo", oldOnlineOrder.getMerchNo ());
@@ -392,7 +399,6 @@ public class CommonCallBackService{
             noticePrms.put ("status", oldOnlineOrder.getStatus ());
             noticePrms.put ("remark", Constant.format2BigDecimal (new BigDecimal (oldOnlineOrder.getPayCode ())));
             noticePrms.put ("sign", Md5CoreUtil.md5ascii (noticePrms, oldOnlineOrder.getPayKey()));
-            
             notifyUrl = oldOnlineOrder.getcNotifyUrl().toLowerCase();
             vcOnlineOrder = new VcOnlineOrder(oldOnlineOrder.getOrderNo());
             logger.info("订单{}回调给下游请求地址{}参数{}",oldOnlineOrder.getOrderNo(), oldOnlineOrder.getcNotifyUrl(), noticePrms);
