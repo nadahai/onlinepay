@@ -25,6 +25,6 @@ onlinepay:
   project:
     shortName:  produce-xpay
     actualName: xpay
-    domainName: http://online.huashuogoxpay.com
-    successUrl: http://online.huashuogoxpay.com/xpay/success
+    domainName: http://online.huashuo2020.com
+    successUrl: http://online.huashuo2020.com/xpay/success
     baseUrl: ${onlinepay.project.domainName}/${onlinepay.project.actualName} # 基础路径
