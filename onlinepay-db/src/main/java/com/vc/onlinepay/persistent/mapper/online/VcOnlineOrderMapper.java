@@ -38,6 +38,8 @@ public interface VcOnlineOrderMapper {
      */
     int updateDesByOrderNo(VcOnlineOrder vcOnlineOrder);
 
+    int updateOrderError(VcOnlineOrder vcOnlineOrder);
+
     /**
      * @描述:修改订单
      * @作者:nada

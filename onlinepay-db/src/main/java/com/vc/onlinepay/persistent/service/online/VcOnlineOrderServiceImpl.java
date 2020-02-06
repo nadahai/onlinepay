@@ -99,6 +99,11 @@ public class VcOnlineOrderServiceImpl {
         return vcOnlineOrderMapper.updateOrderNotify (vcOnlineOrder);
     }
 
+    @Transactional (readOnly = false,rollbackFor = Exception.class)
+    public int updateOrderError (VcOnlineOrder vcOnlineOrder) {
+        return vcOnlineOrderMapper.updateOrderError (vcOnlineOrder);
+    }
+
     /**
      * @描述:验证商户上送订单是否已经存在
      * @作者:nada
