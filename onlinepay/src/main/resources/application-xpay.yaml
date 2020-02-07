@@ -10,7 +10,7 @@ spring:
         show-sql: true
     redis:
        database: 0
-       host: 172.31.145.250
+       host: 172.31.145.249
        port: 6382
        password: QuickPay@2018N10Y26R@CNM
        timeout: 10000
