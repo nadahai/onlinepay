@@ -146,8 +146,8 @@ public class CommonPayService{
             if(!Constant.isNumberChars(merchNo)){
                 return null;
             }
-            MerchInfo merchInfo = null;
-            String key = CacheConstants.CACHE_TABLE_KEY_MERCH_INFO +merchNo;
+            MerchInfo merchInfo =  merchInfoService.getMerchInfoByNo(Long.valueOf(merchNo));
+            /*String key = CacheConstants.CACHE_TABLE_KEY_MERCH_INFO +merchNo;
             if(redisCacheApi.exists(key)){
                 merchInfo = (MerchInfo)redisCacheApi.getBean(key,MerchInfo.class);
             }
@@ -157,7 +157,7 @@ public class CommonPayService{
                 	 boolean isOk = redisCacheApi.setBean(key, merchInfo,MerchInfo.class);
                      return merchInfo;
                  }
-            }
+            }*/
             if (merchInfo == null) {
                 logger.error("获取商户信息为空,商户编号:{}",merchNo);
                 return null;
