@@ -7,9 +7,12 @@
 package com.vc.onlinepay.web.base;
 
 import com.alibaba.fastjson.JSONObject;
+import com.vc.onlinepay.cache.RedisCacheApi;
 import com.vc.onlinepay.utils.http.HttpRequestTools;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -31,6 +34,8 @@ public class IndexController extends BaseController {
     private String domainName;
     @Value("${onlinepay.project.actualName:}")
     private String actualName;
+    @Autowired
+    private RedisCacheApi redisCacheApi;
 
     /**
      * @Description: 进入系统首页
@@ -51,6 +56,8 @@ public class IndexController extends BaseController {
     public ModelAndView  api(HttpServletRequest request,HttpServletResponse response) {
           ModelAndView result = new ModelAndView("toxpay");
           result.addObject("shortName",shortName);
+          redisCacheApi.set("shortName",shortName);
+          result.addObject("redisTest",redisCacheApi.get("shortName"));
           return result;
     }
     
