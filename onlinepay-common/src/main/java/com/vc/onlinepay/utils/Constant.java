@@ -196,9 +196,11 @@ public class Constant {
         StringBuffer orderNo = new StringBuffer ();
         orderNo.append (str);
         orderNo.append (s.substring (s.length () - 6));
+        Random ne=new Random();
+        int randomNum=ne.nextInt(900)+100;
+        orderNo.append(randomNum);
         return orderNo.toString ();
     }
-
 
     /**
      * 生成32位编码
@@ -494,16 +496,6 @@ public class Constant {
         }catch (Exception e){
             e.printStackTrace();
             return qrcodeUrl;
-        }
-    }
-
-    public static void main (String[] args) {
-        try {
-            String url = "http://www.baidu.com";
-            String response = getShortUrl(url);
-            System.out.println (response);
-        } catch (Exception e) {
-            e.printStackTrace ();
         }
     }
 
