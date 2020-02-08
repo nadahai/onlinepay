@@ -10,9 +10,9 @@ spring:
         show-sql: true
     redis:
        database: 0
-       host: 172.31.145.250
-       port: 6382
-       password: QuickPay@2018N10Y26R@CNM
+       host: redis-zuyong.redis.rds.aliyuncs.com
+       port: 6381
+       password: redis@wk2020@#1243&56*87
        timeout: 10000
        lettuce:
          pool:
