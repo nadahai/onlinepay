@@ -107,6 +107,13 @@
       <artifactId>jackson-annotations</artifactId>
       <version>2.9.0</version>
     </dependency>
+
+    <!-- https://mvnrepository.com/artifact/com.jacob/jacob 文字转语音 -->
+    <dependency>
+      <groupId>com.hynnet</groupId>
+      <artifactId>jacob</artifactId>
+      <version>1.18</version>
+    </dependency>
   </dependencies>
 
   <profiles>
