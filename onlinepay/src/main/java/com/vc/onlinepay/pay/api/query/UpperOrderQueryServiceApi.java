@@ -3,8 +3,6 @@ package com.vc.onlinepay.pay.api.query;
 import com.alibaba.fastjson.JSONObject;
 import com.vc.onlinepay.http.HttpClientTools;
 import com.vc.onlinepay.pay.common.ResultListener;
-import com.vc.onlinepay.pay.order.h5.PddH5ServiceImpl;
-import com.vc.onlinepay.pay.query.order.MPocketOrderQueryImpl;
 import com.vc.onlinepay.pay.query.order.RemitOrderQueryImpl;
 import com.vc.onlinepay.persistent.common.CommonCallBackService;
 import com.vc.onlinepay.persistent.common.CommonPayService;
@@ -17,14 +15,15 @@ import com.vc.onlinepay.utils.Constant;
 import com.vc.onlinepay.utils.JsonValidator;
 import com.vc.onlinepay.utils.Md5CoreUtil;
 import com.vc.onlinepay.utils.StringUtil;
-import java.util.Date;
-import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+
+import java.util.Date;
+import java.util.List;
 
 /**
  * @类名称:ReplaceServiceImpl.java
@@ -47,8 +46,6 @@ public class UpperOrderQueryServiceApi {
     private CommonCallBackService commonCallBackServiceImpl;
     @Autowired
     private RemitOrderQueryImpl remitOrderQuery;
-    @Autowired
-    private PddH5ServiceImpl pddH5Service;
     @Autowired
     private CoreEngineProviderService engineProviderService;
 
