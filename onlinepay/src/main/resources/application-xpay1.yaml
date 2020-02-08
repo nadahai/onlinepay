@@ -10,7 +10,7 @@ spring:
         show-sql: true
     redis:
        database: 0
-       host: redis-zuyong.redis.rds.aliyuncs.com
+       host: redis-innetwork.redis.rds.aliyuncs.com
        port: 6381
        password: redis@wk2020@#1243&56*87
        timeout: 10000
