@@ -28,6 +28,12 @@ public class VcOnlineThirdBalance {
     private int channelSource;
     private int channelId;
     private BigDecimal replacePoundage;
+    private String accessIp;
+
+	public VcOnlineThirdBalance(BigDecimal id,String accessIp){
+		this.id = id;
+		this.accessIp = accessIp;
+	}
     
     public static VcOnlineThirdBalance geThirdBalance(String vcService) {
 	    VcOnlineThirdBalance balance = new VcOnlineThirdBalance();
@@ -53,6 +59,11 @@ public class VcOnlineThirdBalance {
 	public VcOnlineThirdBalance(String balanceLabel) {
         this.balanceLabel = balanceLabel;
     }
+
+	public VcOnlineThirdBalance(int channelSource,int channelId){
+		this.channelSource = channelSource;
+		this.channelId = channelId;
+	}
 	
 	public VcOnlineThirdBalance(int cashMode,String balanceLabel) {
         this.cashMode = cashMode;
@@ -198,4 +209,11 @@ public class VcOnlineThirdBalance {
 		this.replacePoundage = replacePoundage;
 	}
 
+	public String getAccessIp() {
+		return accessIp;
+	}
+
+	public void setAccessIp(String accessIp) {
+		this.accessIp = accessIp;
+	}
 }

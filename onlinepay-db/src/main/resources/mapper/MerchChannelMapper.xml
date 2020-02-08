@@ -173,5 +173,11 @@
 		ORDER BY b.STATUS ASC
 	</select>
 
+	<update id="updateAccessIpByChannelId" parameterType="com.vc.onlinepay.persistent.entity.channel.MerchChannel">
+		update vc_a1_channel set ACCESS_IP = #{accessIp} ,update_date=sysdate() where id = #{keyId}
+	</update>
 
+	<select id="getAccessIpByChannelId" resultType="com.vc.onlinepay.persistent.entity.channel.MerchChannel" parameterType="int">
+		select ACCESS_IP as accessIp,id from vc_a1_channel where id = #{id} and del_flag = 0 and status = 1;
+	</select>
 </mapper>

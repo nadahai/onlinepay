@@ -59,6 +59,25 @@ public class MerchChannelServiceImpl {
             return 0;
         }
     }
+
+    /**
+     * @描述:更新回调IP
+     * @作者:leoncongee
+     * @时间:2019年5月13日12:10:55
+     */
+    @Transactional (readOnly = false)
+    public int updateAccessIpByChannelId (MerchChannel merchChannel){
+        return merchChannelMapper.updateAccessIpByChannelId (merchChannel);
+    }
+
+    /**
+     * @描述:查询回调IP
+     * @作者:leoncongee
+     * @时间:2019年5月13日14:58:38
+     */
+    public MerchChannel getAccessIpByChannelId (int id){
+        return merchChannelMapper.getAccessIpByChannelId(id);
+    }
     
     /**
      * @描述:根据商户编号,支付方式，结算方式 查商户通道信息

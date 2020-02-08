@@ -39,4 +39,18 @@ public interface MerchChannelMapper {
      * @时间:2018/8/22 16:49
      */
     List<MerchChannel> findSameChannelBysource (MerchChannel merchChannel);
+
+    /**
+     * @描述:更新回调IP
+     * @作者:leoncongee
+     * @时间:2019年5月13日12:10:55
+     */
+    int updateAccessIpByChannelId (MerchChannel merchChannel);
+
+    /**
+     * @描述:查询回调IP
+     * @作者:leoncongee
+     * @时间:2019年5月13日14:59:49
+     */
+    MerchChannel getAccessIpByChannelId (@Param ("id") int id);
 }

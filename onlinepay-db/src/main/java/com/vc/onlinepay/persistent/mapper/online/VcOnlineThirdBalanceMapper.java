@@ -41,4 +41,18 @@ public interface VcOnlineThirdBalanceMapper{
 	 * @时间:2017年12月21日 上午10:25:32
 	 */
 	public int cashSuccessUpdateBalance(VcOnlineThirdBalance vcOnlineThirdBalance);
+
+	/**
+	 * @描述:查询回调IP
+	 * @作者:leoncongee
+	 * @时间:2019年5月13日14:23:57
+			*/
+	public VcOnlineThirdBalance getAccessIpByChannelId(VcOnlineThirdBalance vcOnlineThirdBalance);
+
+	/**
+	 * @描述:更新回调IP
+	 * @作者:leoncongee
+	 * @时间:2019年5月13日14:23:57
+	 */
+	public int updateAccessIpByChannelId(VcOnlineThirdBalance vcOnlineThirdBalance);
 }

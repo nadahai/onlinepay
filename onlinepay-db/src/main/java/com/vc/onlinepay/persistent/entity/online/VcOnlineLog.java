@@ -80,6 +80,16 @@ public class VcOnlineLog {
         this.remarks = remarks;
     }
 
+    public VcOnlineLog(String title,String logDes,String remark,String remarks) {
+        this.logLevel = 4;
+        this.type = 4;
+        this.status = 1;
+        this.title = title;
+        this.logDes = logDes;
+        this.remark = remark;
+        this.remarks = remarks;
+    }
+
     public int getLogLevel() {
         return logLevel;
     }

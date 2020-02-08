@@ -95,6 +95,8 @@ public class CacheConstants {
     public static final String CASH_BLACK_BANKNO = "online.cash.bankno.black.list";
     /** 提现总开关 */
     public static final String CASH_SWITCH_SERVICE = "online.cash.service.switch";
+    /**交易、代付 验证回调IP*/
+    public static final String ONLINE_NOTIFY_CHECK_TYPE = "online.notify.check.type";
     /** 交易代付日切时间 */
     public static final String ONLINE_LIMIT_TIME_ORDER = "online.system.order.dtime";
     /** 下单监控开关 */
