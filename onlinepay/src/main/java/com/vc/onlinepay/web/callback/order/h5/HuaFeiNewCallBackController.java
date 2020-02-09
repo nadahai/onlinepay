@@ -1,5 +1,6 @@
 package com.vc.onlinepay.web.callback.order.h5;
 
+import com.vc.onlinepay.pay.common.NotifyServiceImpl;
 import com.vc.onlinepay.persistent.common.CommonCallBackService;
 import com.vc.onlinepay.persistent.entity.online.VcOnlineOrder;
 import com.vc.onlinepay.utils.StringUtil;
@@ -29,6 +30,9 @@ public class HuaFeiNewCallBackController extends BaseController {
     
     @Autowired
     private CommonCallBackService commonCallBackServiceImpl;
+
+    @Autowired
+    private NotifyServiceImpl notifyService;
     
     /**
      * @描述:话费新通道回调接口
@@ -74,6 +78,11 @@ public class HuaFeiNewCallBackController extends BaseController {
             vcOnlineOrder = payBusService.getVcOrderByorderNo(vcOrderNo);
             if(null==vcOnlineOrder){
                 logger.error("话费新通道回调接口订单号未找到{}", vcOrderNo);
+                return "ERROR";
+            }
+            String checkIpStatus  = notifyService.checkIpAddressForTrade(vcOnlineOrder, request);
+            if("error".equals(checkIpStatus)){
+                logger.error("话费新通道回调接口,回调ip校验失败:{}", vcOrderNo);
                 return "ERROR";
             }
             vcOnlineOrder.setpOrder(vcOrderNo);
