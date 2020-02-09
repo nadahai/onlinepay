@@ -10,12 +10,15 @@ import com.alibaba.fastjson.JSONObject;
 import com.vc.onlinepay.cache.CacheConstants;
 import com.vc.onlinepay.http.HttpClientTools;
 import com.vc.onlinepay.persistent.common.CoreEngineProviderService;
+import com.vc.onlinepay.persistent.entity.merch.MessageModel;
 import com.vc.onlinepay.utils.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+
+import java.util.concurrent.CompletableFuture;
 
 /**
  * @描述:监控异步通知
@@ -28,6 +31,7 @@ public class AsynNotice {
 	@Autowired
 	private CoreEngineProviderService coreEngineService;
 	private static final String sendWxURL = "http://boss.mall51.top/cms/f/wechat/sendMsgApi";
+    private static final String PRODUCT_EVN = "http://taobao.huashuo2020.com/cms/ws/pushAlert";
 
 	/**
 	 * @描述:微信消息推送
@@ -60,5 +64,32 @@ public class AsynNotice {
 			return false;
 		}
 	}
+
+    /**
+     * @desc 异步通知MessageType类消息到CMS
+     * @author Hiutung
+     * @create 2019/5/13 17:19
+     * @param model
+     * @return
+     */
+    public void asyncMsgNotice(final MessageModel model) {
+        if(null == model) {
+            return;
+        }
+        try {
+            CompletableFuture.runAsync(() -> {
+                logger.info("异步发送通知到DF管理端,接口:{}, 消息内容:{}",PRODUCT_EVN, model.toJSONString());
+                try {
+                    String response = HttpClientTools.httpSendPostForm(PRODUCT_EVN, model.toJSONObject());
+                    logger.info("异步发送通知到DF管理端,接口:{}, 类型:{}, 返回:{}",PRODUCT_EVN, model.getType().getDesc(), response);
+                } catch (Exception e) {
+                    logger.error("异步发送通知到DF管理端异常",e);
+                    e.printStackTrace();
+                }
+            });
+        } catch (Exception e) {
+            logger.error("异步发送通知到DF管理端异常", e);
+        }
+    }
 }
 

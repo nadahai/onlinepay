@@ -84,4 +84,24 @@ public class VcOnlineThirdBalanceServiceImpl {
         return vcOnlineThirdBalanceMapper.findLoadBalance (thirdBalance);
     }
 
+    /**
+     * @描述:查询回调IP
+     * @作者:leoncongee
+     * @时间:2019年5月13日15:18:39
+     */
+    @Transactional (readOnly = false)
+    public VcOnlineThirdBalance getAccessIpByChannelId(VcOnlineThirdBalance vcOnlineThirdBalance){
+        return vcOnlineThirdBalanceMapper.getAccessIpByChannelId(vcOnlineThirdBalance);
+    }
+
+    /**
+     * @描述:更新回调IP
+     * @作者:leoncongee
+     * @时间:2019年5月13日14:23:57
+     */
+    @Transactional (readOnly = false)
+    public int updateAccessIpByChannelId(VcOnlineThirdBalance vcOnlineThirdBalance){
+        return vcOnlineThirdBalanceMapper.updateAccessIpByChannelId(vcOnlineThirdBalance);
+    }
+
 }

@@ -71,6 +71,13 @@ public class MerchChannel{
     private String routeRegularEx;
     private String includeMerchno;
     private String excludeMerchno;
+    private String accessIp;
+    private int keyId;
+
+    public MerchChannel(int keyId,String accessIp) {
+        this.keyId=keyId;
+        this.accessIp = accessIp;
+    }
 
     public MerchChannel(Long merchId,List<Long> payTypes) {
         this.merchId=merchId;
@@ -667,5 +674,21 @@ public class MerchChannel{
 
     public void setExcludeMerchno(String excludeMerchno) {
         this.excludeMerchno = excludeMerchno;
+    }
+
+    public String getAccessIp() {
+        return accessIp;
+    }
+
+    public void setAccessIp(String accessIp) {
+        this.accessIp = accessIp;
+    }
+
+    public int getKeyId() {
+        return keyId;
+    }
+
+    public void setKeyId(int keyId) {
+        this.keyId = keyId;
     }
 }
