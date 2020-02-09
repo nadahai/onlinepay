@@ -10,7 +10,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.vc.onlinepay.cache.CacheConstants;
 import com.vc.onlinepay.http.HttpClientTools;
 import com.vc.onlinepay.persistent.common.CoreEngineProviderService;
-import com.vc.onlinepay.persistent.entity.merch.MessageModel;
 import com.vc.onlinepay.utils.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -72,7 +71,7 @@ public class AsynNotice {
      * @param model
      * @return
      */
-    public void asyncMsgNotice(final MessageModel model) {
+    /*public void asyncMsgNotice(final MessageModel model) {
         if(null == model) {
             return;
         }
@@ -90,6 +89,6 @@ public class AsynNotice {
         } catch (Exception e) {
             logger.error("异步发送通知到DF管理端异常", e);
         }
-    }
+    }*/
 }
 
