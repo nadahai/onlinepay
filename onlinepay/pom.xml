@@ -129,9 +129,9 @@
     </profile>
     
     <profile>
-      <id>xpay</id>
+      <id>xpay-old</id>
       <properties>
-        <profileActive>xpay</profileActive>
+        <profileActive>xpay-ol</profileActive>
         <env.warname>xpay</env.warname>
       </properties>
       <activation>
