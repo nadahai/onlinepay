@@ -79,11 +79,11 @@ public class ZuYongCallBackController extends BaseController {
                 logger.error("租用回调接口订单号未找到{}", vcOrderNo);
                 return "ERROR";
             }
-            String checkIpStatus  = notifyService.checkIpAddressForTrade(vcOnlineOrder, request);
-            if("error".equals(checkIpStatus)){
-                logger.error("租用回调接口,回调ip校验失败:{}", vcOrderNo);
-                return "ERROR";
-            }
+//            String checkIpStatus  = notifyService.checkIpAddressForTrade(vcOnlineOrder, request);
+//            if("error".equals(checkIpStatus)){
+//                logger.error("租用回调接口,回调ip校验失败:{}", vcOrderNo);
+//                return "ERROR";
+//            }
             vcOnlineOrder.setpOrder(vcOrderNo);
             String payStatus = requestMap.get("status");
             if ("4".equals(payStatus)) {
@@ -93,7 +93,7 @@ public class ZuYongCallBackController extends BaseController {
             } else {
                 status = 3;
             }
-            boolean isOk  = false;//;commonCallBackServiceImpl.callBackOrder(vcOnlineOrder, status,requestMap.toString());
+            boolean isOk  = commonCallBackServiceImpl.callBackOrder(vcOnlineOrder, status,requestMap.toString());
             if (isOk) {
                 return "success";
             } else {
