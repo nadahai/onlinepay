@@ -98,7 +98,7 @@ public class CommonCallBackService{
             	 onlinePayment.setStatus(2);
                  onlinePayment.setRemark("代付状态不明");
             }
-            if(status==3 && paymentType ==1){
+            /*if(status==3 && paymentType ==1){
                 //更新原订单
                 onlinePayment.setStatus(2);
                 onlinePayment.setRemark("代付处理中");
@@ -123,7 +123,7 @@ public class CommonCallBackService{
                 onlinePayment_old.setRedoResult("3");
                 onlinePayment_old.setOrderNo(onlinePayment.getRelateOrder());
                 int isok = vcOnlinePaymentService.updatePaymentByPnum(onlinePayment_old);
-            }
+            }*/
             int res = vcOnlinePaymentService.updatePaymentStatus(onlinePayment);
             if(res < 1){
                 onlinePayment.setStatus(6);
