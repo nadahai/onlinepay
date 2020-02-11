@@ -131,7 +131,7 @@
     <profile>
       <id>xpay-old</id>
       <properties>
-        <profileActive>xpay-ol</profileActive>
+        <profileActive>xpay-old</profileActive>
         <env.warname>xpay</env.warname>
       </properties>
       <activation>
@@ -140,9 +140,9 @@
     </profile>
 
     <profile>
-      <id>xpay1</id>
+      <id>xpay</id>
       <properties>
-        <profileActive>xpay1</profileActive>
+        <profileActive>xpay</profileActive>
         <env.warname>xpay</env.warname>
       </properties>
       <activation>
