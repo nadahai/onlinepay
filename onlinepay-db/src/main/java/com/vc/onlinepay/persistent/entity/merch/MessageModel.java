@@ -26,21 +26,21 @@ public class MessageModel {
         this.type = type;
     }
 
-    public MessageModel(MessageTypeEnum type, String msg) {
+    public MessageModel(MessageTypeEnum type, String pushMsg) {
         this.type = type;
-        this.pushMsg = msg;
+        this.pushMsg = pushMsg;
     }
 
-    public MessageModel(MessageTypeEnum type, String title, String msg) {
+    public MessageModel(MessageTypeEnum type, String pushTitle, String pushMsg) {
         this.type = type;
-        this.pushTitle = title;
-        this.pushMsg = msg;
+        this.pushTitle = pushTitle;
+        this.pushMsg = pushMsg;
     }
 
-    public MessageModel(String title, String msg) {
+    public MessageModel(String pushTitle, String pushMsg) {
         this.type = MessageTypeEnum.WINDOW;
-        this.pushTitle = title;
-        this.pushMsg = msg;
+        this.pushTitle = pushTitle;
+        this.pushMsg = pushMsg;
     }
     
     public MessageTypeEnum getType() {
@@ -55,24 +55,24 @@ public class MessageModel {
         return pushTitle;
     }
 
-    public void setTitle(String title) {
-        this.pushTitle = title;
+    public void setTitle(String pushTitle) {
+        this.pushTitle = pushTitle;
     }
 
     public String getMsg() {
         return pushMsg;
     }
 
-    public void setMsg(String msg) {
-        this.pushMsg = msg;
+    public void setMsg(String pushMsg) {
+        this.pushMsg = pushMsg;
     }
 
     @Override
     public String toString() {
         return "MessageModel{" +
                 "type=" + type +
-                ", title='" + pushTitle + '\'' +
-                ", msg='" + pushMsg + '\'' +
+                ", pushTitle='" + pushTitle + '\'' +
+                ", pushMsg='" + pushMsg + '\'' +
                 '}';
     }
 

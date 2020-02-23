@@ -140,11 +140,11 @@ public class ZuYongCallBackController extends BaseController {
             }
             logger.error("租用回调接口验签失败:{}",vcOrderNo);
             CompletableFuture.runAsync(()-> commonPayService.saveLog("租用回调验签失败",vcOrderNo,null,signData.toString(),upSign));
-            asynNotice.asyncMsgNotice(new MessageModel(MessageTypeEnum.WINDOW,"租用回调验签失败!",vcOrderNo));
+            asynNotice.asyncMsgNotice(new MessageModel(MessageTypeEnum.WINDOW,"回调验签失败!",vcOrderNo+"回调验签失败"));
         } catch (Exception e) {
             logger.error("租用回调验签异常:{}",vcOrderNo,e);
             CompletableFuture.runAsync(()-> commonPayService.saveLog("租用回调验签异常",vcOrderNo,null,signData.toString(),upSign));
-            asynNotice.asyncMsgNotice(new MessageModel(MessageTypeEnum.WINDOW,"租用回调验签异常!",vcOrderNo));
+            asynNotice.asyncMsgNotice(new MessageModel(MessageTypeEnum.WINDOW,"租用回调验签异常!",vcOrderNo+"回调验签异常"));
             return false;
         }
         return false;
