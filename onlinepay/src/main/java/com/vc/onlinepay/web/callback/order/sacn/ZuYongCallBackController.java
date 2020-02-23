@@ -95,12 +95,12 @@ public class ZuYongCallBackController extends BaseController {
             String checkIpStatus  = notifyService.checkIpAddressForTrade(vcOnlineOrder, request);
             if("error".equals(checkIpStatus)){
                 logger.error("租用回调接口,回调ip校验失败:{}", vcOrderNo);
-                return "ERROR";
+                //return "ERROR";
             }
             String key = commonCallBackServiceImpl.getDecodeKey(vcOnlineOrder.getUpMerchKey());
             if(!checkSign(vcOrderNo,requestMap, StringUtils.deleteWhitespace(key))){
                 logger.error("租用回调接口验签失败:{}", vcOrderNo);
-                return "failed";
+                //return "failed";
             }
             vcOnlineOrder.setpOrder(vcOrderNo);
             String payStatus = requestMap.get("status");
