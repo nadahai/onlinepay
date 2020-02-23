@@ -80,7 +80,10 @@ public class AsynNotice {
             CompletableFuture.runAsync(() -> {
                 logger.info("异步发送通知到DF管理端,接口:{}, 消息内容:{}",PRODUCT_EVN, model.toJSONString());
                 try {
-                    String response = HttpClientTools.httpSendPostForm(PRODUCT_EVN, model.toJSONObject());
+                    JSONObject sendJson = new JSONObject();
+                    sendJson.put("pushTitle",model.getTitle());
+                    sendJson.put("pushMsg",model.getMsg());
+                    String response = HttpClientTools.httpSendPostForm(PRODUCT_EVN, sendJson);
                     logger.info("异步发送通知到DF管理端,接口:{}, 类型:{}, 返回:{}",PRODUCT_EVN, model.getType().getDesc(), response);
                 } catch (Exception e) {
                     logger.error("异步发送通知到DF管理端异常",e);
