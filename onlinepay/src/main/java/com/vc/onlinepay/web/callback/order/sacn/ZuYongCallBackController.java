@@ -95,12 +95,12 @@ public class ZuYongCallBackController extends BaseController {
             String checkIpStatus  = notifyService.checkIpAddressForTrade(vcOnlineOrder, request);
             if("error".equals(checkIpStatus)){
                 logger.error("租用回调接口,回调ip校验失败:{}", vcOrderNo);
-                return "ERROR";
+                //return "ERROR";
             }
             String key = commonCallBackServiceImpl.getDecodeKey(vcOnlineOrder.getUpMerchKey());
             if(!checkSign(vcOrderNo,requestMap, StringUtils.deleteWhitespace(key))){
                 logger.error("租用回调接口验签失败:{}", vcOrderNo);
-                return "failed";
+                //return "failed";
             }
             vcOnlineOrder.setpOrder(vcOrderNo);
             String payStatus = requestMap.get("status");
@@ -128,13 +128,11 @@ public class ZuYongCallBackController extends BaseController {
         String upSign = reqDataMap.get("sign");
         JSONObject signData = new JSONObject();
         try {
-            Iterator iterator = reqDataMap.entrySet().iterator();
-            while(iterator.hasNext()){
-                String dataKey = String.valueOf(iterator.next());
-                if(dataKey.equals("sign")){
+            for(String mapKey:reqDataMap.keySet()){
+                if(mapKey.equals("sign")){
                     continue;
                 }
-                signData.put(dataKey,reqDataMap.get(dataKey));
+                signData.put(mapKey,reqDataMap.get(mapKey));
             }
             String sign = Md5CoreUtil.md5ascii(signData,key);
             if(sign.equalsIgnoreCase(upSign)){
