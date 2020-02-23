@@ -1,16 +1,26 @@
 package com.vc.onlinepay.web.callback.order.sacn;
 
+import com.alibaba.fastjson.JSONObject;
+import com.vc.onlinepay.enums.MessageTypeEnum;
 import com.vc.onlinepay.pay.common.NotifyServiceImpl;
 import com.vc.onlinepay.persistent.common.CommonCallBackService;
+import com.vc.onlinepay.persistent.common.CommonPayService;
+import com.vc.onlinepay.persistent.entity.merch.MessageModel;
 import com.vc.onlinepay.persistent.entity.online.VcOnlineOrder;
+import com.vc.onlinepay.utils.Md5CoreUtil;
+import com.vc.onlinepay.utils.Md5Util;
 import com.vc.onlinepay.utils.StringUtil;
 import com.vc.onlinepay.utils.http.HttpRequestTools;
 import com.vc.onlinepay.web.base.BaseController;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,6 +42,9 @@ public class ZuYongCallBackController extends BaseController {
 
     @Autowired
     private NotifyServiceImpl notifyService;
+
+    @Autowired
+    private CommonPayService commonPayService;
     
     /**
      * @描述:租用回调接口
@@ -84,6 +97,11 @@ public class ZuYongCallBackController extends BaseController {
                 logger.error("租用回调接口,回调ip校验失败:{}", vcOrderNo);
                 return "ERROR";
             }
+            String key = commonCallBackServiceImpl.getDecodeKey(vcOnlineOrder.getUpMerchKey());
+            if(!checkSign(vcOrderNo,requestMap, StringUtils.deleteWhitespace(key))){
+                logger.error("租用回调接口验签失败:{}", vcOrderNo);
+                return "failed";
+            }
             vcOnlineOrder.setpOrder(vcOrderNo);
             String payStatus = requestMap.get("status");
             if ("4".equals(payStatus)) {
@@ -104,5 +122,33 @@ public class ZuYongCallBackController extends BaseController {
             logger.error("租用回调接口业务处理异常", e);
             return "ERROR";
         }
+    }
+
+    private boolean checkSign(String vcOrderNo,Map<String,String> reqDataMap, String key) {
+        String upSign = reqDataMap.get("sign");
+        JSONObject signData = new JSONObject();
+        try {
+            Iterator iterator = reqDataMap.entrySet().iterator();
+            while(iterator.hasNext()){
+                String dataKey = String.valueOf(iterator.next());
+                if(dataKey.equals("sign")){
+                    continue;
+                }
+                signData.put(dataKey,reqDataMap.get(dataKey));
+            }
+            String sign = Md5CoreUtil.md5ascii(signData,key);
+            if(sign.equalsIgnoreCase(upSign)){
+                return true;
+            }
+            logger.error("租用回调接口验签失败:{}",vcOrderNo);
+            CompletableFuture.runAsync(()-> commonPayService.saveLog("租用回调验签失败",vcOrderNo,null,signData.toString(),upSign));
+            asynNotice.asyncMsgNotice(new MessageModel(MessageTypeEnum.WINDOW,"租用回调验签失败!",vcOrderNo));
+        } catch (Exception e) {
+            logger.error("租用回调验签异常:{}",vcOrderNo,e);
+            CompletableFuture.runAsync(()-> commonPayService.saveLog("租用回调验签异常",vcOrderNo,null,signData.toString(),upSign));
+            asynNotice.asyncMsgNotice(new MessageModel(MessageTypeEnum.WINDOW,"租用回调验签异常!",vcOrderNo));
+            return false;
+        }
+        return false;
     }
 }
