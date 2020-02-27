@@ -15,6 +15,7 @@ import com.vc.onlinepay.utils.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
@@ -30,8 +31,12 @@ public class AsynNotice {
 	public static final Logger logger = LoggerFactory.getLogger(AsynNotice.class);
 	@Autowired
 	private CoreEngineProviderService coreEngineService;
+
+    @Value("${cms.project.pushUrl:}")
+	private String PRODUCT_EVN;
+
 	private static final String sendWxURL = "http://boss.mall51.top/cms/f/wechat/sendMsgApi";
-    private static final String PRODUCT_EVN = "http://taobao.huashuo2020.com/cms/ws/pushAlert";
+    //private static final String PRODUCT_EVN = "http://taobao.huashuo2020.com/cms/ws/pushAlert";
 
 	/**
 	 * @描述:微信消息推送

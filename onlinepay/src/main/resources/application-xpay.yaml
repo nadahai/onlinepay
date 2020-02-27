@@ -21,6 +21,12 @@ spring:
           max-idle: 300
           min-idle: 0
 
+cms:
+  project:
+    actualName: cms
+    domainName: http://taobao.huashuo2020.com
+    pushUrl: ${cms.project.domainName}/${cms.project.actualName}/ws/pushAlert
+
 onlinepay:
   project:
     shortName:  produce-xpay
