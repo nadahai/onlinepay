@@ -43,12 +43,12 @@ public class TimerCronJob {
      * @时间:2019年4月26日21:54:00
      */
     //@Scheduled(cron = "0 */10 * * * ?")
-    public void taobaocleanOrderTrade(){
+   /* public void taobaocleanOrderTrade(){
         try {
             Integer result = channelSubNoService.updateSubNoDayAmount(null);
             logger.info("定时更新的pdd码商限额结果:{}",result);
         } catch (Exception e) {
             logger.error("定时回调，异步通知下游失败的订单", e);
         }
-    }
+    }*/
 }

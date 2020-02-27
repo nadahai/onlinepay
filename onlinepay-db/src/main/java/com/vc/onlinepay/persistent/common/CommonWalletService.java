@@ -7,11 +7,6 @@
 package com.vc.onlinepay.persistent.common;
 
 import com.vc.onlinepay.exception.OnlineServiceException;
-import com.vc.onlinepay.persistent.entity.channel.ChannelSubNo;
-import com.vc.onlinepay.persistent.entity.merch.SupplierSubno;
-import com.vc.onlinepay.persistent.entity.merch.XkPddBuyer;
-import com.vc.onlinepay.persistent.entity.merch.XkPddGoods;
-import com.vc.onlinepay.persistent.entity.merch.XkPddMerch;
 import com.vc.onlinepay.persistent.entity.online.VcOnlineOrder;
 import com.vc.onlinepay.persistent.entity.online.VcOnlinePayment;
 import com.vc.onlinepay.persistent.entity.online.VcOnlineWallet;
@@ -21,18 +16,18 @@ import com.vc.onlinepay.persistent.mapper.merch.XkPddGoodsMapper;
 import com.vc.onlinepay.persistent.mapper.merch.XkPddMerchMapper;
 import com.vc.onlinepay.persistent.monitor.AsynMonitor;
 import com.vc.onlinepay.persistent.service.channel.MerchChannelServiceImpl;
-import com.vc.onlinepay.persistent.service.channel.SupplierSubnoServiceImpl;
 import com.vc.onlinepay.persistent.service.online.VcOnlineOrderServiceImpl;
 import com.vc.onlinepay.persistent.service.online.VcOnlineWalletRecordServiceImpl;
 import com.vc.onlinepay.persistent.service.online.VcOnlineWalletServiceImpl;
 import com.vc.onlinepay.utils.StringUtil;
-import java.math.BigDecimal;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.math.BigDecimal;
 
 /**
  * @描述:通用财富业务处理接口实现(禁止随意修改)
@@ -227,42 +222,9 @@ public class CommonWalletService {
             order.setOrderDes("成功已结算");
             int r = vcOnlineOrderService.updateOrderSettleStatus(order);
             logger.info ("更新订单结算结果{},{}",orderNo,r);
-            return this.updateSubInfo (vcOnlineOrder,orderNo);
+            return merchChannelServiceImpl.updateSubNoAmount(vcOnlineOrder,orderNo);
         } catch (Exception e) {
             logger.error("异步更新成功订单财富信息,订单号{},异常{}",orderNo,e);
-            return false;
-        }
-    }
-
-    /**
-     * @描述:更新订单子账号信息
-     * @作者:nada
-     * @时间:2018/12/28
-     **/
-    @Transactional(readOnly=false,rollbackFor=Exception.class)
-    public boolean updateSubInfo(VcOnlineOrder vcOnlineOrder,String orderNo){
-        try {
-            long merchId = vcOnlineOrder.getMerchId();
-            long channelId = vcOnlineOrder.getChannelId();
-            long channelSource = vcOnlineOrder.getPaySource();
-            if(channelSource == 51 || channelSource == 65 || channelSource == 81 || channelSource == 83){
-                SupplierSubno supplierSubno = new SupplierSubno(vcOnlineOrder.getUpMerchNo(),vcOnlineOrder.getUpMerchKey(),vcOnlineOrder.getTraAmount());
-                int r = merchChannelServiceImpl.updateAlipaySubNoAmount(supplierSubno);
-                logger.info("更新支付宝子账号信息{},{}",orderNo,r);
-                r = merchChannelServiceImpl.updateSubNoAmount(new ChannelSubNo(channelId,merchId,vcOnlineOrder.getUpMerchNo(),vcOnlineOrder.getTraAmount()));
-                logger.info("更新支付宝渠道大商户子账号信息{},{}",orderNo,r);
-                return true;
-            }else if(channelSource==111L){
-                int r = merchChannelServiceImpl.updateSubNoAmount(new ChannelSubNo(channelId,merchId,vcOnlineOrder.getUpMerchNo(),vcOnlineOrder.getTraAmount()));
-                logger.info("更新大商户子账号信息{},{}",orderNo,r);
-                return true;
-            }else if(channelSource==93L){
-                int r = merchChannelServiceImpl.updateSubNoAmount(new ChannelSubNo(channelId,vcOnlineOrder.getUpMerchNo(),vcOnlineOrder.getTraAmount()));
-                logger.info("更新大商户子账号信息{},{}",orderNo,r);
-            }
-            return true;
-        } catch (Exception e) {
-            logger.error("更新订单子账号信息订单号{},异常{}",orderNo,e);
             return false;
         }
     }

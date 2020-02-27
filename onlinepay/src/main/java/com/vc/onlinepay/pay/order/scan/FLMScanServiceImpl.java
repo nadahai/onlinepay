@@ -77,7 +77,7 @@ public class FLMScanServiceImpl {
             String pwd = reqData.containsKey ("channelDesKey") ? reqData.getString ("channelDesKey").trim () : "";
             String mobile = reqData.containsKey ("channelKey") ? reqData.getString ("channelKey").trim () : "";
             String vcOrderNo = reqData.containsKey ("vcOrderNo") ? reqData.getString ("vcOrderNo").trim () : "";
-            channelSubNoServiceImpl.updateLastOrderTime(new ChannelSubNo(mobile));
+            //channelSubNoServiceImpl.updateLastOrderTime(new ChannelSubNo(mobile));
             if (StringUtils.isAnyEmpty (mobile, vcOrderNo)) {
                 return listener.failedHandler (Constant.failedMsg ("账号为空"));
             }

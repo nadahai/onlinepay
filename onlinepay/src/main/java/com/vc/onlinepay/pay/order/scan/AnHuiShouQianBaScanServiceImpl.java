@@ -60,7 +60,7 @@ public class AnHuiShouQianBaScanServiceImpl {
             String upMerchNo = reqData.containsKey ("channelKey") ? reqData.getString ("channelKey").trim () : "";
             String urlCallback = reqData.getString ("projectDomainUrl") + "/shouQianBaPayCallbackApi";
             String vcOrderNo = reqData.containsKey ("vcOrderNo") ? reqData.getString ("vcOrderNo").trim () : "";
-            channelSubNoServiceImpl.updateLastOrderTime(new ChannelSubNo (upMerchNo));
+            //channelSubNoServiceImpl.updateLastOrderTime(new ChannelSubNo (upMerchNo));
             BigDecimal money = reqData.getBigDecimal ("amount");
             if (StringUtils.isAnyEmpty (upMerchNo, vcOrderNo)) {
                 return listener.failedHandler (Constant.failedMsg ("账号为空"));

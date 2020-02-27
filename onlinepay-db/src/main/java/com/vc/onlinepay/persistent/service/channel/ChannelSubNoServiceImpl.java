@@ -211,10 +211,10 @@ public class ChannelSubNoServiceImpl {
      * @作者:ChaiJing THINK
      * @时间:2018/8/13 14:36
      */
-    @Transactional (readOnly = false,rollbackFor = Exception.class)
+    /*@Transactional (readOnly = false,rollbackFor = Exception.class)
     public Integer updateLastOrderTime (ChannelSubNo channelSubNo) {
         return channelSubNoMapper.updateLastOrderTime (channelSubNo);
-    }
+    }*/
 
     @Transactional (readOnly = false,rollbackFor = Exception.class)
     public Integer cleanDayTradeAmount (ChannelSubNo channelSubNo) {

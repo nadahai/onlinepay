@@ -84,7 +84,7 @@ public class ZuYongPDD3ScanServiceImpl {
                 return listener.failedHandler (Constant.failedMsg (msg));
             }
             String bankUrl = StringEscapeUtils.unescapeJava(payParams.getString ("bankUrl"));
-            channelSubNoServiceImpl.updateLastOrderTime(new ChannelSubNo(merchNo));
+            //channelSubNoServiceImpl.updateLastOrderTime(new ChannelSubNo(merchNo));
             result.put("code", Constant.SUCCESSS);
             result.put("msg", "获取链接成功");
             result.put ("bankUrl",bankUrl);

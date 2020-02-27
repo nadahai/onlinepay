@@ -12,6 +12,7 @@ import com.vc.onlinepay.exception.OnlineServiceException;
 import com.vc.onlinepay.persistent.entity.channel.ChannelSubNo;
 import com.vc.onlinepay.persistent.entity.channel.MerchChannel;
 import com.vc.onlinepay.persistent.entity.merch.SupplierSubno;
+import com.vc.onlinepay.persistent.entity.online.VcOnlineOrder;
 import com.vc.onlinepay.persistent.mapper.channel.MerchChannelMapper;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -47,7 +48,7 @@ public class MerchChannelServiceImpl {
      * @描述:更新下单时间
      * @时间:2018年5月17日 下午5:57:58
      */
-    @Transactional (readOnly = false)
+    /*@Transactional (readOnly = false)
     public Integer updateLastOrderTime (ChannelSubNo channelSubNo) throws OnlineServiceException {
         try {
             if (StringUtils.isEmpty(channelSubNo.getUpMerchNo()) || "0".equals (channelSubNo.getUpMerchNo())){
@@ -58,7 +59,7 @@ public class MerchChannelServiceImpl {
             logger.error ("更新下单信息异常", e);
             return 0;
         }
-    }
+    }*/
 
     /**
      * @描述:更新回调IP
@@ -229,6 +230,31 @@ public class MerchChannelServiceImpl {
         } catch (Exception e) {
             logger.error ("修改子商户日额度异常", e);
             return 0;
+        }
+    }
+
+    /**
+     * @描述:修改子商户日额度
+     * @时间:2018年5月17日 下午5:57:58
+     */
+    @Transactional (readOnly = false)
+    public Boolean updateSubNoAmount (VcOnlineOrder vcOnlineOrder, String orderNo) throws OnlineServiceException {
+        try {
+            long merchId = vcOnlineOrder.getMerchId();
+            long channelId = vcOnlineOrder.getChannelId();
+            long channelSource = vcOnlineOrder.getPaySource();
+            if (StringUtils.isEmpty (vcOnlineOrder.getUpMerchNo ()) || "0".equals (vcOnlineOrder.getUpMerchNo ())) {
+                return false;
+            }
+            if(channelSource==111L){
+                int r = channelSubNoService.updateSubNoAmount(new ChannelSubNo(channelId,merchId,vcOnlineOrder.getUpMerchNo(),vcOnlineOrder.getTraAmount()));
+                logger.info("更新大商户子账号信息{},{}",orderNo,r);
+                return true;
+            }
+            return true;
+        } catch (Exception e) {
+            logger.error ("修改子商户日额度异常", e);
+            return false;
         }
     }
 

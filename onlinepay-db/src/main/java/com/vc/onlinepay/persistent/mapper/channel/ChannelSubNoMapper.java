@@ -67,7 +67,7 @@ public interface ChannelSubNoMapper {
      * @作者:ChaiJing THINK
      * @时间:2018/8/13 14:36
      */
-    Integer updateLastOrderTime(ChannelSubNo channelSubNo);
+    //Integer updateLastOrderTime(ChannelSubNo channelSubNo);
     
     /**
      * @描述:查找已拼多多商户
