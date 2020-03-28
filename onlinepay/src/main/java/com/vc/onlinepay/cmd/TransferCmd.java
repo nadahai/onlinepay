@@ -247,13 +247,16 @@ public class TransferCmd {
                 return Constant.failedMsg ("请求商户被禁用,请核实商户状态");
             }
             reqData.put ("mode", MerchInfo.getReplaceMode (merchInfo));
+            String isMemo = reqData.containsKey ("isMemo")?reqData.getString("isMemo"):"";
             String ipaddress = reqData.getString("netIpaddress");
-            if (!reqData.containsKey ("isMemo") || !"isMemo".equals (reqData.getString ("isMemo"))) {
+            String merchSecuityIps = merchInfo.getIpAddress ();
+            if (!"isMemo".equals (isMemo)) {
+                //2:仅认证代付 4:同时认证交易代付
                 if (merchInfo.getIsSecurity () == 2 || merchInfo.getIsSecurity () == 4) {
-                    if (StringUtil.isEmpty (merchInfo.getIpAddress ())) {
+                    if (StringUtil.isEmpty(merchSecuityIps)) {
                         return Constant.failedMsg ("温馨提示：请备案IP白名单认证");
                     }
-                    if (!merchInfo.getIpAddress ().contains (ipaddress) && !"127.0.0.2".equals (ipaddress)) {
+                    if (!merchSecuityIps.contains(ipaddress) && !"127.0.0.2".equals (ipaddress)) {
                         return Constant.failedMsg ("温馨提示：" + ipaddress + "IP不在备案白名单");
                     }
                 }

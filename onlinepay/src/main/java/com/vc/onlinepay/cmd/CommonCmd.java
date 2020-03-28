@@ -101,11 +101,9 @@ public class CommonCmd {
                 return Constant.failedMsg ("请求商户号" + merchNo + "已禁用");
             }
             reqData.remove ("sign");
-            //String createSign = Md5CoreUtil.md5ascii (reqData, merchInfo.getPassword ());
             String signStr = Md5CoreUtil.getSignStr (reqData, merchInfo.getPassword ());
             logger.info("系统signStr结果:{}",signStr);
             String createSign = Md5Util.MD5 (signStr);
-            //测试账号过滤sign校验
             String testMerch = coreProviderService.getCacheCfgKey("online.replace.test.merch");
             boolean isTest = Boolean.FALSE;
             if(StringUtil.isNotEmpty(testMerch) && testMerch.contains(merchNo)){
@@ -120,18 +118,6 @@ public class CommonCmd {
                     return Constant.failedMsg ("验签失败,平台验签为" + sign);
                 }
             }
-            Long merchType = merchInfo.getMerchType();
-            //租用系统验证资金配置
-            if(merchType !=null && merchType == 8 ){
-            	BigDecimal amount = reqData.getBigDecimal("amount");
-                VcOnlineWallet vcOnlineWallet = payBusService.findVcOnlineWalletBymerchNo(merchNo);
-                if(vcOnlineWallet == null){
-                    return Constant.failedMsg("温馨提示:账户信息未配置");
-                }
-                if(amount.compareTo(merchInfo.getUsableTraMoney().subtract(merchInfo.getTra_total_amount()))>=0){
-                    return Constant.failedMsg("温馨提示:账户余额不足请充值");
-                }
-            }
             reqData.put ("mode", MerchInfo.getReplaceMode (merchInfo));
             reqData.put ("merchantNo", merchNo);
             reqData.put ("replaceChannel", merchInfo.getReplaceChannel ());
@@ -141,7 +127,7 @@ public class CommonCmd {
             reqData.put ("bankNo", merchInfo.getBankNo ());
             reqData.put ("projectDomainUrl", domainName + "/" + actualName);
             reqData.put ("vcOrderNo", Constant.getAutoOrderNo ());
-            reqData.put ("merchType",merchType);
+            reqData.put ("merchType",merchInfo.getMerchType());
             reqData.put ("successUrl", successUrl);
             reqData.put ("checkRate", merchInfo.getCheckRate ());
             reqData.put ("isSecurity", merchInfo.getIsSecurity ());
