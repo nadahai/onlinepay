@@ -194,24 +194,12 @@ public class TransferCmd {
             String idCardNo = StringUtils.deleteWhitespace (reqData.containsKey ("idCardNo") ? reqData.getString ("idCardNo") : "");
             String amount = reqData.containsKey ("amount") ? reqData.getString ("amount").trim () : "";
             String tradeNo = reqData.containsKey ("tradeNo") ? reqData.getString ("tradeNo").trim () : "";
-
-            int r0 = new BigDecimal (amount).compareTo (new BigDecimal ("1000"));
-            /*
-            if (r0 == -1 || r0 == 0) {
-                return Constant.failedMsg ("请求代付金额过小:" + amount + ",请检查代付金额,必须大于1000");
-            }
-            */
             if (StringUtils.isEmpty (tradeNo)) {
                 return Constant.failedMsg ("请求报文tradeNo参数为空");
             }
             if (reqData.getString ("tradeNo").length () < 10 && reqData.getString ("tradeNo").length () > 32) {
                 return Constant.failedMsg ("请求订单号10-32长度");
             }
-            /***
-            if (StringUtils.isEmpty (idCardNo)) {
-                return Constant.failedMsg ("请求报文idCardNo参数为空");
-            }
-            **/
             if (StringUtils.isEmpty (accountName)) {
                 return Constant.failedMsg ("请求报文accountName参数为空");
             }
@@ -227,11 +215,6 @@ public class TransferCmd {
             if (!reqData.containsKey ("bankName") || StringUtils.isEmpty (reqData.getString ("bankName"))) {
                 return Constant.failedMsg ("请求报文bankName参数为空");
             }
-            /**
-            if (!reqData.containsKey ("bankSubName") || StringUtils.isEmpty (reqData.getString ("bankSubName"))) {
-                return Constant.failedMsg ("请求报文bankSubName参数为空");
-            }
-            **/
             //日切时间
             String onlineOrderLimit = coreEngineProviderService.getCacheCfgKey (CacheConstants.ONLINE_LIMIT_TIME_ORDER);
             if (Constant.isEffectiveTimeNow (onlineOrderLimit)) {
