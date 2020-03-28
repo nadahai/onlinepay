@@ -94,7 +94,7 @@ public class TransferCmd {
      * @描述:调用代付订单业务处理
      * @时间:2017年6月16日 下午6:19:27
      */
-    public synchronized JSONObject doAllReplaceOrder (JSONObject reqData) {
+    public JSONObject doAllReplaceOrder (JSONObject reqData) {
         try {
             //第一步：参数验证业务处理
             JSONObject result = this.checkReqPrms (reqData);
