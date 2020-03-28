@@ -22,8 +22,6 @@ import java.math.BigDecimal;
 public class ZuYongPDD3ScanServiceImpl {
 
     private static Logger logger = LoggerFactory.getLogger(ZuYongPDD3ScanServiceImpl.class);
-    @Autowired
-    private ChannelSubNoServiceImpl channelSubNoServiceImpl;
     /**
      * @描述:自研拼多多租用系统
      * @时间:2017年12月1日 下午3:15:40
