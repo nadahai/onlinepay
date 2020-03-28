@@ -99,7 +99,7 @@ public class VcOnlinePayment {
         String relateOrder = cashOrderNo;
         if ("isMemo".equals (isMemo)) {
             orderSource = 2;
-            paymentType = 2;
+            paymentType = 1;
             //relateOrder = params.getString ("orderNo").substring (0, params.getString ("orderNo").indexOf ("_"));
         }
 
