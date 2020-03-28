@@ -21,20 +21,20 @@ import org.springframework.web.bind.annotation.RestController;
  * @作者:nada
  * @版权:公司 Copyright (c) 2017
  */
-@Controller
-@RestController
-@RequestMapping("/agentTransfer")
+//@Controller
+//@RestController
+//@RequestMapping("/agentTransfer")
 public class ReplaceController extends BaseController{
 
-    @Autowired
+    /*@Autowired
     private ReplaceServiceApi replaceService;
     @Autowired
     private ReplaceServiceImpl replaceServiceImpl;
 
-	/**
+	*//**
     * @描述:代付下单接口入口
     * @时间:2017年6月6日 下午10:24:20
-    */
+    *//*
     @Override
 	@RequestMapping(value = "", produces = "text/html;charset=UTF-8")
     public void doPost(HttpServletRequest request,HttpServletResponse response){
@@ -54,10 +54,10 @@ public class ReplaceController extends BaseController{
         }
     }
     
-    /**
+    *//**
 	 * @描述:调用代付下单业务处理
 	 * @时间:2017年6月16日 下午6:19:27
-	 */
+	 *//*
 	public JSONObject invokeRestOrder(HttpServletRequest request) {
 		JSONObject result =  new JSONObject();
 		JSONObject reqData = null;
@@ -114,5 +114,5 @@ public class ReplaceController extends BaseController{
 			asynNotice.asynWxMsgNotice("代付报警","代付下单业务处理异常需紧急处理");
 			return replaceService.replaceFailedResponse(reqData, result);
 		}
-	}
+	}*/
 }

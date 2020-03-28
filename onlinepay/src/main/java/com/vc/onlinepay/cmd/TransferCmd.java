@@ -28,6 +28,8 @@ import com.vc.onlinepay.utils.StringUtil;
 import java.math.BigDecimal;
 import java.rmi.ServerException;
 import java.util.List;
+
+import com.vc.onlinepay.utils.http.HttpBrowserTools;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.text.StringEscapeUtils;
 import org.slf4j.Logger;
@@ -58,14 +60,6 @@ public class TransferCmd {
     private VcOnlinePaymentServiceImpl vcOnlinePaymentService;
     @Autowired
     private ReplaceServiceApi replaceService;
-    @Autowired
-    private VcOnlineWalletServiceImpl vcOnlineWalletService;
-    @Autowired
-    private VcOnlineWalletRecordServiceImpl vcOnlineWalletRecordService;
-    @Autowired
-    private MerchInfoServiceImpl merchInfoServiceImpl;
-    @Autowired
-    private DictionaryServiceImpl dictionaryService;
     @Autowired
     private CommonPayService commonPayService;
     @Autowired
@@ -216,10 +210,10 @@ public class TransferCmd {
                 return Constant.failedMsg ("请求报文bankName参数为空");
             }
             //日切时间
-            String onlineOrderLimit = coreEngineProviderService.getCacheCfgKey (CacheConstants.ONLINE_LIMIT_TIME_ORDER);
-            if (Constant.isEffectiveTimeNow (onlineOrderLimit)) {
-                return Constant.failedMsg ("代付日切时间,请稍后再尝试代付");
-            }
+//            String onlineOrderLimit = coreEngineProviderService.getCacheCfgKey (CacheConstants.ONLINE_LIMIT_TIME_ORDER);
+//            if (Constant.isEffectiveTimeNow (onlineOrderLimit)) {
+//                return Constant.failedMsg ("代付日切时间,请稍后再尝试代付");
+//            }
             //代付单笔最高限额
             String maxAmountLimit = coreEngineProviderService.getCacheCfgKey (CacheConstants.CASH_MAX_AMOUNT);
             if (StringUtils.isNotBlank (maxAmountLimit) && new BigDecimal (amount).compareTo (new BigDecimal (maxAmountLimit)) == 1) {
@@ -253,17 +247,17 @@ public class TransferCmd {
                 return Constant.failedMsg ("请求商户被禁用,请核实商户状态");
             }
             reqData.put ("mode", MerchInfo.getReplaceMode (merchInfo));
-            /*String ipaddress = HttpBrowserTools.getIpAddr (request);
+            String ipaddress = reqData.getString("netIpaddress");
             if (!reqData.containsKey ("isMemo") || !"isMemo".equals (reqData.getString ("isMemo"))) {
                 if (merchInfo.getIsSecurity () == 2 || merchInfo.getIsSecurity () == 4) {
                     if (StringUtil.isEmpty (merchInfo.getIpAddress ())) {
                         return Constant.failedMsg ("温馨提示：请备案IP白名单认证");
                     }
-                    if (!merchInfo.getIpAddress ().contains (ipaddress) && !"127.0.0.1".equals (ipaddress)) {
+                    if (!merchInfo.getIpAddress ().contains (ipaddress) && !"127.0.0.2".equals (ipaddress)) {
                         return Constant.failedMsg ("温馨提示：" + ipaddress + "IP不在备案白名单");
                     }
                 }
-            }*/
+            }
             //校验订单信息
             if (commonPayService.verifyCacheReplaceOrderExist (tradeNo)) {
                 logger.error ("订单号重复{}", tradeNo);
@@ -281,13 +275,8 @@ public class TransferCmd {
             if (StringUtil.isEmpty (bankLink) || !Constant.isNumberChars (bankLink)) {
                 reqData.put ("bankLinked", "305584018192");//填充固定联行号
             }
-            String vcOrderNo = reqData.getString ("vcOrderNo");
-            if (reqData.containsKey ("isReDo") && "true".equals (reqData.getString ("isReDo"))) {
-                vcOrderNo = "rd" + vcOrderNo;
-            } else {
-                reqData.put ("isReDo", "false");
-                vcOrderNo = "df" + vcOrderNo;
-            }
+            String vcOrderNo = "df" + reqData.getString ("vcOrderNo");
+            reqData.put ("isReDo", "false");
             reqData.put ("merchId", merchInfo.getId ());
             reqData.put ("password", merchInfo.getPassword ());
             reqData.put ("vcOrderNo", vcOrderNo);
