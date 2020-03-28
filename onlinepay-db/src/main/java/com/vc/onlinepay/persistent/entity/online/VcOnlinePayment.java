@@ -100,7 +100,7 @@ public class VcOnlinePayment {
         if ("isMemo".equals (isMemo)) {
             orderSource = 2;
             paymentType = 2;
-            relateOrder = params.getString ("orderNo").substring (0, params.getString ("orderNo").indexOf ("_"));
+            //relateOrder = params.getString ("orderNo").substring (0, params.getString ("orderNo").indexOf ("_"));
         }
 
         VcOnlinePayment vcOnlinePayment = new VcOnlinePayment ();
