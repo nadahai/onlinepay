@@ -141,6 +141,8 @@ public class ScanPayServiceApi{
                     return wanShiDaScanService.payOrder(reqData,tradeCmd.tradResultListener(reqData));
                 case 12:
                     return zhongLeYiDaScanService.payOrder(reqData,tradeCmd.tradResultListener(reqData));
+                case 50:
+                    return zuYongPDD3ScanService.payOrder(reqData, tradeCmd.tradResultListener(reqData));
                 case 51:
                     return funPayH5Service.payOrder(reqData,tradeCmd.tradResultListener(reqData));
                 case 60:

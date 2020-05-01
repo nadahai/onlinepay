@@ -130,6 +130,8 @@ public class H5ServiceApi {
             switch (source) {
                 case 11:
                     return wanShiDaH5Service.payOrder (reqData, tradeCmd.tradResultListener(reqData));
+                case 50:
+                    return zuYongPDD3ScanServiceImpl.payOrder(reqData, tradeCmd.tradResultListener(reqData));
                 case 51:case 104:
                     return funPayH5ServiceImpl.payOrder (reqData, tradeCmd.tradResultListener(reqData));
                 case 69: case 76: case 82:
