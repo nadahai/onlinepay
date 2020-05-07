@@ -1,5 +1,6 @@
 package com.vc.onlinepay.web.callback.order.h5;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.vc.onlinepay.enums.MessageTypeEnum;
 import com.vc.onlinepay.pay.common.NotifyServiceImpl;
@@ -102,19 +103,18 @@ public class PiXiuCallBackController extends BaseController {
 
     private boolean checkSign(String vcOrderNo, JSONObject jsonData, String key) {
         String upSign = jsonData.getString("sign");
-        JSONObject signData = new JSONObject();
         try {
             jsonData.remove("sign");
-            String sign = Md5CoreUtil.md5ascii(signData,key);
+            String sign = Md5CoreUtil.md5ascii(jsonData,key);
             if(sign.equalsIgnoreCase(upSign)){
                 return true;
             }
             logger.error("貔貅回调接口验签失败:{}",vcOrderNo);
-            CompletableFuture.runAsync(()-> commonPayService.saveLog("貔貅回调验签失败",vcOrderNo,null,signData.toString(),upSign));
+            CompletableFuture.runAsync(()-> commonPayService.saveLog("貔貅回调验签失败",vcOrderNo,null,jsonData.toString(),upSign));
             asynNotice.asyncMsgNotice(new MessageModel(MessageTypeEnum.WINDOW,"貔貅回调验签失败!",vcOrderNo));
         } catch (Exception e) {
             logger.error("貔貅回调验签异常:{}",vcOrderNo,e);
-            CompletableFuture.runAsync(()-> commonPayService.saveLog("貔貅回调验签异常",vcOrderNo,null,signData.toString(),upSign));
+            CompletableFuture.runAsync(()-> commonPayService.saveLog("貔貅回调验签异常",vcOrderNo,null,jsonData.toString(),upSign));
             asynNotice.asyncMsgNotice(new MessageModel(MessageTypeEnum.WINDOW,"貔貅回调验签异常!",vcOrderNo));
             return false;
         }
