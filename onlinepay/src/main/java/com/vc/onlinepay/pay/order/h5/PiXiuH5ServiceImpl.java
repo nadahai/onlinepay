@@ -14,9 +14,9 @@ import java.math.BigDecimal;
 import java.util.Iterator;
 
 @Service
-public class PiXiuScanServiceImpl {
+public class PiXiuH5ServiceImpl {
 
-    private static Logger logger = LoggerFactory.getLogger (PiXiuScanServiceImpl.class);
+    private static Logger logger = LoggerFactory.getLogger (PiXiuH5ServiceImpl.class);
     
 
     /**

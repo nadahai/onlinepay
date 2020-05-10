@@ -105,7 +105,7 @@ public class H5ServiceApi {
     @Autowired
     private HangKongScanServiceImpl hangKongScanServiceImpl;
     @Autowired
-    private PiXiuScanServiceImpl piXiuScanService;
+    private PiXiuH5ServiceImpl piXiuScanService;
 
 //    @Autowired
 //    private PddH5ServiceImpl pddH5Service;
