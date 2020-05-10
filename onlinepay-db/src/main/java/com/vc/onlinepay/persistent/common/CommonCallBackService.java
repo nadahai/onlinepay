@@ -7,6 +7,7 @@
 package com.vc.onlinepay.persistent.common;
 
 import cn.hutool.core.thread.ThreadUtil;
+import cn.hutool.http.HttpRequest;
 import com.alibaba.fastjson.JSONObject;
 import com.vc.onlinepay.http.HttpClientTools;
 import com.vc.onlinepay.http.HttpsClientTools;
@@ -451,7 +452,23 @@ public class CommonCallBackService{
 
 
     public static void main(String[] args) {
+        try {
+            String notifyUrl = "https://platform.fuzhengbaokj.com/api_gateway/callback/pay/huluwa";
+            String noticeJson = "{\"msg\":\"手工调整\",\"amount\":300.00,\"code\":\"10000\",\"orderNo\":\"h50510160903517848663\",\"tradeNo\":\"709074525068722176\",\"merchNo\":\"999941000007\",\"sign\":\"9e5392c217384f22f8ddb09357951238\",\"remark\":300.00,\"status\":4}";
+            JSONObject noticePrms = Constant.stringToJson(noticeJson);
 
+            String respContent = "";
+            if(notifyUrl.startsWith("https3://")){
+                respContent = HttpsClientTools.sendHttpSSL_appljson(noticePrms,notifyUrl);
+            }else{
+                respContent = HttpRequest.post(notifyUrl).body(noticeJson).execute().body();
+                //respContent = HttpClientTools.baseHttpSendPost(notifyUrl, noticePrms.toString(),Constant.CHART_UTF);
+            }
+            System.out.println(respContent);
+            Thread.currentThread().sleep(1000000);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
 
