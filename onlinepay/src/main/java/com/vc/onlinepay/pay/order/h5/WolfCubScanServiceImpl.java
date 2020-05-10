@@ -61,7 +61,7 @@ public class WolfCubScanServiceImpl {
             reqJson.put("notify_url", notifyUrl);
             reqJson.put("return_url", "http://192.168.0.1/test");
             reqJson.put("type", getPayType(vcOrderNo,payType));
-            reqJson.put("name", goodsName);
+            reqJson.put("name", "goodname");
             reqJson.put("money", amount);
             reqJson.put("out_trade_no", vcOrderNo);
             String outUserId = DateUtils.getTimeYMDhms()+String.valueOf(new Random().nextInt(10000));

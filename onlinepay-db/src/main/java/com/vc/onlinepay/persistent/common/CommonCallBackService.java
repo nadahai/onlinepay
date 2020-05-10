@@ -448,5 +448,10 @@ public class CommonCallBackService{
     public String getDecodeKey(String channelDesKey) throws Exception{
         return coreEngineProviderService.getDecodeChannlKey(channelDesKey);
     }
+
+
+    public static void main(String[] args) {
+
+    }
 }
 
