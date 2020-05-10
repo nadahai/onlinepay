@@ -1,6 +1,7 @@
 package com.vc.onlinepay.pay.order.h5;
 
 import com.alibaba.fastjson.JSONObject;
+import com.vc.onlinepay.cache.RedisCacheApi;
 import com.vc.onlinepay.pay.common.ResultListener;
 import com.vc.onlinepay.utils.Constant;
 import com.vc.onlinepay.utils.Md5CoreUtil;
@@ -8,6 +9,7 @@ import com.vc.onlinepay.utils.Md5Util;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -17,6 +19,9 @@ import java.util.Iterator;
 public class PiXiuH5ServiceImpl {
 
     private static Logger logger = LoggerFactory.getLogger (PiXiuH5ServiceImpl.class);
+
+    @Autowired
+    private RedisCacheApi redisCacheApi;
     
 
     /**
@@ -50,7 +55,13 @@ public class PiXiuH5ServiceImpl {
 
             logger.info("貔貅支付接口入参{}",parms);
             String payUrl = appendHtml(parms,API_PAY_URL).toString();
-            result.put("redirectHtml", payUrl);
+            if("999941000018".equals(reqData.getString("merchNo")) || "999941000001".equals(reqData.getString("merchNo"))){
+                result.put("bankUrl", reqData.getString ("projectDomainUrl")+"/cashier/pixiu/"+orderNo);
+                parms.put ("payUrl",API_PAY_URL);
+                redisCacheApi.set("cashier_"+orderNo,parms);
+            }else{
+                result.put("redirectHtml", payUrl);
+            }
             result.put("code", Constant.SUCCESSS);
             result.put("msg", "下单成功");
             return listener.successHandler (result);

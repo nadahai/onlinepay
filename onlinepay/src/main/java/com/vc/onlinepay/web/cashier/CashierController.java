@@ -2,13 +2,17 @@ package com.vc.onlinepay.web.cashier;
 
 import static java.util.regex.Pattern.compile;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.google.gson.Gson;
+import com.vc.onlinepay.cache.RedisCacheApi;
 import com.vc.onlinepay.persistent.common.CommonPayService;
 import com.vc.onlinepay.persistent.entity.channel.MerchChannel;
 import com.vc.onlinepay.persistent.entity.merch.MerchInfo;
+import com.vc.onlinepay.persistent.entity.online.VcOnlineOrder;
 import com.vc.onlinepay.persistent.service.channel.MerchChannelServiceImpl;
 import com.vc.onlinepay.persistent.service.channel.SupplierSubnoServiceImpl;
+import com.vc.onlinepay.persistent.service.online.VcOnlineOrderServiceImpl;
 import com.vc.onlinepay.utils.Constant;
 import com.vc.onlinepay.utils.Md5CoreUtil;
 import com.vc.onlinepay.utils.StringUtil;
@@ -23,9 +27,13 @@ import java.util.Map;
 import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -42,8 +50,15 @@ public class CashierController extends BaseController {
 
     @Autowired
     private MerchChannelServiceImpl merchChannelService;
+
     @Autowired
     private SupplierSubnoServiceImpl supplierSubnoService;
+
+    @Autowired
+    private VcOnlineOrderServiceImpl vcOnlineOrderService;
+
+    @Autowired
+    private RedisCacheApi redisCacheApi;
 
     @Value("${onlinepay.project.successUrl:}")
     private String successUrl;
@@ -306,6 +321,41 @@ public class CashierController extends BaseController {
         } catch (Exception e) {
             logger.error("组装支付参数异常", e);
             return new JSONObject();
+        }
+    }
+
+
+    /**
+     * 貔貅支付,生成bankUrl地址
+     */
+    @GetMapping(value = "/cashier/pixiu/{vcOrderNo}")
+    public ModelAndView taobaoScanCashier(@PathVariable String vcOrderNo){
+        ModelAndView mode = null;
+        try {
+            VcOnlineOrder vcOnlineOrder = vcOnlineOrderService.findOrderByOrderNo(vcOrderNo);
+            if(vcOnlineOrder==null){
+                logger.info("貔貅支付,获取订单信息为空{}",vcOrderNo);
+                return new ModelAndView("failure").addObject("message", "下单失败,请重试");
+            }
+            String cacheReqData = "";
+            String key = "cashier_"+vcOrderNo;
+            if(redisCacheApi.exists(key)){
+                cacheReqData = String.valueOf(redisCacheApi.get(key));
+            }else{
+                logger.info("貔貅支付,缓存信息为空{}",vcOrderNo);
+                return new ModelAndView("failure").addObject("message", "订单已过期,请重新下单");
+            }
+            JSONObject reqDataJson = JSON.parseObject(cacheReqData,JSONObject.class);
+            logger.info("貔貅支付,单号:{},参数:{}",vcOrderNo,reqDataJson);
+            String payUrl = reqDataJson.getString("payUrl");
+            reqDataJson.remove("payUrl");
+            mode = new ModelAndView("auto/autoSubmit");
+            mode.addObject("actionUrl", payUrl);
+            mode.addObject("map",reqDataJson);
+            return mode;
+        } catch (Exception e) {
+            logger.error("貔貅支付,生成bankUrl异常",vcOrderNo,e);
+            return new ModelAndView("failure").addObject("message", "下单失败,请重试");
         }
     }
 
