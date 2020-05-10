@@ -12,7 +12,7 @@ import com.vc.onlinepay.pay.order.bakup.ZuYongPDD3ScanServiceImpl;
 import com.vc.onlinepay.pay.order.h5.AAPayH5ServiceImpl;
 import com.vc.onlinepay.pay.order.h5.FunPayH5ServiceImpl;
 import com.vc.onlinepay.pay.order.h5.FunPayMerchH5ServiceImpl;
-import com.vc.onlinepay.pay.order.h5.ZFBGMScanServiceImpl;
+import com.vc.onlinepay.pay.order.h5.ZFBGMH5ServiceImpl;
 import com.vc.onlinepay.pay.order.scan.*;
 import com.vc.onlinepay.utils.Constant;
 import org.slf4j.Logger;
@@ -107,7 +107,7 @@ public class ScanPayServiceApi{
     @Autowired
     private WxSXBScanServiceImpl wxSXBScanServiceImpl;
     @Autowired
-    private ZFBGMScanServiceImpl zFBGMScanServiceImpl;
+    private ZFBGMH5ServiceImpl zFBGMScanServiceImpl;
     @Autowired
     private TaoBDFScanServiceImpl taoBDFScanServiceImpl;
     @Autowired

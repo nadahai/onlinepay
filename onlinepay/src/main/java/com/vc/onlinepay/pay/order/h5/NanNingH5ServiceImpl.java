@@ -14,9 +14,9 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Component
-public class NanNingScanServiceImpl {
+public class NanNingH5ServiceImpl {
 
-    private static Logger logger = LoggerFactory.getLogger (NanNingScanServiceImpl.class);
+    private static Logger logger = LoggerFactory.getLogger (NanNingH5ServiceImpl.class);
     
 
     /**

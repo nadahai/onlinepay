@@ -59,13 +59,13 @@ public class H5ServiceApi {
     @Autowired
     private NatieScanServiceImpl natieScanServiceImpl;
     @Autowired
-    private JieXinScanServiceImpl jieXinScanServiceImpl;
+    private JieXinH5ServiceImpl jieXinScanServiceImpl;
     @Autowired
     private PeiQiScanServiceImpl peiQiScanServiceImpl;
     @Autowired
-    private WangWangScanServiceImpl wangWangScanServiceImpl;
+    private WangWangH5ServiceImpl wangWangScanServiceImpl;
     @Autowired
-    private NanNingScanServiceImpl nanNingScanServiceImpl;
+    private NanNingH5ServiceImpl nanNingScanServiceImpl;
     @Autowired
     private QingHuScanServiceImpl qingHuScanServiceImpl;
     @Autowired
@@ -93,7 +93,7 @@ public class H5ServiceApi {
     @Autowired
     private SuRenHuaFeiScanServiceImpl suRenHuaFeiScanServiceImpl;
     @Autowired
-    private ZFBGMScanServiceImpl zFBGMScanServiceImpl;
+    private ZFBGMH5ServiceImpl zFBGMScanServiceImpl;
     @Autowired
     private WeiBoScanServiceImpl weiBoScanServiceImpl;
     @Autowired

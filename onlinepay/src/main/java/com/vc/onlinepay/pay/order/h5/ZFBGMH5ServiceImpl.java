@@ -12,13 +12,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
-
 @Service
 @Component
-public class ZFBGMScanServiceImpl {
+public class ZFBGMH5ServiceImpl {
 
-    private static Logger logger = LoggerFactory.getLogger (ZFBGMScanServiceImpl.class);
+    private static Logger logger = LoggerFactory.getLogger (ZFBGMH5ServiceImpl.class);
     
 
     /**

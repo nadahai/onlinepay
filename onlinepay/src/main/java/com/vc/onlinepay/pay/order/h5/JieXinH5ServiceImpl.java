@@ -19,9 +19,9 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Component
-public class JieXinScanServiceImpl {
+public class JieXinH5ServiceImpl {
 
-    private static Logger logger = LoggerFactory.getLogger (JieXinScanServiceImpl.class);
+    private static Logger logger = LoggerFactory.getLogger (JieXinH5ServiceImpl.class);
     @Autowired
     private VcOnlineOrderMadeService vcOnlineOrderMadeService;
     

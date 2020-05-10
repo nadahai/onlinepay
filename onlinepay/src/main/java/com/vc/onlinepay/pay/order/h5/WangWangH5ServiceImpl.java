@@ -15,9 +15,9 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Component
-public class WangWangScanServiceImpl {
+public class WangWangH5ServiceImpl {
 
-    private static Logger logger = LoggerFactory.getLogger (WangWangScanServiceImpl.class);
+    private static Logger logger = LoggerFactory.getLogger (WangWangH5ServiceImpl.class);
     
 
     /**
