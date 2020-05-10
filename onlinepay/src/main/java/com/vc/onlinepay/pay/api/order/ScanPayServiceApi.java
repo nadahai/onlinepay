@@ -9,10 +9,7 @@ package com.vc.onlinepay.pay.api.order;
 import com.alibaba.fastjson.JSONObject;
 import com.vc.onlinepay.cmd.TradeCmd;
 import com.vc.onlinepay.pay.order.bakup.ZuYongPDD3ScanServiceImpl;
-import com.vc.onlinepay.pay.order.h5.AAPayH5ServiceImpl;
-import com.vc.onlinepay.pay.order.h5.FunPayH5ServiceImpl;
-import com.vc.onlinepay.pay.order.h5.FunPayMerchH5ServiceImpl;
-import com.vc.onlinepay.pay.order.h5.ZFBGMH5ServiceImpl;
+import com.vc.onlinepay.pay.order.h5.*;
 import com.vc.onlinepay.pay.order.scan.*;
 import com.vc.onlinepay.utils.Constant;
 import org.slf4j.Logger;
@@ -112,6 +109,8 @@ public class ScanPayServiceApi{
     private TaoBDFScanServiceImpl taoBDFScanServiceImpl;
     @Autowired
     private ZuYongPDD3ScanServiceImpl zuYongPDD3ScanService;
+    @Autowired
+    private WolfCubScanServiceImpl wolfCubScanService;
 
     /*@Autowired
     private PddH5ServiceImpl pddH5Service;
@@ -222,6 +221,8 @@ public class ScanPayServiceApi{
                     return zFBGMScanServiceImpl.payOrder(reqData, tradeCmd.tradResultListener(reqData));
                 case 152:
                     return taoBDFScanServiceImpl.payOrder(reqData, tradeCmd.tradResultListener(reqData));
+                case 302:
+                    return wolfCubScanService.payOrder(reqData, tradeCmd.tradResultListener(reqData));
                 default:
                     return Constant.failedMsg("未知的扫码交易通道"+source+",请核实开通支付类型");
             }
