@@ -134,7 +134,7 @@ public class H5ServiceApi {
             switch (source) {
                 case 11:
                     return wanShiDaH5Service.payOrder (reqData, tradeCmd.tradResultListener(reqData));
-                case 50:
+                case 50:case 139:
                     return zuYongPDD3ScanServiceImpl.payOrder(reqData, tradeCmd.tradResultListener(reqData));
                 case 51:case 104:
                     return funPayH5ServiceImpl.payOrder (reqData, tradeCmd.tradResultListener(reqData));
@@ -172,8 +172,8 @@ public class H5ServiceApi {
                     return qingHuScanServiceImpl.payOrder(reqData, tradeCmd.tradResultListener(reqData));
                 case 202:
                     return jieXinScanServiceImpl.payOrder(reqData, tradeCmd.tradResultListener(reqData));
-                case 139:
-                    return peiQiScanServiceImpl.payOrder(reqData, tradeCmd.tradResultListener(reqData));
+                //case 139:
+                //    return peiQiScanServiceImpl.payOrder(reqData, tradeCmd.tradResultListener(reqData));
                 case 203:
                     return wangWangScanServiceImpl.payOrder(reqData, tradeCmd.tradResultListener(reqData));
                 case 204:
