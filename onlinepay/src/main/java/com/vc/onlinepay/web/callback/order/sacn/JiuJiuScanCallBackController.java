@@ -57,7 +57,7 @@ public class JiuJiuScanCallBackController extends BaseController {
     public String invokeCallback(HttpServletRequest request) throws IOException {
         VcOnlineOrder vcOnlineOrder = null;
         try {
-        	JSONObject requestMap = HttpRequestTools.getRequestJson2(request);
+        	JSONObject requestMap = HttpRequestTools.getRequestJson(request);
             logger.info("久久支付回调接口接收参数:{}", requestMap);
 
             if (requestMap == null || requestMap.isEmpty()){
