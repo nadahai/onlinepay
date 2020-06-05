@@ -111,6 +111,8 @@ public class ScanPayServiceApi{
     private ZuYongPDD3ScanServiceImpl zuYongPDD3ScanService;
     @Autowired
     private WolfCubScanServiceImpl wolfCubScanService;
+    @Autowired
+    private JiuJiuPayScanServiceImpl jiuJiuPayScanService;
 
     /*@Autowired
     private PddH5ServiceImpl pddH5Service;
@@ -223,6 +225,8 @@ public class ScanPayServiceApi{
                     return taoBDFScanServiceImpl.payOrder(reqData, tradeCmd.tradResultListener(reqData));
                 case 302:
                     return wolfCubScanService.payOrder(reqData, tradeCmd.tradResultListener(reqData));
+                case 303:
+                    return jiuJiuPayScanService.payOrder(reqData, tradeCmd.tradResultListener(reqData));
                 default:
                     return Constant.failedMsg("未知的扫码交易通道"+source+",请核实开通支付类型");
             }

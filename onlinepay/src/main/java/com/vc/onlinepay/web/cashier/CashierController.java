@@ -359,6 +359,40 @@ public class CashierController extends BaseController {
         }
     }
 
+    /**
+     * 久久支付,生成bankUrl地址
+     */
+    @GetMapping(value = "/cashier/jiujiu/{vcOrderNo}")
+    public ModelAndView jiuJiuScanCashier(@PathVariable String vcOrderNo){
+        ModelAndView mode = null;
+        try {
+            VcOnlineOrder vcOnlineOrder = vcOnlineOrderService.findOrderByOrderNo(vcOrderNo);
+            if(vcOnlineOrder==null){
+                logger.info("久久支付,获取订单信息为空{}",vcOrderNo);
+                return new ModelAndView("failure").addObject("message", "下单失败,请重试");
+            }
+            String cacheReqData = "";
+            String key = "cashier_jiujiu_"+vcOrderNo;
+            if(redisCacheApi.exists(key)){
+                cacheReqData = String.valueOf(redisCacheApi.get(key));
+            }else{
+                logger.info("久久支付,缓存信息为空{}",vcOrderNo);
+                return new ModelAndView("failure").addObject("message", "订单已过期,请重新下单");
+            }
+            JSONObject reqDataJson = JSON.parseObject(cacheReqData,JSONObject.class);
+            logger.info("久久支付,单号:{},参数:{}",vcOrderNo,reqDataJson);
+            String payUrl = reqDataJson.getString("payUrl");
+            reqDataJson.remove("payUrl");
+            mode = new ModelAndView("auto/autoSubmit");
+            mode.addObject("actionUrl", payUrl);
+            mode.addObject("map",reqDataJson);
+            return mode;
+        } catch (Exception e) {
+            logger.error("久久支付,生成bankUrl异常",vcOrderNo,e);
+            return new ModelAndView("failure").addObject("message", "下单失败,请重试");
+        }
+    }
+
     private static boolean isMoney(String str) {
         Pattern pattern = compile("(^[1-9]([0-9]+)?(\\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\\.[0-9]([0-9])?$)");
         return pattern.matcher(str).matches();
