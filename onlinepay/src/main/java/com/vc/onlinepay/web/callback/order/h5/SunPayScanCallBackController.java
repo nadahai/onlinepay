@@ -76,7 +76,7 @@ public class SunPayScanCallBackController extends BaseController {
                 return "failed";
             }
             //回调金额判断
-            Double traAmount = vcOnlineOrder.getTraAmount().doubleValue();
+            Double traAmount = vcOnlineOrder.getTraAmount().doubleValue()*100;
             Double callBackAmount = Double.valueOf(requestMap.getString("amount"));//回调返回交易金额
             if(Math.abs(traAmount-callBackAmount)>200){
             	logger.error("太阳支付回调接口金额浮动超过2元:{}", vcOrderNo);
