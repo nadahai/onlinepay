@@ -238,7 +238,7 @@ public class H5ServiceApi {
                     return piXiuScanService.payOrder(reqData, tradeCmd.tradResultListener(reqData));
                 case 302:
                     return wolfCubScanService.payOrder(reqData, tradeCmd.tradResultListener(reqData));
-                case 303:
+                case 304:
                     return sunPayScanService.payOrder(reqData, tradeCmd.tradResultListener(reqData));
                 default:
                     return Constant.failedMsg ("未知的H5支付通道" + source + ",请核实开通支付类型");
