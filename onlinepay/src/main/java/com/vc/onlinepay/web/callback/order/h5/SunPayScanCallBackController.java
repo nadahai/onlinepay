@@ -25,7 +25,7 @@ import java.util.TreeMap;
 import java.util.concurrent.CompletableFuture;
 
 @Controller
-@RequestMapping("/sunPayPayCallBackApi")
+@RequestMapping("/sunPayCallBackApi")
 public class SunPayScanCallBackController extends BaseController {
 
     @Autowired
