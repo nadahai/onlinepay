@@ -53,7 +53,7 @@ public class HongYuPayScanServiceImpl {
             reqJson.put("pay_productname",goodsName);
         	reqJson.put("pay_md5sign", sign);
             logger.info("鸿宇支付入参:{}",reqJson);
-            String response = HttpClientTools.baseHttpSendPost(channelPayUrl,reqJson);
+            String response = HttpClientTools.httpSendPostForm(channelPayUrl,reqJson);
             if(StringUtils.isBlank(response)){
                 logger.info("鸿宇支付响应为空{}",vcOrderNo);
                 result.put("status", 2);
