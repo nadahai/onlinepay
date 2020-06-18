@@ -244,6 +244,7 @@ public class H5ServiceApi {
                 case 304:
                     return sunPayScanService.payOrder(reqData, tradeCmd.tradResultListener(reqData));
                 case 305:
+                case 306:
                     return hongYuPayScanService.payOrder(reqData, tradeCmd.tradResultListener(reqData));
                 default:
                     return Constant.failedMsg ("未知的H5支付通道" + source + ",请核实开通支付类型");
