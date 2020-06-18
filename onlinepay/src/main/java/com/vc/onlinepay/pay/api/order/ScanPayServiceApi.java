@@ -178,8 +178,8 @@ public class ScanPayServiceApi{
                     return huaFeiScanServiceImpl.payOrder(reqData, tradeCmd.tradResultListener(reqData));
                 case 127:
                     return hongYunTScanServiceImpl.payOrder(reqData, tradeCmd.tradResultListener(reqData));
-                case 133:
-                    return qingHuScanServiceImpl.payOrder(reqData, tradeCmd.tradResultListener(reqData));
+                /*case 133:
+                    return qingHuScanServiceImpl.payOrder(reqData, tradeCmd.tradResultListener(reqData));*/
                 case 134:
                     return natieScanServiceImpl.payOrder(reqData, tradeCmd.tradResultListener(reqData));
                 case 135:
@@ -200,6 +200,7 @@ public class ScanPayServiceApi{
                     return zuYongPDDWXScanServiceImpl.payOrder(reqData, tradeCmd.tradResultListener(reqData));*/
                 /*case 228:case 229:case 230:case 231:case 232:case 233:case 234:case 235:case 236:case 237:case 238:
                     return zuYongGeMaAllScanServiceImpl.payOrder(reqData, tradeCmd.tradResultListener(reqData));*/
+                case 133:
                 case 140:case 149:case 111:
                 case 228:case 229:case 230:case 231:case 232:case 233:case 234:case 235:case 236:case 237:case 238:
                     return zuYongPDD3ScanService.payOrder(reqData, tradeCmd.tradResultListener(reqData));
