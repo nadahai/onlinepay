@@ -63,7 +63,7 @@ public class AnYiPayScanCallBackController extends BaseController {
                 logger.error("安逸支付回调接口获取参数为空");
                 return "failed";
             }
-            String vcOrderNo = requestMap.getString("trade_no");
+            String vcOrderNo = requestMap.getString("out_trade_no");
             if (StringUtil.isEmpty(vcOrderNo)) {
                 logger.error("安逸支付回调接口订单号为空{}", vcOrderNo);
                 return "failed";
