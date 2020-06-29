@@ -59,7 +59,7 @@ public class ShanFuTongPayScanServiceImpl {
         	reqJson.put("sign", sign);
 
             logger.info("闪付通支付入参:{}",reqJson);
-            String response = HttpClientTools.httpSendPostFrom(channelPayUrl,reqJson);
+            String response = HttpClientTools.sendPost(channelPayUrl,"params="+reqJson.toString());
             if(StringUtils.isBlank(response)){
                 result.put("status", 2);
                 result.put("code", Constant.FAILED);
