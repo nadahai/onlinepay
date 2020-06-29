@@ -104,7 +104,7 @@ public class ShanFuTongPayScanCallBackController extends BaseController {
             }
             boolean isOk = commonCallBackServiceImpl.callBackOrder(vcOnlineOrder, status,requestMap.toString());
             if (isOk) {
-            	return "OK";
+            	return "success";
             } else {
                 logger.error("闪付通支付回调接口更新失败{}", requestMap);
                 return "failed";
