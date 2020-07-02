@@ -105,7 +105,7 @@ public class ZhongLianCallBackController extends BaseController {
             }
             boolean isOk = commonCallBackServiceImpl.callBackOrder(vcOnlineOrder, status,requestMap.toString());
             if (isOk) {
-            	return "OK";
+            	return "SUCCESS";
             } else {
                 logger.error("众联支付回调接口更新失败{}", requestMap);
                 return "failed";

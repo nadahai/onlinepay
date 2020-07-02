@@ -108,9 +108,9 @@ public class ZhongLianServiceImpl {
         reqJson.put("mchOrderNo", DateUtils.getTimeYMDhms());
         reqJson.put("orderTime", DateUtils.getTimeYMDhms());
         reqJson.put("goodsName", "test");
-        reqJson.put("amount", new BigDecimal("998").multiply(new BigDecimal(100)).stripTrailingZeros().toPlainString());
+        reqJson.put("amount", new BigDecimal("89").multiply(new BigDecimal(100)).stripTrailingZeros().toPlainString());
         reqJson.put("clientIp","192.168.0.1");
-        reqJson.put("notifyUrl","192.168.0.1");
+        reqJson.put("notifyUrl","http://192.168.0.1/test");
         reqJson.put("buyerId","10001");
         reqJson.put("buyerName","张三");
         String signStr = Md5CoreUtil.getSignStr(reqJson)+"&appkey=TZSHAGVLLCDLNBVPMBKI";
