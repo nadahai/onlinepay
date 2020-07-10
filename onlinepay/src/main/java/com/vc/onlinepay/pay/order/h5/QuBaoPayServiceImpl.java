@@ -49,7 +49,7 @@ public class QuBaoPayServiceImpl {
             reqJson.put("device_type", "wap");
             reqJson.put("request_time", DateUtils.getTimeYMDhms());
             reqJson.put("nonce_str", DateUtils.getTimeYMDhms()+(new Random().nextInt(9000)+1000));
-            reqJson.put("pay_ip", reqData.getString("ipaddress"));
+            reqJson.put("pay_ip", reqData.getString("netIpaddress"));
             reqJson.put("out_trade_no", vcOrderNo);
             reqJson.put("amount", new BigDecimal(amount).setScale(2,BigDecimal.ROUND_DOWN));
             reqJson.put("currency", "CNY");
