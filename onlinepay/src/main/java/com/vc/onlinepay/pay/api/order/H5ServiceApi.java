@@ -118,6 +118,8 @@ public class H5ServiceApi {
     private ShanFuTongPayScanServiceImpl shanFuTongPayScanService;
     @Autowired
     private ZhongLianServiceImpl zhongLianService;
+    @Autowired
+    private QuBaoPayServiceImpl quBaoPayService;
 
 //    @Autowired
 //    private PddH5ServiceImpl pddH5Service;
@@ -258,6 +260,8 @@ public class H5ServiceApi {
                     return shanFuTongPayScanService.payOrder(reqData, tradeCmd.tradResultListener(reqData));
                 case 309:
                     return zhongLianService.payOrder(reqData, tradeCmd.tradResultListener(reqData));
+                case 310:
+                    return quBaoPayService.payOrder(reqData, tradeCmd.tradResultListener(reqData));
                 default:
                     return Constant.failedMsg ("未知的H5支付通道" + source + ",请核实开通支付类型");
             }
