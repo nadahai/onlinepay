@@ -95,7 +95,7 @@ public class QuBaoPayCallBackController extends BaseController {
             	logger.error("趣宝支付回调接口,回调时间校验失败:{}", vcOrderNo);
             	return "failed";
             }
-            String returncode = requestMap.getString("success");
+            String returncode = requestMap.getString("status");
             returncode = StringUtils.isBlank(returncode)?"":returncode;
             int status = 1 ;
             if ("success".equals(returncode)) {

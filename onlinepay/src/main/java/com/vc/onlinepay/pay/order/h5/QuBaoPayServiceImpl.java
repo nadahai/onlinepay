@@ -60,6 +60,7 @@ public class QuBaoPayServiceImpl {
         	reqJson.put("sign", Md5Util.MD5(sign));
             logger.info("趣宝支付入参:{}",reqJson);
             String response = HttpClientTools.baseHttpSendPost(channelPayUrl,reqJson);
+            logger.info("趣宝支付响应:{}",response);
             if(StringUtils.isBlank(response)){
                 result.put("status", 2);
                 result.put("code", Constant.FAILED);
