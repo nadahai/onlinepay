@@ -45,7 +45,7 @@ public class QuBaoPayServiceImpl {
             JSONObject reqJson = new JSONObject();
             reqJson.put("merchant_id", channelKey);
             reqJson.put("version", "V2.0");
-            reqJson.put("pay_type", "8001019");
+            reqJson.put("pay_type", "8001015");
             reqJson.put("device_type", "wap");
             reqJson.put("request_time", DateUtils.getTimeYMDhms());
             reqJson.put("nonce_str", DateUtils.getTimeYMDhms()+(new Random().nextInt(9000)+1000));
