@@ -49,7 +49,7 @@ public class HeZongPayServiceImpl {
             reqJson.put("backUrl", notifyUrl);
             reqJson.put("mcnNum", channelKey);
             reqJson.put("orderId", vcOrderNo);
-            reqJson.put("payType", 2);
+            reqJson.put("payType", 12);
             reqJson.put("ip", reqData.getString("ipAddress"));
             String signStr = "mcnNum="+reqJson.getString("mcnNum")+"&"+
                     "orderId="+reqJson.getString("orderId")+"&"+
