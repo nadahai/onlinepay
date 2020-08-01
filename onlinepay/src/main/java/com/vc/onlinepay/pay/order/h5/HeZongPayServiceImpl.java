@@ -62,7 +62,7 @@ public class HeZongPayServiceImpl {
         	reqJson.put("sign", sign);
 
             logger.info("合纵支付入参:{}",reqJson);
-            String response = HttpClientTools.baseHttpSendPost(channelPayUrl,reqJson);
+            String response = HttpsClientTools.sendHttpSSL_appljson(reqJson,"https://api.hzpay.info/api/v1/pay_qrcode.api");
             if(StringUtils.isBlank(response)){
                 result.put("status", 2);
                 result.put("code", Constant.FAILED);
