@@ -48,7 +48,8 @@ public class ZhongLianServiceImpl {
             JSONObject reqJson = new JSONObject();
             reqJson.put("merchantNo", channelKey);
             reqJson.put("nonceStr", DateUtils.getTimeYMDhms()+new Random().nextInt(100));
-            reqJson.put("paymentType", "ALIPAY_PC");
+            //reqJson.put("paymentType", "ALIPAY_PC");
+            reqJson.put("paymentType", "ALIPAY_APP");
             reqJson.put("mchOrderNo", vcOrderNo);
             reqJson.put("orderTime", DateUtils.getTimeYMDhms());
             reqJson.put("goodsName", reqData.getString("goodsName"));
