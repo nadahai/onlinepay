@@ -23,7 +23,7 @@
         <commons.springboot.version>2.0.0.RELEASE</commons.springboot.version>
         <commons-pool2.version>2.5.0</commons-pool2.version>
         <httpclient.version>4.5.5</httpclient.version>
-        <jackson.version>2.9.4</jackson.version>
+        <jackson.version>2.12.1</jackson.version>
         <jackson.version.annotations>2.9.0</jackson.version.annotations>
     </properties>
 
